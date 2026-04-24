@@ -42,11 +42,11 @@ export function SupportButton() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
+    <div className="fixed bottom-6 right-6 z-50">
       {/* Popover content */}
       <div className={cn(
-        "bg-card/95 backdrop-blur-xl border border-red-500/20 rounded-3xl shadow-2xl w-80 transition-all duration-300 origin-bottom-right overflow-hidden flex flex-col",
-        isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-95 opacity-0 translate-y-4 pointer-events-none"
+        "absolute bottom-[calc(100%+16px)] right-0 bg-card/95 backdrop-blur-xl border border-red-500/20 rounded-3xl shadow-2xl w-80 transition-all duration-300 origin-bottom-right overflow-hidden flex flex-col",
+        isOpen ? "scale-100 opacity-100 translate-y-0 pointer-events-auto" : "scale-95 opacity-0 translate-y-4 pointer-events-none"
       )}>
         {/* Header */}
         <div className="p-5 border-b border-white/5 flex items-center justify-between bg-red-600/5">
