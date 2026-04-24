@@ -130,7 +130,7 @@ export function CartSheet() {
                 <span className="text-2xl font-black text-foreground">{formattedTotal}</span>
               </div>
               <Button 
-                className="w-full h-14 text-lg font-bold bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40"
+                className="w-full h-14 text-lg font-bold bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white shadow-lg shadow-red-600/25 transition-all hover:shadow-red-600/40"
                 onClick={handleCheckout}
               >
                 <CreditCard className="mr-2 h-5 w-5" /> Ir para o Checkout

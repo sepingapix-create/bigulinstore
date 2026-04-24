@@ -120,18 +120,19 @@ export function ProductCard({ product }: ProductCardProps) {
               </span>
             </div>
 
-            {/* Circular Buy Button */}
+            {/* Buy Button */}
             <button 
               onClick={handleBuyNow}
               disabled={product.stock === 0}
               className={cn(
-                "h-11 w-11 rounded-full flex items-center justify-center transition-all duration-300 relative group/btn",
+                "h-10 px-4 rounded-full flex items-center justify-center gap-2 transition-all duration-300 relative group/btn",
                 product.stock > 0 
-                  ? "bg-red-600 hover:bg-red-500 text-white hover:scale-110 shadow-[0_0_20px_rgba(220,38,38,0.4)]" 
+                  ? "bg-red-600 hover:bg-red-500 text-white hover:scale-105 shadow-[0_0_15px_rgba(220,38,38,0.4)]" 
                   : "bg-zinc-800 text-zinc-500 cursor-not-allowed"
               )}
             >
-              <ShoppingCart className={cn("h-4 w-4", product.stock > 0 && "group-hover/btn:scale-110 transition-transform")} />
+              <ShoppingCart className={cn("h-4 w-4 shrink-0", product.stock > 0 && "group-hover/btn:-rotate-12 transition-transform")} />
+              <span className="text-[10px] font-black uppercase tracking-widest whitespace-nowrap">Compre Agora</span>
             </button>
           </div>
         </div>

@@ -9,6 +9,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { GlobalFlashTimer } from "@/components/GlobalFlashTimer";
+import { HeroVector } from "@/components/animations/HeroVector";
 
 export default async function Home() {
   const allProducts = await db.select({
@@ -65,31 +66,57 @@ export default async function Home() {
     <div className="min-h-screen flex flex-col">
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative pt-24 pb-32 overflow-hidden">
-          {/* Decorative gradients */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-primary/20 blur-[120px] rounded-full pointer-events-none" />
-          
-          <div className="container mx-auto px-4 relative z-10 text-center">
-            <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-6 italic animate-in fade-in slide-in-from-top-12 duration-1000 ease-out">
-              Império <br />
-              <span className="inline-block pb-2 pr-4 text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 animate-pulse">
-                Bigulin
+        <section className="relative pt-24 pb-36 overflow-hidden min-h-[80vh] flex items-center">
+          {/* Animated SVG Vector */}
+          <HeroVector />
+
+          {/* Soft background radial */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-primary/10 blur-[140px] rounded-full pointer-events-none" />
+
+          <div className="container mx-auto px-4 relative z-10 text-center w-full">
+            {/* Badge above title */}
+            <div className="inline-flex items-center gap-2 bg-red-600/10 border border-red-600/20 text-red-500 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_6px_rgba(220,38,38,0.8)] animate-pulse" />
+              Entrega instantânea · Qualidade imperial
+            </div>
+
+            <h1 className="text-6xl md:text-9xl font-black tracking-tighter mb-6 italic animate-in fade-in slide-in-from-top-12 duration-1000 ease-out leading-none">
+              IMPÉRIO <br />
+              <span className="inline-block pb-2 pr-4 text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600">
+                BIGULIN
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 font-medium animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300 fill-mode-both">
-              Desperte o poder do entretenimento premium com entrega instantânea e o selo de qualidade do Dragão.
+
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 font-medium animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300 fill-mode-both leading-relaxed">
+              Desperte o poder do entretenimento premium com entrega
+              instantânea e o selo de qualidade do Dragão.
             </p>
-            <div className="flex items-center justify-center gap-4 animate-in fade-in zoom-in-95 duration-1000 delay-500 fill-mode-both">
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in zoom-in-95 duration-1000 delay-500 fill-mode-both">
               <Link href="#catalogo">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8 h-12 text-lg font-semibold shadow-[0_0_20px_rgba(220,38,38,0.4)] transition-all hover:shadow-[0_0_30px_rgba(220,38,38,0.6)] hover:scale-110 active:scale-95">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-10 h-14 text-base font-bold shadow-[0_0_30px_rgba(220,38,38,0.5)] transition-all hover:shadow-[0_0_40px_rgba(220,38,38,0.7)] hover:scale-110 active:scale-95">
                   Ver Catálogo
                 </Button>
               </Link>
               <Link href="#como-funciona">
-                <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-lg font-medium border-red-500/20 hover:bg-red-500/10 transition-all text-red-500 hover:scale-105 active:scale-95">
+                <Button size="lg" variant="ghost" className="rounded-full px-10 h-14 text-base font-medium hover:bg-red-500/10 transition-all text-muted-foreground hover:text-red-400 hover:scale-105 active:scale-95">
                   Como Funciona <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
+            </div>
+
+            {/* Trust Stats */}
+            <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700 fill-mode-both">
+              {[
+                { value: "10K+", label: "Clientes Satisfeitos" },
+                { value: "99.9%", label: "Uptime do Sistema" },
+                { value: "<1min", label: "Entrega Média" },
+              ].map((stat) => (
+                <div key={stat.label} className="text-center">
+                  <p className="text-2xl font-black text-white tracking-tight">{stat.value}</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-widest font-medium mt-0.5">{stat.label}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -295,9 +322,12 @@ export default async function Home() {
       </section>
 
       {/* Simple Footer */}
-      <footer className="border-t border-border/40 bg-background py-8">
-        <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Bigulin. Todos os direitos reservados.</p>
+      <footer className="border-t border-border/40 bg-background py-10">
+        <div className="container mx-auto px-4 flex flex-col items-center justify-center gap-4 text-center">
+          <Link href="/termos" className="text-sm text-muted-foreground hover:text-red-500 transition-colors underline-offset-4 hover:underline">
+            Termos e Condições da Compra
+          </Link>
+          <p className="text-sm text-muted-foreground/60">&copy; {new Date().getFullYear()} Império Bigulin. Todos os direitos reservados.</p>
         </div>
       </footer>
     </div>
