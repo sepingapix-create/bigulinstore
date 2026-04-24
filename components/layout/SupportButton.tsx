@@ -25,13 +25,16 @@ const FAQS = [
 
 import { usePathname } from "next/navigation";
 
-export function SupportButton() {
+export function SupportButton({ variant = "floating" }: { variant?: "floating" | "inline" }) {
   const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState<"main" | "faq">("main");
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const pathname = usePathname();
 
-  if (pathname?.startsWith("/admin") || pathname?.startsWith("/affiliate") || pathname?.startsWith("/profile") || pathname?.startsWith("/order")) return null;
+  // If floating, hide on certain pages
+  if (variant === "floating" && (pathname?.startsWith("/admin") || pathname?.startsWith("/affiliate") || pathname?.startsWith("/profile") || pathname?.startsWith("/order"))) {
+    return null;
+  }
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
@@ -42,11 +45,16 @@ export function SupportButton() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className={cn(
+      "z-50",
+      variant === "floating" ? "fixed bottom-6 right-6" : "relative inline-block"
+    )}>
       {/* Popover content */}
       <div className={cn(
-        "absolute bottom-[calc(100%+16px)] right-0 bg-card/95 backdrop-blur-xl border border-red-500/20 rounded-3xl shadow-2xl w-80 transition-all duration-300 origin-bottom-right overflow-hidden flex flex-col",
-        isOpen ? "scale-100 opacity-100 translate-y-0 pointer-events-auto" : "scale-95 opacity-0 translate-y-4 pointer-events-none"
+        "absolute bg-card/95 backdrop-blur-xl border border-red-500/20 rounded-3xl shadow-2xl w-80 transition-all duration-300 overflow-hidden flex flex-col",
+        variant === "floating" ? "bottom-[calc(100%+16px)] right-0 origin-bottom-right" : "top-[calc(100%+16px)] left-1/2 -translate-x-1/2 origin-top",
+        isOpen ? "scale-100 opacity-100 pointer-events-auto" : "scale-95 opacity-0 pointer-events-none",
+        variant === "floating" ? (isOpen ? "translate-y-0" : "translate-y-4") : (isOpen ? "translate-y-0" : "-translate-y-4")
       )}>
         {/* Header */}
         <div className="p-5 border-b border-white/5 flex items-center justify-between bg-red-600/5">
@@ -72,7 +80,7 @@ export function SupportButton() {
         </div>
         
         {/* Body */}
-        <div className="max-h-[400px] overflow-y-auto p-5">
+        <div className="max-h-[400px] overflow-y-auto p-5 text-left">
           {view === "main" ? (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
               <div>
@@ -130,14 +138,23 @@ export function SupportButton() {
         </div>
       </div>
 
-      {/* Floating Button */}
-      <button 
-        onClick={toggleOpen}
-        className="h-16 w-16 bg-red-600 rounded-full flex items-center justify-center text-white shadow-2xl shadow-red-600/40 hover:scale-110 active:scale-95 transition-all group border-2 border-yellow-500/50 relative"
-      >
-        <Headphones className={cn("h-8 w-8 transition-all", isOpen ? "rotate-12" : "group-hover:-rotate-12")} />
-        <div className="absolute -top-1 -right-1 h-4 w-4 bg-yellow-500 rounded-full border-2 border-red-600 animate-pulse" />
-      </button>
+      {/* Button */}
+      {variant === "floating" ? (
+        <button 
+          onClick={toggleOpen}
+          className="h-16 w-16 bg-red-600 rounded-full flex items-center justify-center text-white shadow-2xl shadow-red-600/40 hover:scale-110 active:scale-95 transition-all group border-2 border-yellow-500/50 relative"
+        >
+          <Headphones className={cn("h-8 w-8 transition-all", isOpen ? "rotate-12" : "group-hover:-rotate-12")} />
+          <div className="absolute -top-1 -right-1 h-4 w-4 bg-yellow-500 rounded-full border-2 border-red-600 animate-pulse" />
+        </button>
+      ) : (
+        <button 
+          onClick={toggleOpen}
+          className="inline-flex items-center justify-center rounded-full px-8 h-12 text-lg font-medium border border-red-500/20 hover:bg-red-500/10 transition-all text-red-500 hover:scale-105 active:scale-95"
+        >
+          <Headphones className="mr-2 h-4 w-4" /> Suporte Imperial
+        </button>
+      )}
     </div>
   );
 }
