@@ -9,7 +9,6 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { GlobalFlashTimer } from "@/components/GlobalFlashTimer";
-import { SupportButton } from "@/components/layout/SupportButton";
 
 export default async function Home() {
   const allProducts = await db.select({
@@ -91,7 +90,6 @@ export default async function Home() {
                   Como Funciona <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <SupportButton variant="inline" />
             </div>
           </div>
         </section>
