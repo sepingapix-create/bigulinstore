@@ -5,7 +5,13 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const dbUrl = new URL(process.env.DATABASE_URL as string);
+const dbUrlString = process.env.DATABASE_URL || "mysql://user:pass@localhost:3306/db";
+let dbUrl: URL;
+try {
+  dbUrl = new URL(dbUrlString);
+} catch (e) {
+  dbUrl = new URL("mysql://user:pass@localhost:3306/db");
+}
 
 const connectionConfig = {
   host: dbUrl.hostname,
