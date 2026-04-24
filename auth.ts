@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/db";
-import { users } from "@/db/schema";
+import { users, affiliateVisits } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import Google from "next-auth/providers/google";
@@ -45,11 +45,50 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientSecret: process.env.AUTH_DISCORD_SECRET,
     }),
   ],
+  events: {
+    async createUser({ user }) {
+      if (!user.id) return;
+      
+      // Check if this is the first user, make them ADMIN
+      const allUsers = await db.select({ id: users.id }).from(users).limit(2);
+      if (allUsers.length === 1) {
+        await db.update(users).set({ role: "ADMIN" }).where(eq(users.id, user.id));
+      }
+
+      // Referral Tracking
+      try {
+        const { cookies } = await import("next/headers");
+        const cookieStore = await cookies();
+        const referralVisitId = cookieStore.get("referral_visit_id")?.value;
+
+        if (referralVisitId) {
+          const [targetVisit] = await db
+            .select()
+            .from(affiliateVisits)
+            .where(eq(affiliateVisits.id, referralVisitId))
+            .limit(1);
+
+          if (targetVisit) {
+            await db.update(affiliateVisits)
+              .set({ 
+                convertedToUser: true, 
+                userId: user.id 
+              })
+              .where(eq(affiliateVisits.id, targetVisit.id));
+          }
+        }
+      } catch (err) {
+        console.error("Error linking referral on OAuth registration:", err);
+      }
+    }
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        // Fetch fresh user to get the correct role (in case it was updated in createUser event)
+        const [dbUser] = await db.select().from(users).where(eq(users.id, user.id as string));
         token.id = user.id;
-        token.role = (user as any).role;
+        token.role = dbUser?.role || "USER";
       }
       return token;
     },
