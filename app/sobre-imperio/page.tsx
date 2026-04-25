@@ -43,7 +43,8 @@ export default function SobreImperioPage() {
               Nossa Linhagem
             </div>
             <h1 className="text-5xl md:text-8xl lg:text-[110px] font-black tracking-tight mb-10 italic leading-tight drop-shadow-2xl group-hover/hero:scale-[1.01] transition-transform duration-700 uppercase">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 py-2">O IMPÉRIO</span> <br className="md:hidden" /> BIGULIN
+              <span className="not-italic font-light text-zinc-500 text-3xl md:text-6xl lg:text-7xl mr-4 md:mr-8 align-middle">O</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 py-2">IMPÉRIO</span> <br className="md:hidden" /> BIGULIN
             </h1>
             <p className="text-xl md:text-2xl text-zinc-500 leading-relaxed font-medium max-w-3xl mx-auto italic group-hover/hero:text-zinc-400 transition-colors duration-500">
               "Forjando um novo padrão de honra no entretenimento digital."
@@ -51,8 +52,48 @@ export default function SobreImperioPage() {
           </ScrollReveal>
         </div>
 
-        {/* Split Content Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center mb-40">
+        {/* Pillar Values Section */}
+        <div className="relative mb-40">
+          <div className="text-center mb-16 group/pillars">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-600 mb-4 group-hover/pillars:text-zinc-400 transition-colors">Nossos Pilares</h3>
+            <div className="h-px w-20 bg-red-500 mx-auto group-hover/pillars:w-40 transition-all duration-700" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { icon: ShieldCheck, color: "text-red-500", title: "Honra", desc: "Nossa palavra é lei. Se prometemos entrega imediata, você receberá instantaneamente sem burocracias." },
+              { icon: Target, color: "text-yellow-500", title: "Foco", desc: "Nossa mira está sempre voltada para a melhor experiência do usuário e curadoria de serviços." },
+              { icon: Heart, color: "text-pink-500", title: "Lealdade", desc: "Tratamos nossos clientes como aliados imperiais de longa data em nossa jornada ao topo." },
+              { icon: Zap, color: "text-blue-400", title: "Agilidade", desc: "O tempo é o recurso mais precioso. No Império, sua entrega acontece na velocidade do pensamento." },
+              { icon: Globe, color: "text-emerald-400", title: "Sabedoria", desc: "Curadoria de elite para selecionar apenas os melhores serviços disponíveis no mercado global." },
+              { icon: Rocket, color: "text-purple-400", title: "Domínio", desc: "Infraestrutura de ponta para garantir que seu acesso nunca sofra interrupções ou falhas." },
+              { icon: ShieldCheck, color: "text-orange-500", title: "Transparência", desc: "Clareza total em cada transação, sem letras miúdas, taxas ocultas ou surpresas desagradáveis." },
+              { icon: Star, color: "text-amber-400", title: "Excelência", desc: "Busca incansável pela perfeição absoluta em cada detalhe dos serviços que oferecemos." },
+              { icon: Users, color: "text-cyan-400", title: "União", desc: "Uma comunidade forte de parceiros e clientes que crescem e prosperam juntos no nosso Império." },
+              { icon: Crown, color: "text-yellow-600", title: "Soberania", desc: "Liderança absoluta que define os padrões do mercado de assinaturas premium." },
+              { icon: Award, color: "text-blue-500", title: "Prestígio", desc: "O status de pertencer à elite do entretenimento digital de alta performance." },
+              { icon: Rocket, color: "text-orange-600", title: "Vanguarda", desc: "Inovação constante para trazer as soluções mais modernas até você hoje." },
+            ].map((v, i) => (
+              <div 
+                key={i} 
+                className="group bg-gradient-to-b from-white/[0.03] to-transparent border border-white/5 p-10 rounded-[40px] hover:from-white/[0.05] transition-all duration-500 hover:border-red-500/20 hover:-translate-y-3 relative overflow-hidden group/pcard h-full animate-in fade-in slide-in-from-bottom-8 fill-mode-both"
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                <div className="absolute top-0 right-0 w-24 h-24 bg-white/[0.02] -mr-12 -mt-12 rounded-full group-hover:scale-150 group-hover:bg-red-500/[0.02] transition-all duration-700" />
+                
+                <div className={`w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-red-500/10 transition-all duration-500 shadow-xl group-hover:shadow-red-500/10`}>
+                  <v.icon className={`h-8 w-8 ${v.color} group-hover:rotate-12 group-hover:scale-110 transition-all duration-500`} />
+                </div>
+                
+                <h4 className="text-2xl font-black mb-4 uppercase italic tracking-tighter group-hover:text-white transition-colors">{v.title}</h4>
+                <p className="text-zinc-500 leading-relaxed text-sm font-medium group-hover:text-zinc-300 transition-colors">{v.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Split Content Section - Moved here */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           <div className="lg:col-span-7 space-y-12">
             <ScrollReveal direction="left">
               <div className="relative group/text">
@@ -126,46 +167,6 @@ export default function SobreImperioPage() {
                 </div>
               </div>
             </ScrollReveal>
-          </div>
-        </div>
-
-        {/* Pillar Values Section */}
-        <div className="relative">
-          <div className="text-center mb-16 group/pillars">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-600 mb-4 group-hover/pillars:text-zinc-400 transition-colors">Nossos Pilares</h3>
-            <div className="h-px w-20 bg-red-500 mx-auto group-hover/pillars:w-40 transition-all duration-700" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { icon: ShieldCheck, color: "text-red-500", title: "Honra", desc: "Nossa palavra é lei. Se prometemos entrega imediata, você receberá instantaneamente sem burocracias." },
-              { icon: Target, color: "text-yellow-500", title: "Foco", desc: "Nossa mira está sempre voltada para a melhor experiência do usuário e curadoria de serviços." },
-              { icon: Heart, color: "text-pink-500", title: "Lealdade", desc: "Tratamos nossos clientes como aliados imperiais de longa data em nossa jornada ao topo." },
-              { icon: Zap, color: "text-blue-400", title: "Agilidade", desc: "O tempo é o recurso mais precioso. No Império, sua entrega acontece na velocidade do pensamento." },
-              { icon: Globe, color: "text-emerald-400", title: "Sabedoria", desc: "Curadoria de elite para selecionar apenas os melhores serviços disponíveis no mercado global." },
-              { icon: Rocket, color: "text-purple-400", title: "Domínio", desc: "Infraestrutura de ponta para garantir que seu acesso nunca sofra interrupções ou falhas." },
-              { icon: ShieldCheck, color: "text-orange-500", title: "Transparência", desc: "Clareza total em cada transação, sem letras miúdas, taxas ocultas ou surpresas desagradáveis." },
-              { icon: Star, color: "text-amber-400", title: "Excelência", desc: "Busca incansável pela perfeição absoluta em cada detalhe dos serviços que oferecemos." },
-              { icon: Users, color: "text-cyan-400", title: "União", desc: "Uma comunidade forte de parceiros e clientes que crescem e prosperam juntos no nosso Império." },
-              { icon: Crown, color: "text-yellow-600", title: "Soberania", desc: "Liderança absoluta que define os padrões do mercado de assinaturas premium." },
-              { icon: Award, color: "text-blue-500", title: "Prestígio", desc: "O status de pertencer à elite do entretenimento digital de alta performance." },
-              { icon: Rocket, color: "text-orange-600", title: "Vanguarda", desc: "Inovação constante para trazer as soluções mais modernas até você hoje." },
-            ].map((v, i) => (
-              <div 
-                key={i} 
-                className="group bg-gradient-to-b from-white/[0.03] to-transparent border border-white/5 p-10 rounded-[40px] hover:from-white/[0.05] transition-all duration-500 hover:border-red-500/20 hover:-translate-y-3 relative overflow-hidden group/pcard h-full animate-in fade-in slide-in-from-bottom-8 fill-mode-both"
-                style={{ animationDelay: `${i * 100}ms` }}
-              >
-                <div className="absolute top-0 right-0 w-24 h-24 bg-white/[0.02] -mr-12 -mt-12 rounded-full group-hover:scale-150 group-hover:bg-red-500/[0.02] transition-all duration-700" />
-                
-                <div className={`w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-red-500/10 transition-all duration-500 shadow-xl group-hover:shadow-red-500/10`}>
-                  <v.icon className={`h-8 w-8 ${v.color} group-hover:rotate-12 group-hover:scale-110 transition-all duration-500`} />
-                </div>
-                
-                <h4 className="text-2xl font-black mb-4 uppercase italic tracking-tighter group-hover:text-white transition-colors">{v.title}</h4>
-                <p className="text-zinc-500 leading-relaxed text-sm font-medium group-hover:text-zinc-300 transition-colors">{v.desc}</p>
-              </div>
-            ))}
           </div>
         </div>
       </div>
