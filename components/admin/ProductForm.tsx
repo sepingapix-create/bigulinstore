@@ -131,7 +131,7 @@ export function ProductForm({ initialData, trigger }: ProductFormProps) {
       {triggerElement}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="bg-[#0A0A0A] border-[#1A1A1A] text-white sm:max-w-[520px] p-0 overflow-hidden">
+        <DialogContent className="bg-[#0A0A0A] border-[#1A1A1A] text-white sm:max-w-[520px] p-0 overflow-hidden flex flex-col max-h-[90vh]">
           {/* Header */}
           <div className="p-6 border-b border-[#1A1A1A] bg-gradient-to-r from-primary/10 via-transparent to-transparent">
             <DialogTitle className="flex items-center gap-3 text-lg font-black italic uppercase">
@@ -155,7 +155,7 @@ export function ProductForm({ initialData, trigger }: ProductFormProps) {
           <form
             key={initialData?.id || "new"}
             onSubmit={handleSubmit}
-            className="p-6 space-y-4"
+            className="p-6 space-y-4 overflow-y-auto flex-1"
           >
             <div className="grid gap-2">
               <Label htmlFor="name" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">

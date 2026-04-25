@@ -19,9 +19,9 @@ export async function getIPLocation(ip: string): Promise<GeoLocation | null> {
   if (!ip || ip === "unknown" || ip === "127.0.0.1" || ip === "::1") return null;
 
   const fallbacks = [
-    // 1. ip-api.com (HTTPS)
+    // 1. ip-api.com (HTTP)
     async () => {
-      const res = await fetchWithTimeout(`https://ip-api.com/json/${ip}?fields=city,regionName,status`);
+      const res = await fetchWithTimeout(`http://ip-api.com/json/${ip}?fields=city,regionName,status`);
       const data = await res.json();
       if (data.status !== "success") throw new Error("ip-api failed");
       return { city: data.city, region: data.regionName };
@@ -64,9 +64,9 @@ export async function getBatchLocations(ips: string[]): Promise<Record<string, G
 
   if (uniqueIps.length === 0) return results;
 
-  // Try ip-api.com BATCH first (most efficient) — HTTPS
+  // Try ip-api.com BATCH first (most efficient) — HTTP (free tier doesn't support HTTPS)
   try {
-    const response = await fetchWithTimeout("https://ip-api.com/batch", {
+    const response = await fetchWithTimeout("http://ip-api.com/batch", {
       method: "POST",
       body: JSON.stringify(uniqueIps.map(ip => ({ query: ip, fields: "city,regionName,status,query" }))),
       headers: { "Content-Type": "application/json" }
