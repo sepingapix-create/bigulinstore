@@ -142,7 +142,7 @@ export default async function Home() {
                   <GlobalFlashTimer targetDate={earliestFlashDeal!.flashDealEnd!.toISOString()} />
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                 {activeFlashDeals.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
@@ -174,16 +174,15 @@ export default async function Home() {
                   <div key={category} className="space-y-6">
                     <ScrollReveal>
                       <div className="flex justify-center">
-                        <div className="inline-flex items-center gap-3 bg-black/50 backdrop-blur-xl border-2 border-red-600/30 px-8 py-3 rounded-2xl shadow-[0_0_30px_rgba(220,38,38,0.15)] group hover:border-red-500 transition-all duration-500">
-                          <Bookmark className="h-6 w-6 text-red-500 fill-red-500/20 group-hover:scale-110 transition-transform" />
-                          <h3 className="text-xl md:text-2xl font-black tracking-widest text-red-100 uppercase italic">
+                    <div className="inline-flex items-center gap-2 bg-black/50 backdrop-blur-xl border border-red-600/30 px-5 py-2 rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.1)] group hover:border-red-500 transition-all duration-500">
+                          <h3 className="text-sm md:text-base font-black tracking-widest text-red-100 uppercase italic">
                             {category}
                           </h3>
                         </div>
                       </div>
                     </ScrollReveal>
                     
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                       {productsByCategory[category].map((product) => (
                         <ProductCard key={product.id} product={product} />
                       ))}

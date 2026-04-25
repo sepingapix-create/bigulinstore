@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tag, Ticket } from "lucide-react";
+import { Tag, Ticket, FileText } from "lucide-react";
 import { processCheckout, validateCouponAction } from "@/actions/checkout";
 import { toast } from "sonner";
 
@@ -26,6 +26,7 @@ export default function CheckoutPage() {
   const [isValidating, setIsValidating] = useState(false);
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -346,9 +347,38 @@ export default function CheckoutPage() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex flex-col gap-3 pb-8">
+                  {/* Terms acceptance */}
+                  <button
+                    type="button"
+                    onClick={() => setTermsAccepted(v => !v)}
+                    className={`w-full flex items-start gap-3 p-4 rounded-xl border text-left transition-all duration-300 ${
+                      termsAccepted
+                        ? "border-green-500/40 bg-green-500/5 shadow-[0_0_15px_rgba(34,197,94,0.1)]"
+                        : "border-border/40 bg-muted/10 hover:border-primary/30 hover:bg-primary/5"
+                    }`}
+                  >
+                    <div className={`mt-0.5 shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all duration-300 ${
+                      termsAccepted ? "border-green-500 bg-green-500" : "border-zinc-600"
+                    }`}>
+                      {termsAccepted && <Check className="h-3 w-3 text-white" strokeWidth={3} />}
+                    </div>
+                    <p className="text-xs text-zinc-400 leading-relaxed">
+                      Li e concordo com os{" "}
+                      <Link
+                        href="/termos"
+                        target="_blank"
+                        onClick={e => e.stopPropagation()}
+                        className="text-primary hover:underline font-bold inline-flex items-center gap-1"
+                      >
+                        <FileText className="h-3 w-3" /> Termos e Condições da Compra
+                      </Link>
+                      . Estou ciente da política de não reembolso e das regras de uso dos serviços.
+                    </p>
+                  </button>
+
                   <Button 
                     className="w-full h-16 text-xl font-black uppercase italic bg-primary hover:bg-primary/90 text-white shadow-[0_0_30px_rgba(220,38,38,0.4)] transition-all hover:scale-[1.03] active:scale-95 disabled:opacity-50 disabled:hover:scale-100"
-                    disabled={isProcessing || !contactName || !contactEmail}
+                    disabled={isProcessing || !contactName || !contactEmail || !termsAccepted}
                     onClick={handleFinalize}
                   >
                     {isProcessing ? (
@@ -361,9 +391,6 @@ export default function CheckoutPage() {
                       </>
                     )}
                   </Button>
-                  <p className="text-[10px] text-center text-muted-foreground px-4 leading-relaxed italic">
-                    Ao finalizar sua compra, você concorda com nossos <span className="text-primary hover:underline cursor-pointer">Termos de Serviço</span> e <span className="text-primary hover:underline cursor-pointer">Política de Privacidade</span>.
-                  </p>
                 </CardFooter>
               </Card>
 
