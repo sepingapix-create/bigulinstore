@@ -30,15 +30,15 @@ export default async function Home() {
   const flashDealProducts = allProducts.filter(p => p.isFlashDeal);
   const regularProducts = allProducts.filter(p => !p.isFlashDeal);
 
-  // Group regular products by category
-  const productsByCategory = regularProducts.reduce((acc, product) => {
+  // Group all products by category (including flash deals)
+  const productsByCategory = allProducts.reduce((acc, product) => {
     const category = product.category || "Outros";
     if (!acc[category]) {
       acc[category] = [];
     }
     acc[category].push(product);
     return acc;
-  }, {} as Record<string, typeof regularProducts>);
+  }, {} as Record<string, typeof allProducts>);
 
   const categories = Object.keys(productsByCategory).sort((a, b) => {
     const aLower = a.toLowerCase();
