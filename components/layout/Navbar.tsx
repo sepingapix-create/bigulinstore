@@ -37,15 +37,15 @@ export async function Navbar() {
         {/* Central Search */}
         <div className="flex-1 max-w-2xl mx-8 flex items-center gap-6">
           <SearchBar />
-          <Link href="/#sobre-nos" className="group flex items-center gap-1.5 text-[10px] font-black uppercase italic tracking-tighter text-muted-foreground hover:text-white transition-all hidden xl:flex whitespace-nowrap bg-muted/20 px-3 py-1.5 rounded-full border border-border/50 hover:border-primary/50 hover:bg-muted/40">
+          <Link href="/sobre-imperio" className="group flex items-center gap-1.5 text-[10px] font-black uppercase italic tracking-tighter text-muted-foreground hover:text-white transition-all hidden xl:flex whitespace-nowrap bg-muted/20 px-3 py-1.5 rounded-full border border-border/50 hover:border-primary/50 hover:bg-muted/40">
             <span className="w-1.5 h-1.5 rounded-full bg-primary/40 group-hover:bg-primary animate-pulse" />
-            Sobre Nós
+            Sobre o Império
           </Link>
-          <Link href="/#como-funciona" className="group flex items-center gap-1.5 text-[10px] font-black uppercase italic tracking-tighter text-muted-foreground hover:text-white transition-all hidden xl:flex whitespace-nowrap bg-muted/20 px-3 py-1.5 rounded-full border border-border/50 hover:border-primary/50 hover:bg-muted/40">
+          <Link href="/como-funciona" className="group flex items-center gap-1.5 text-[10px] font-black uppercase italic tracking-tighter text-muted-foreground hover:text-white transition-all hidden xl:flex whitespace-nowrap bg-muted/20 px-3 py-1.5 rounded-full border border-border/50 hover:border-primary/50 hover:bg-muted/40">
             <div className="text-primary group-hover:animate-bounce">
-              <Users className="h-3 w-3" />
+              <Zap className="h-3 w-3" />
             </div>
-            Suporte
+            Como Funciona
           </Link>
         </div>
 

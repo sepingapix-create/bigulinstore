@@ -98,7 +98,7 @@ export default async function Home() {
                   Ver Catálogo
                 </Button>
               </Link>
-              <Link href="#como-funciona">
+              <Link href="/como-funciona">
                 <Button size="sm" variant="ghost" className="rounded-full px-7 h-11 text-sm font-medium hover:bg-red-500/10 transition-all text-muted-foreground hover:text-red-400 hover:scale-105 active:scale-95">
                   Como Funciona <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -300,21 +300,21 @@ export default async function Home() {
                 </div>
 
                 {/* Right: quote card with glow */}
-                <div className="relative">
-                  <div className="absolute inset-0 bg-red-600/5 blur-2xl rounded-3xl" />
-                  <div className="relative bg-[#0d0d10] border border-red-500/15 rounded-2xl p-8 flex flex-col items-center text-center shadow-[0_0_40px_-10px_rgba(220,38,38,0.2)]">
-                    <div className="relative mb-5">
-                      <div className="absolute inset-0 text-5xl blur-xl opacity-30 select-none">愛</div>
-                      <span className="relative text-5xl select-none text-red-400">愛</span>
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-red-600/5 blur-3xl rounded-3xl group-hover:bg-red-600/10 transition-all duration-700" />
+                  <div className="relative bg-[#0d0d10] border border-red-500/15 rounded-2xl p-8 flex flex-col items-center text-center shadow-[0_0_40px_-10px_rgba(220,38,38,0.2)] group-hover:shadow-[0_0_60px_-10px_rgba(220,38,38,0.4)] group-hover:border-red-500/30 group-hover:-translate-y-2 transition-all duration-500 ease-out">
+                    <div className="relative mb-5 group-hover:scale-110 transition-transform duration-500">
+                      <div className="absolute inset-0 text-5xl blur-xl opacity-30 select-none group-hover:opacity-60 transition-opacity">愛</div>
+                      <span className="relative text-5xl select-none text-red-400 drop-shadow-[0_0_8px_rgba(220,38,38,0.5)]">愛</span>
                     </div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-red-500 mb-3">O Selo do Dragão</p>
-                    <p className="text-sm text-zinc-400 italic leading-relaxed max-w-xs">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-red-500 mb-3 group-hover:tracking-[0.4em] transition-all duration-500">O Selo do Dragão</p>
+                    <p className="text-sm text-zinc-400 italic leading-relaxed max-w-xs group-hover:text-zinc-300 transition-colors">
                       "Onde há fumaça, há fogo. Onde há Bigulin, há qualidade garantida."
                     </p>
                     <div className="mt-6 flex items-center gap-3">
-                      <div className="h-px w-12 bg-gradient-to-r from-transparent to-red-500/50" />
-                      <span className="text-[9px] font-black uppercase tracking-widest text-zinc-600">Império Bigulin</span>
-                      <div className="h-px w-12 bg-gradient-to-l from-transparent to-red-500/50" />
+                      <div className="h-px w-12 bg-gradient-to-r from-transparent to-red-500/50 group-hover:w-16 transition-all duration-500" />
+                      <span className="text-[9px] font-black uppercase tracking-widest text-zinc-600 group-hover:text-zinc-400 transition-colors">Império Bigulin</span>
+                      <div className="h-px w-12 bg-gradient-to-l from-transparent to-red-500/50 group-hover:w-16 transition-all duration-500" />
                     </div>
                   </div>
                 </div>
