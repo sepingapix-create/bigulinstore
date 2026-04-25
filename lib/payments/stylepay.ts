@@ -54,12 +54,15 @@ export class StylepayService {
       const { clientId, clientSecret } = await this.getCredentials();
 
       const payload = {
-        amount,
+        amount: Number(amount.toFixed(2)),
         external_id: externalId,
         payer,
         payerQuestion: `Pagamento do pedido #${externalId}`,
         postbackUrl: `${process.env.NEXTAUTH_URL || "https://seusite.com"}/api/webhooks/stylepay`,
-        products
+        products: products.map(p => ({
+          ...p,
+          price: Number(p.price.toFixed(2))
+        }))
       };
 
       console.log("[STYLEPAY DEBUG] Sending payload to Stylepay:", JSON.stringify(payload, null, 2));
