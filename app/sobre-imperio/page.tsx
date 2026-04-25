@@ -1,5 +1,5 @@
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { ShieldCheck, Target, Heart, Award, Globe, ArrowLeft, Star, Crown, Rocket, Zap } from "lucide-react";
+import { ShieldCheck, Target, Heart, Award, Globe, ArrowLeft, Star, Crown, Rocket, Zap, Users } from "lucide-react";
 import Link from "next/link";
 
 export default function SobreImperioPage() {
@@ -42,8 +42,8 @@ export default function SobreImperioPage() {
               <Crown className="h-3 w-3 animate-bounce" />
               Nossa Linhagem
             </div>
-            <h1 className="text-5xl md:text-8xl lg:text-[110px] font-black tracking-tighter mb-10 italic leading-tight drop-shadow-2xl group-hover/hero:scale-[1.01] transition-transform duration-700">
-              O <span className="inline-block py-2 text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 drop-shadow-[0_0_30px_rgba(220,38,38,0.3)]">IMPÉRIO</span> <br className="md:hidden" /> BIGULIN
+            <h1 className="text-5xl md:text-8xl lg:text-[110px] font-black tracking-tight mb-10 italic leading-tight drop-shadow-2xl group-hover/hero:scale-[1.01] transition-transform duration-700 uppercase">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 py-2">O IMPÉRIO</span> <br className="md:hidden" /> BIGULIN
             </h1>
             <p className="text-xl md:text-2xl text-zinc-500 leading-relaxed font-medium max-w-3xl mx-auto italic group-hover/hero:text-zinc-400 transition-colors duration-500">
               "Forjando um novo padrão de honra no entretenimento digital."
@@ -144,8 +144,11 @@ export default function SobreImperioPage() {
               { icon: Zap, color: "text-blue-400", title: "Agilidade", desc: "O tempo é o recurso mais precioso. No Império, sua entrega acontece na velocidade do pensamento." },
               { icon: Globe, color: "text-emerald-400", title: "Sabedoria", desc: "Curadoria de elite para selecionar apenas os melhores serviços disponíveis no mercado global." },
               { icon: Rocket, color: "text-purple-400", title: "Domínio", desc: "Infraestrutura de ponta para garantir que seu acesso nunca sofra interrupções ou falhas." },
+              { icon: ShieldCheck, color: "text-orange-500", title: "Transparência", desc: "Clareza total em cada transação, sem letras miúdas, taxas ocultas ou surpresas desagradáveis." },
+              { icon: Star, color: "text-amber-400", title: "Excelência", desc: "Busca incansável pela perfeição absoluta em cada detalhe dos serviços que oferecemos." },
+              { icon: Users, color: "text-cyan-400", title: "União", desc: "Uma comunidade forte de parceiros e clientes que crescem e prosperam juntos no nosso Império." },
             ].map((v, i) => (
-              <ScrollReveal key={i} delay={i * 100} direction="up">
+              <ScrollReveal key={i} delay={i * 50} direction="up">
                 <div className="group bg-gradient-to-b from-white/[0.03] to-transparent border border-white/5 p-10 rounded-[40px] hover:from-white/[0.05] transition-all duration-500 hover:border-red-500/20 hover:-translate-y-3 relative overflow-hidden group/pcard h-full">
                   <div className="absolute top-0 right-0 w-24 h-24 bg-white/[0.02] -mr-12 -mt-12 rounded-full group-hover:scale-150 group-hover:bg-red-500/[0.02] transition-all duration-700" />
                   
