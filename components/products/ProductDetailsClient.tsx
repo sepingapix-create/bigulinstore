@@ -106,6 +106,14 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
 
             <div className="space-y-1">
               <p className="text-sm text-muted-foreground italic">Preço individual</p>
+              {product.originalPrice && (
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="px-2 py-0.5 bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-widest rounded border border-red-500/20">Promoção</span>
+                  <span className="text-lg text-zinc-500 font-bold line-through">
+                    {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(Number(product.originalPrice))}
+                  </span>
+                </div>
+              )}
               <div className="flex items-end gap-2">
                 <span className="text-5xl font-black text-white tracking-tighter">{formattedPrice}</span>
                 <span className="text-sm text-muted-foreground mb-2 italic">à vista no PIX</span>

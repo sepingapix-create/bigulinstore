@@ -16,6 +16,9 @@ interface Product {
   category: string;
   stock: number;
   imageUrl: string;
+  originalPrice?: string | null;
+  isFlashDeal?: boolean;
+  flashDealEnd?: string | Date | null;
 }
 
 export function ProductActions({ product }: { product: Product }) {

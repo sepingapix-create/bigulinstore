@@ -25,6 +25,7 @@ interface Product {
   category: string;
   stock: number;
   imageUrl: string;
+  originalPrice?: string | null;
   isFlashDeal?: boolean;
   flashDealEnd?: string | null;
 }

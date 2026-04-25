@@ -99,7 +99,14 @@ export function ProductCard({ product }: ProductCardProps) {
           {/* Price + Button row */}
           <div className="flex items-center justify-between border-t border-white/5 pt-2 gap-2">
             <div>
-              <p className="text-[8px] text-zinc-600 font-bold uppercase tracking-wider leading-none mb-0.5">POR</p>
+              {product.originalPrice ? (
+                <div className="flex items-center gap-1 mb-0.5">
+                  <span className="text-[8px] text-red-500 font-bold uppercase tracking-widest bg-red-500/10 px-1 rounded">Promo</span>
+                  <span className="text-[9px] text-zinc-500 font-bold line-through">{formatPrice(product.originalPrice)}</span>
+                </div>
+              ) : (
+                <p className="text-[8px] text-zinc-600 font-bold uppercase tracking-wider leading-none mb-0.5">POR</p>
+              )}
               <p className="text-base font-black text-white italic tracking-tight leading-none">
                 {formatPrice(product.price)}
               </p>

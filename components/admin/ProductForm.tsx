@@ -24,6 +24,7 @@ interface ProductFormProps {
     category: string;
     stock: number;
     imageUrl: string;
+    originalPrice?: string | null;
     isFlashDeal?: boolean;
     flashDealEnd?: string | Date | null;
   };
@@ -37,6 +38,7 @@ export function ProductForm({ initialData, trigger }: ProductFormProps) {
     name: initialData?.name ?? "",
     description: initialData?.description ?? "",
     price: initialData?.price ?? "",
+    originalPrice: initialData?.originalPrice ?? "",
     category: initialData?.category ?? "",
     imageUrl: initialData?.imageUrl ?? "",
   });
@@ -61,6 +63,7 @@ export function ProductForm({ initialData, trigger }: ProductFormProps) {
         name: initialData.name,
         description: initialData.description,
         price: initialData.price,
+        originalPrice: initialData.originalPrice ?? "",
         category: initialData.category,
         imageUrl: initialData.imageUrl,
       });
@@ -100,6 +103,7 @@ export function ProductForm({ initialData, trigger }: ProductFormProps) {
           name: "",
           description: "",
           price: "",
+          originalPrice: "",
           category: "",
           imageUrl: "",
         });
@@ -248,19 +252,39 @@ export function ProductForm({ initialData, trigger }: ProductFormProps) {
               </div>
 
               {isFlashDeal && (
-                <div className="grid gap-2 animate-in slide-in-from-top-2 fade-in duration-300">
-                  <Label htmlFor="flashDealEnd" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    Data e Hora de Encerramento
-                  </Label>
-                  <Input
-                    id="flashDealEnd"
-                    name="flashDealEnd"
-                    type="datetime-local"
-                    value={flashDealEnd}
-                    onChange={(e) => setFlashDealEnd(e.target.value)}
-                    required={isFlashDeal}
-                    className="bg-[#111111] border-[#1A1A1A] focus:border-red-500/50 h-10 transition-all"
-                  />
+                <div className="grid gap-4 animate-in slide-in-from-top-2 fade-in duration-300">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="originalPrice" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                        Preço Antigo (R$)
+                      </Label>
+                      <Input
+                        id="originalPrice"
+                        name="originalPrice"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={formData.originalPrice}
+                        onChange={handleChange}
+                        placeholder="Ex: 99.90"
+                        className="bg-[#111111] border-[#1A1A1A] focus:border-red-500/50 h-10 transition-all text-muted-foreground line-through"
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="flashDealEnd" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                        Fim da Oferta
+                      </Label>
+                      <Input
+                        id="flashDealEnd"
+                        name="flashDealEnd"
+                        type="datetime-local"
+                        value={flashDealEnd}
+                        onChange={(e) => setFlashDealEnd(e.target.value)}
+                        required={isFlashDeal}
+                        className="bg-[#111111] border-[#1A1A1A] focus:border-red-500/50 h-10 transition-all"
+                      />
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

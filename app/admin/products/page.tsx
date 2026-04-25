@@ -17,6 +17,7 @@ export default async function AdminProductsPage() {
     category: p.category,
     stock: Number(p.stock),
     imageUrl: p.imageUrl,
+    originalPrice: p.originalPrice,
     isFlashDeal: Boolean(p.isFlashDeal),
     flashDealEnd: p.flashDealEnd ? p.flashDealEnd.toISOString() : null,
   }));

@@ -25,10 +25,12 @@ export default function LoginPage() {
       <div className="relative z-10 w-full max-w-md px-4">
         {/* Logo / Brand */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <span className="text-3xl">愛</span>
-            <span className="text-2xl font-black tracking-tight">
-              <span className="text-white">BIG</span><span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-yellow-500">ULIN</span>
+          <div className="inline-flex items-center gap-1 mb-4 group">
+            <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 italic mr-1">
+              爱
+            </span>
+            <span className="font-black text-2xl tracking-tighter uppercase italic text-white">
+              Bi<span className="text-yellow-500">gulin</span>
             </span>
           </div>
           <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-red-500 mb-2">Império das Assinaturas</p>
