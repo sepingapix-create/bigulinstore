@@ -1,5 +1,6 @@
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { ShieldCheck, Target, Heart, Zap, Award, Globe } from "lucide-react";
+import { ShieldCheck, Target, Heart, Zap, Award, Globe, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export default function SobreImperioPage() {
   return (
@@ -9,6 +10,19 @@ export default function SobreImperioPage() {
       <div className="absolute bottom-40 -right-20 w-[500px] h-[500px] bg-yellow-500/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container mx-auto px-4 relative z-10">
+        {/* Back Button */}
+        <ScrollReveal direction="left">
+          <Link 
+            href="/" 
+            className="inline-flex items-center gap-2 text-zinc-500 hover:text-red-500 transition-colors mb-12 group"
+          >
+            <div className="p-2 rounded-full bg-white/5 border border-white/10 group-hover:border-red-500/50 group-hover:bg-red-500/10 transition-all">
+              <ArrowLeft className="h-4 w-4" />
+            </div>
+            <span className="text-xs font-bold uppercase tracking-widest">Voltar ao catálogo</span>
+          </Link>
+        </ScrollReveal>
+
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto text-center mb-24">
           <ScrollReveal>

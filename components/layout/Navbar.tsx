@@ -41,12 +41,6 @@ export async function Navbar() {
             <span className="w-1.5 h-1.5 rounded-full bg-primary/40 group-hover:bg-primary animate-pulse" />
             Sobre o Império
           </Link>
-          <Link href="/como-funciona" className="group flex items-center gap-1.5 text-[10px] font-black uppercase italic tracking-tighter text-muted-foreground hover:text-white transition-all hidden xl:flex whitespace-nowrap bg-muted/20 px-3 py-1.5 rounded-full border border-border/50 hover:border-primary/50 hover:bg-muted/40">
-            <div className="text-primary group-hover:animate-bounce">
-              <Zap className="h-3 w-3" />
-            </div>
-            Como Funciona
-          </Link>
         </div>
 
         {/* Right Actions */}

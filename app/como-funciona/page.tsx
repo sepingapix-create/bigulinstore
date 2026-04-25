@@ -1,5 +1,6 @@
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { ShoppingCart, Zap, User, Rocket, ShieldCheck, Target, Heart } from "lucide-react";
+import { ShoppingCart, Zap, User, Rocket, ShieldCheck, Target, Heart, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export default function ComoFuncionaPage() {
   const steps = [
@@ -48,6 +49,19 @@ export default function ComoFuncionaPage() {
   return (
     <div className="min-h-screen bg-[#050505] text-white pt-24 pb-20">
       <div className="container mx-auto px-4">
+        {/* Back Button */}
+        <ScrollReveal direction="left">
+          <Link 
+            href="/" 
+            className="inline-flex items-center gap-2 text-zinc-500 hover:text-red-500 transition-colors mb-12 group"
+          >
+            <div className="p-2 rounded-full bg-white/5 border border-white/10 group-hover:border-red-500/50 group-hover:bg-red-500/10 transition-all">
+              <ArrowLeft className="h-4 w-4" />
+            </div>
+            <span className="text-xs font-bold uppercase tracking-widest">Voltar ao catálogo</span>
+          </Link>
+        </ScrollReveal>
+
         {/* Header Section */}
         <div className="text-center mb-20">
           <ScrollReveal>

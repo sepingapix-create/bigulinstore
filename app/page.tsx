@@ -1,7 +1,7 @@
 import { ProductCard } from "@/components/products/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Zap, ShoppingCart, Rocket, User, ShieldCheck, Target, Heart, Instagram, Twitter, Send, MessageSquare, Bookmark } from "lucide-react";
+import { ArrowRight, Zap, Instagram, Twitter, Send, MessageSquare, Bookmark } from "lucide-react";
 import { db } from "@/db";
 import { products } from "@/db/schema";
 import { desc, sql } from "drizzle-orm";
@@ -205,123 +205,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* How it Works Section */}
-        <section id="como-funciona" className="py-12 relative overflow-hidden border-t border-border/10">
-           <div className="container mx-auto px-4 relative z-10">
-              <ScrollReveal>
-              {/* Section header — same style as catalog */}
-              <div className="flex items-center gap-4 mb-10">
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-red-500 mb-1">Passo a passo</p>
-                  <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
-                    Como funciona
-                    <span className="text-zinc-500 font-light ml-2">o império</span>
-                  </h2>
-                </div>
-                <div className="flex-1 h-px bg-gradient-to-r from-red-500/30 to-transparent ml-4" />
-              </div>
 
-              {/* Steps */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-white/5 rounded-2xl overflow-hidden border border-white/5">
-                 {[
-                   { step: "01", title: "Escolha",        desc: "Selecione seu serviço premium preferido em nosso catálogo.", icon: ShoppingCart, accent: "text-blue-400",   glow: "group-hover:shadow-[0_0_20px_rgba(96,165,250,0.15)]",  bar: "from-blue-500",   iconBg: "bg-blue-500/10"   },
-                   { step: "02", title: "Pagamento",      desc: "Pague via PIX com segurança. Aprovação em segundos.",       icon: Zap,          accent: "text-yellow-400", glow: "group-hover:shadow-[0_0_20px_rgba(250,204,21,0.15)]",  bar: "from-yellow-500", iconBg: "bg-yellow-500/10" },
-                   { step: "03", title: "Processamento",  desc: "Nosso sistema prepara seu acesso com a máxima velocidade.", icon: User,         accent: "text-purple-400", glow: "group-hover:shadow-[0_0_20px_rgba(192,132,252,0.15)]", bar: "from-purple-500", iconBg: "bg-purple-500/10" },
-                   { step: "04", title: "Domínio",        desc: "Receba seus dados de acesso no perfil e no e-mail.",        icon: Rocket,       accent: "text-green-400",  glow: "group-hover:shadow-[0_0_20px_rgba(74,222,128,0.15)]",  bar: "from-green-500",  iconBg: "bg-green-500/10"  },
-                 ].map((item, idx) => (
-                   <div key={idx} className={`group relative bg-[#0d0d10] hover:bg-[#111115] transition-all duration-300 p-6 flex flex-col gap-4 ${item.glow}`}>
-                     {/* Top accent line on hover */}
-                     <div className={`absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r ${item.bar} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-                     <div className="flex items-center justify-between">
-                       <span className="text-[10px] font-black text-zinc-700 tracking-[0.2em]">{item.step}</span>
-                       <div className={`p-1.5 rounded-lg ${item.iconBg} transition-all duration-300`}>
-                         <item.icon className={`h-3.5 w-3.5 text-zinc-600 group-hover:${item.accent} transition-colors duration-300`} />
-                       </div>
-                     </div>
-                     <div>
-                       <h4 className={`text-sm font-bold text-white mb-1.5 group-hover:${item.accent} transition-colors`}>{item.title}</h4>
-                       <p className="text-xs text-zinc-600 leading-relaxed">{item.desc}</p>
-                     </div>
-                     <div className="mt-auto pt-4 border-t border-white/5">
-                       <div className={`h-0.5 rounded-full bg-gradient-to-r ${item.bar} to-transparent transition-all duration-500 group-hover:w-full`} style={{ width: `${(idx + 1) * 25}%` }} />
-                     </div>
-                   </div>
-                 ))}
-              </div>
-              </ScrollReveal>
-           </div>
-        </section>
-
-
-        <section id="sobre-nos" className="py-12 border-t border-border/10">
-          <div className="container mx-auto px-4">
-            <ScrollReveal direction="left">
-              {/* Section header */}
-              <div className="flex items-center gap-4 mb-10">
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-red-500 mb-1">Nossa missão</p>
-                  <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
-                    Sobre
-                    <span className="text-zinc-500 font-light ml-2">o império</span>
-                  </h2>
-                </div>
-                <div className="flex-1 h-px bg-gradient-to-r from-red-500/30 to-transparent ml-4" />
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                {/* Left: text content */}
-                <div>
-                  <div className="space-y-4 text-zinc-500 text-sm leading-relaxed mb-8">
-                    <p>
-                      A <span className="text-white font-semibold">Bigulin</span> nasceu com uma missão clara: democratizar o acesso ao entretenimento premium com a honra e a velocidade que nossos clientes merecem.
-                    </p>
-                    <p>
-                      Em um mercado saturado de incertezas, nós nos erguemos como um porto seguro. Cada assinatura entregue carrega o selo de autenticidade e suporte incondicional.
-                    </p>
-                  </div>
-
-                  {/* Stats row */}
-                  <div className="grid grid-cols-3 gap-px bg-white/5 rounded-xl overflow-hidden border border-white/5">
-                    {[
-                      { icon: ShieldCheck, label: "Segurança", desc: "Total em cada transação", iconColor: "text-red-400",    iconBg: "bg-red-500/10",    topBar: "from-red-500"    },
-                      { icon: Target,      label: "Precisão",  desc: "Entrega instantânea",    iconColor: "text-yellow-400", iconBg: "bg-yellow-500/10", topBar: "from-yellow-500" },
-                      { icon: Heart,       label: "Paixão",    desc: "Suporte que se importa", iconColor: "text-pink-400",   iconBg: "bg-pink-500/10",   topBar: "from-pink-500"   },
-                    ].map((s) => (
-                      <div key={s.label} className="group relative bg-[#0d0d10] hover:bg-[#111115] transition-all duration-300 p-4 flex flex-col gap-2">
-                        <div className={`absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r ${s.topBar} to-transparent opacity-0 group-hover:opacity-100 transition-opacity`} />
-                        <div className={`w-7 h-7 rounded-lg ${s.iconBg} flex items-center justify-center mb-1`}>
-                          <s.icon className={`h-3.5 w-3.5 ${s.iconColor}`} />
-                        </div>
-                        <p className="text-xs font-bold text-white">{s.label}</p>
-                        <p className="text-[10px] text-zinc-600 leading-snug">{s.desc}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Right: quote card with glow */}
-                <div className="relative group">
-                  <div className="absolute inset-0 bg-red-600/5 blur-3xl rounded-3xl group-hover:bg-red-600/10 transition-all duration-700" />
-                  <div className="relative bg-[#0d0d10] border border-red-500/15 rounded-2xl p-8 flex flex-col items-center text-center shadow-[0_0_40px_-10px_rgba(220,38,38,0.2)] group-hover:shadow-[0_0_60px_-10px_rgba(220,38,38,0.4)] group-hover:border-red-500/30 group-hover:-translate-y-2 transition-all duration-500 ease-out">
-                    <div className="relative mb-5 group-hover:scale-110 transition-transform duration-500">
-                      <div className="absolute inset-0 text-5xl blur-xl opacity-30 select-none group-hover:opacity-60 transition-opacity">愛</div>
-                      <span className="relative text-5xl select-none text-red-400 drop-shadow-[0_0_8px_rgba(220,38,38,0.5)]">愛</span>
-                    </div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-red-500 mb-3 group-hover:tracking-[0.4em] transition-all duration-500">O Selo do Dragão</p>
-                    <p className="text-sm text-zinc-400 italic leading-relaxed max-w-xs group-hover:text-zinc-300 transition-colors">
-                      "Onde há fumaça, há fogo. Onde há Bigulin, há qualidade garantida."
-                    </p>
-                    <div className="mt-6 flex items-center gap-3">
-                      <div className="h-px w-12 bg-gradient-to-r from-transparent to-red-500/50 group-hover:w-16 transition-all duration-500" />
-                      <span className="text-[9px] font-black uppercase tracking-widest text-zinc-600 group-hover:text-zinc-400 transition-colors">Império Bigulin</span>
-                      <div className="h-px w-12 bg-gradient-to-l from-transparent to-red-500/50 group-hover:w-16 transition-all duration-500" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
-          </div>
-        </section>
       </main>
 
       {/* Social Media Section */}
