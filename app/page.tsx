@@ -156,11 +156,15 @@ export default async function Home() {
         <section id="catalogo" className="py-10 bg-card/5 border-t border-border/10">
           <div className="container mx-auto px-4">
             <ScrollReveal direction="right">
-              <div className="mb-8 text-center">
-                <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-4 italic">
-                  NOSSO <span className="text-primary">CATÁLOGO</span> IMPERIAL
-                </h2>
-                <div className="w-24 h-1 bg-primary mx-auto rounded-full" />
+              <div className="mb-8 flex items-center gap-4">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-red-500 mb-1">Império Bigulin</p>
+                  <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                    Catálogo
+                    <span className="text-zinc-500 font-light ml-2">completo</span>
+                  </h2>
+                </div>
+                <div className="flex-1 h-px bg-gradient-to-r from-red-500/30 to-transparent ml-4" />
               </div>
             </ScrollReveal>
 
@@ -173,12 +177,12 @@ export default async function Home() {
                 {categories.map((category) => (
                   <div key={category} className="space-y-6">
                     <ScrollReveal>
-                      <div className="flex justify-center">
-                    <div className="inline-flex items-center gap-2 bg-black/50 backdrop-blur-xl border border-red-600/30 px-5 py-2 rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.1)] group hover:border-red-500 transition-all duration-500">
-                          <h3 className="text-sm md:text-base font-black tracking-widest text-red-100 uppercase italic">
-                            {category}
-                          </h3>
-                        </div>
+                      <div className="flex items-center gap-3 mb-1">
+                        <span className="w-1 h-4 rounded-full bg-red-500 shadow-[0_0_8px_rgba(220,38,38,0.6)]" />
+                        <h3 className="text-xs font-bold uppercase tracking-[0.25em] text-zinc-400">
+                          {category}
+                        </h3>
+                        <div className="flex-1 h-px bg-white/5" />
                       </div>
                     </ScrollReveal>
                     
