@@ -37,7 +37,6 @@ export default async function AdminAffiliatesPage() {
     .select({
       affiliateId: affiliateVisits.affiliateId,
       total: count(),
-      sales: sql<number>`SUM(CASE WHEN ${affiliateVisits.convertedToSale} = 1 THEN 1 ELSE 0 END)`,
     })
     .from(affiliateVisits)
     .groupBy(affiliateVisits.affiliateId);
@@ -52,34 +51,40 @@ export default async function AdminAffiliatesPage() {
 
   const referralMap = Object.fromEntries(referralCounts.map((r) => [r.affiliateId, r.total]));
 
-  // ── 4. Per-affiliate detailed visits (resolved before render) ─────────────
-  const affiliateVisitDetails = await Promise.all(
-    allAffiliates.map(async ({ affiliate }) => {
-      const visits = await db
-        .select({ visit: affiliateVisits, visitUser: users })
-        .from(affiliateVisits)
-        .leftJoin(users, eq(affiliateVisits.userId, users.id))
-        .where(eq(affiliateVisits.affiliateId, affiliate.id))
-        .orderBy(desc(affiliateVisits.createdAt))
-        .limit(50);
-      return { affiliateId: affiliate.id, visits };
-    })
-  );
+  // ── 4. Detailed visits (Refactored to single query for performance) ─────────
+  const recentVisits = await db
+    .select({ visit: affiliateVisits, visitUser: users, affiliateId: affiliateVisits.affiliateId })
+    .from(affiliateVisits)
+    .leftJoin(users, eq(affiliateVisits.userId, users.id))
+    .orderBy(desc(affiliateVisits.createdAt))
+    .limit(1000);
 
-  const visitsDetailMap = Object.fromEntries(
-    affiliateVisitDetails.map((d) => [d.affiliateId, d.visits])
-  );
+  // Group in JS
+  const visitsDetailMap: Record<string, any[]> = {};
+  recentVisits.forEach((v) => {
+    if (!visitsDetailMap[v.affiliateId]) visitsDetailMap[v.affiliateId] = [];
+    if (visitsDetailMap[v.affiliateId].length < 50) {
+      visitsDetailMap[v.affiliateId].push({ visit: v.visit, visitUser: v.visitUser });
+    }
+  });
 
   // ─── 4.5 Resilient IP Geolocation ──────────────────────────────────────────
-  const { getBatchLocations } = await import("@/lib/geolocation");
-  const allIps = affiliateVisitDetails.flatMap(d => d.visits.map(v => v.visit.visitorIp!)).filter(Boolean);
-  const ipLocationMap = await getBatchLocations(allIps);
+  let ipLocationMap: Record<string, any> = {};
+  try {
+    const { getBatchLocations } = await import("@/lib/geolocation");
+    const allIps = recentVisits.map(v => v.visit.visitorIp!).filter(Boolean);
+    if (allIps.length > 0) {
+      ipLocationMap = await getBatchLocations(allIps);
+    }
+  } catch (geoErr) {
+    console.error("Geolocation fetch failed, continuing without it:", geoErr);
+  }
 
   // ── 5. Grand totals ───────────────────────────────────────────────────────
-  const totalVisits = visitCounts.reduce((s, v) => s + Number(v.total), 0);
-  const totalSales = referralCounts.reduce((s, r) => s + Number(r.total), 0);
+  const totalVisits = visitCounts.reduce((s, v) => s + Number(v.total || 0), 0);
+  const totalSales = referralCounts.reduce((s, r) => s + Number(r.total || 0), 0);
   const totalCommissions = allAffiliates.reduce(
-    (s, { affiliate }) => s + Number(affiliate.totalEarned),
+    (s, { affiliate }) => s + Number(affiliate.totalEarned || 0),
     0
   );
 
