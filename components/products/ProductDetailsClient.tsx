@@ -90,7 +90,7 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
       {/* Right Column - 4/12 */}
       <div className="lg:col-span-4 space-y-6">
         {/* Purchase Card */}
-        <div className="bg-[#0A0A0A] border border-[#1A1A1A] rounded-2xl p-8 sticky top-24 shadow-2xl transition-all duration-500 hover:border-primary/50 hover:shadow-primary/10 hover:-translate-y-1">
+        <div className="bg-[#0A0A0A] border border-[#1A1A1A] rounded-2xl p-8 shadow-2xl transition-all duration-500 hover:border-primary/50 hover:shadow-primary/10 hover:-translate-y-1">
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl font-black tracking-tighter mb-2 uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">{product.name}</h1>
