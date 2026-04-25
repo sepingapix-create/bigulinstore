@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search, ShoppingCart, User, LogOut, LayoutDashboard, Users } from "lucide-react";
+import { Search, ShoppingCart, User, LogOut, LayoutDashboard, Users, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
