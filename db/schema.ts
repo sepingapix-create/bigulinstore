@@ -121,7 +121,7 @@ export const affiliates = mysqlTable("affiliates", {
   createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
 });
 
-export const affiliateReferrals = mysqlTable("affiliateReferrals", {
+export const affiliateReferrals = mysqlTable("affiliatereferrals", {
   id: varchar("id", { length: 255 }).primaryKey(),
   affiliateId: varchar("affiliateId", { length: 255 }).notNull().references(() => affiliates.id),
   orderId: varchar("orderId", { length: 255 }).notNull().references(() => orders.id),
@@ -130,7 +130,7 @@ export const affiliateReferrals = mysqlTable("affiliateReferrals", {
   createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
 });
 
-export const affiliateVisits = mysqlTable("affiliateVisits", {
+export const affiliateVisits = mysqlTable("affiliatevisits", {
   id: varchar("id", { length: 255 }).primaryKey(),
   affiliateId: varchar("affiliateId", { length: 255 }).notNull().references(() => affiliates.id),
   visitorIp: varchar("visitorIp", { length: 100 }),
