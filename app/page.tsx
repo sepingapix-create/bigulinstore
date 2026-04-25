@@ -128,17 +128,24 @@ export default async function Home() {
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-500/5 blur-[120px] rounded-full pointer-events-none" />
             <div className="container mx-auto px-4">
               <ScrollReveal>
-              <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
-                <div className="text-center md:text-left">
-                  <div className="inline-flex items-center gap-2 bg-red-500/10 text-red-500 px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-red-500/20">
-                    <Zap className="h-4 w-4 fill-red-500" /> Ofertas Relâmpago
+              <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
+                {/* Left: minimal title */}
+                <div className="flex items-center gap-4 flex-1 min-w-0">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <Zap className="h-3 w-3 fill-red-500 text-red-500" />
+                      <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-red-500">Tempo Limitado</p>
+                    </div>
+                    <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                      Ofertas <span className="text-zinc-500 font-light">relâmpago</span>
+                    </h2>
                   </div>
-                  <h2 className="text-3xl md:text-5xl font-black tracking-tight italic">
-                    CORRA ANTES QUE <span className="text-red-500">ACABE!</span>
-                  </h2>
+                  <div className="flex-1 h-px bg-gradient-to-r from-red-500/30 to-transparent hidden sm:block" />
                 </div>
-                <div className="bg-card/40 backdrop-blur-md p-4 rounded-2xl border border-border/50 flex items-center gap-4">
-                  <p className="text-xs font-bold text-muted-foreground uppercase vertical-text">Expira em</p>
+
+                {/* Right: timer */}
+                <div className="flex items-center gap-3 bg-black/40 border border-red-500/10 px-4 py-2 rounded-xl">
+                  <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">Expira em</p>
                   <GlobalFlashTimer targetDate={earliestFlashDeal!.flashDealEnd!.toISOString()} />
                 </div>
               </div>
