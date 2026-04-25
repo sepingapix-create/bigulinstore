@@ -82,9 +82,17 @@ export async function getAffiliateStatsAction() {
     .orderBy(desc(affiliateVisits.createdAt))
     .limit(100);
 
-  // ─── Resilient IP Geolocation ───
-  const { getBatchLocations } = await import("@/lib/geolocation");
-  const ipLocationMap = await getBatchLocations(visits.map(v => v.visit.visitorIp!).filter(Boolean));
+  // ─── Resilient IP Geolocation (non-fatal) ───
+  let ipLocationMap: Record<string, { city: string; region: string }> = {};
+  try {
+    const { getBatchLocations } = await import("@/lib/geolocation");
+    const ips = visits.map(v => v.visit.visitorIp!).filter(Boolean);
+    if (ips.length > 0) {
+      ipLocationMap = await getBatchLocations(ips);
+    }
+  } catch (err) {
+    console.error("Geolocation lookup failed (non-fatal):", err);
+  }
 
   // Attach location to visits
   const enhancedVisits = visits.map(v => ({

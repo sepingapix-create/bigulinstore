@@ -4,6 +4,14 @@ export interface GeoLocation {
   country?: string;
 }
 
+const GEO_TIMEOUT_MS = 5000;
+
+function fetchWithTimeout(url: string, options?: RequestInit): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), GEO_TIMEOUT_MS);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(timer));
+}
+
 /**
  * Fetches location for a single IP with fallback between 3 providers.
  */
@@ -11,23 +19,23 @@ export async function getIPLocation(ip: string): Promise<GeoLocation | null> {
   if (!ip || ip === "unknown" || ip === "127.0.0.1" || ip === "::1") return null;
 
   const fallbacks = [
-    // 1. ip-api.com
+    // 1. ip-api.com (HTTPS)
     async () => {
-      const res = await fetch(`http://ip-api.com/json/${ip}?fields=city,regionName,status`);
+      const res = await fetchWithTimeout(`https://ip-api.com/json/${ip}?fields=city,regionName,status`);
       const data = await res.json();
       if (data.status !== "success") throw new Error("ip-api failed");
       return { city: data.city, region: data.regionName };
     },
     // 2. ipwho.is
     async () => {
-      const res = await fetch(`https://ipwho.is/${ip}`);
+      const res = await fetchWithTimeout(`https://ipwho.is/${ip}`);
       const data = await res.json();
       if (!data.success) throw new Error("ipwho.is failed");
       return { city: data.city, region: data.region };
     },
     // 3. freeipapi.com
     async () => {
-      const res = await fetch(`https://freeipapi.com/api/json/${ip}`);
+      const res = await fetchWithTimeout(`https://freeipapi.com/api/json/${ip}`);
       const data = await res.json();
       if (!data.cityName) throw new Error("freeipapi failed");
       return { city: data.cityName, region: data.regionName };
@@ -56,9 +64,9 @@ export async function getBatchLocations(ips: string[]): Promise<Record<string, G
 
   if (uniqueIps.length === 0) return results;
 
-  // Try ip-api.com BATCH first (most efficient)
+  // Try ip-api.com BATCH first (most efficient) — HTTPS
   try {
-    const response = await fetch("http://ip-api.com/batch", {
+    const response = await fetchWithTimeout("https://ip-api.com/batch", {
       method: "POST",
       body: JSON.stringify(uniqueIps.map(ip => ({ query: ip, fields: "city,regionName,status,query" }))),
       headers: { "Content-Type": "application/json" }
@@ -90,3 +98,4 @@ export async function getBatchLocations(ips: string[]): Promise<Record<string, G
 
   return results;
 }
+

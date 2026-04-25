@@ -66,7 +66,7 @@ export default async function Home() {
     <div className="min-h-screen flex flex-col">
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative pt-24 pb-36 overflow-hidden min-h-[80vh] flex items-center">
+        <section className="relative pt-20 pb-16 overflow-hidden min-h-[60vh] flex items-center">
           {/* Animated SVG Vector */}
           <HeroVector />
 
@@ -75,38 +75,38 @@ export default async function Home() {
 
           <div className="container mx-auto px-4 relative z-10 text-center w-full">
             {/* Badge above title */}
-            <div className="inline-flex items-center gap-2 bg-red-600/10 border border-red-600/20 text-red-500 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
+            <div className="inline-flex items-center gap-2 bg-red-600/10 border border-red-600/20 text-red-500 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 animate-in fade-in slide-in-from-top-4 duration-700">
               <span className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_6px_rgba(220,38,38,0.8)] animate-pulse" />
               Entrega instantânea · Qualidade imperial
             </div>
 
-            <h1 className="text-6xl md:text-9xl font-black tracking-tighter mb-6 italic animate-in fade-in slide-in-from-top-12 duration-1000 ease-out leading-none">
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4 italic animate-in fade-in slide-in-from-top-12 duration-1000 ease-out leading-none">
               IMPÉRIO <br />
               <span className="inline-block pb-2 pr-4 text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600">
                 BIGULIN
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 font-medium animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300 fill-mode-both leading-relaxed">
+            <p className="text-base text-muted-foreground max-w-xl mx-auto mb-6 font-medium animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300 fill-mode-both leading-relaxed">
               Desperte o poder do entretenimento premium com entrega
               instantânea e o selo de qualidade do Dragão.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in zoom-in-95 duration-1000 delay-500 fill-mode-both">
+            <div className="flex flex-row items-center justify-center gap-3 animate-in fade-in zoom-in-95 duration-1000 delay-500 fill-mode-both">
               <Link href="#catalogo">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-10 h-14 text-base font-bold shadow-[0_0_30px_rgba(220,38,38,0.5)] transition-all hover:shadow-[0_0_40px_rgba(220,38,38,0.7)] hover:scale-110 active:scale-95">
+                <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-7 h-11 text-sm font-bold shadow-[0_0_20px_rgba(220,38,38,0.4)] transition-all hover:shadow-[0_0_30px_rgba(220,38,38,0.6)] hover:scale-110 active:scale-95">
                   Ver Catálogo
                 </Button>
               </Link>
               <Link href="#como-funciona">
-                <Button size="lg" variant="ghost" className="rounded-full px-10 h-14 text-base font-medium hover:bg-red-500/10 transition-all text-muted-foreground hover:text-red-400 hover:scale-105 active:scale-95">
+                <Button size="sm" variant="ghost" className="rounded-full px-7 h-11 text-sm font-medium hover:bg-red-500/10 transition-all text-muted-foreground hover:text-red-400 hover:scale-105 active:scale-95">
                   Como Funciona <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             </div>
 
             {/* Trust Stats */}
-            <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700 fill-mode-both">
+            <div className="mt-8 flex flex-row items-center justify-center gap-8 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700 fill-mode-both">
               {[
                 { value: "10K+", label: "Clientes Satisfeitos" },
                 { value: "99.9%", label: "Uptime do Sistema" },
@@ -124,11 +124,11 @@ export default async function Home() {
 
         {/* Flash Deals Section */}
         {activeFlashDeals.length > 0 && (
-          <section className="py-20 relative overflow-hidden bg-red-950/5 border-t border-red-500/10">
+          <section className="py-10 relative overflow-hidden bg-red-950/5 border-t border-red-500/10">
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-500/5 blur-[120px] rounded-full pointer-events-none" />
             <div className="container mx-auto px-4">
               <ScrollReveal>
-              <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-4">
+              <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
                 <div className="text-center md:text-left">
                   <div className="inline-flex items-center gap-2 bg-red-500/10 text-red-500 px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-red-500/20">
                     <Zap className="h-4 w-4 fill-red-500" /> Ofertas Relâmpago
@@ -153,10 +153,10 @@ export default async function Home() {
         )}
 
         {/* Catalog Section */}
-        <section id="catalogo" className="py-20 bg-card/5 border-t border-border/10">
+        <section id="catalogo" className="py-10 bg-card/5 border-t border-border/10">
           <div className="container mx-auto px-4">
             <ScrollReveal direction="right">
-              <div className="mb-16 text-center">
+              <div className="mb-8 text-center">
                 <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-4 italic">
                   NOSSO <span className="text-primary">CATÁLOGO</span> IMPERIAL
                 </h2>
@@ -169,9 +169,9 @@ export default async function Home() {
                 Nenhum produto disponível no momento. Volte mais tarde!
               </div>
             ) : (
-              <div className="space-y-24">
+              <div className="space-y-12">
                 {categories.map((category) => (
-                  <div key={category} className="space-y-12">
+                  <div key={category} className="space-y-6">
                     <ScrollReveal>
                       <div className="flex justify-center">
                         <div className="inline-flex items-center gap-3 bg-black/50 backdrop-blur-xl border-2 border-red-600/30 px-8 py-3 rounded-2xl shadow-[0_0_30px_rgba(220,38,38,0.15)] group hover:border-red-500 transition-all duration-500">
@@ -196,14 +196,14 @@ export default async function Home() {
         </section>
 
         {/* How it Works Section */}
-        <section id="como-funciona" className="py-24 bg-card/10 backdrop-blur-sm relative overflow-hidden border-t border-border/20">
+        <section id="como-funciona" className="py-12 bg-card/10 backdrop-blur-sm relative overflow-hidden border-t border-border/20">
            <div className="absolute top-0 right-0 p-24 opacity-5 rotate-12">
               <Zap className="h-64 w-64 text-yellow-500" />
            </div>
            
            <div className="container mx-auto px-4 relative z-10">
               <ScrollReveal>
-              <div className="text-center mb-16">
+              <div className="text-center mb-8">
                  <Badge className="bg-red-600/10 text-red-600 border-red-600/20 px-4 py-1 rounded-full mb-4">O CAMINHO DO DRAGÃO</Badge>
                  <h2 className="text-4xl md:text-5xl font-black italic uppercase mb-4">Como o Império Funciona</h2>
                  <p className="text-muted-foreground max-w-xl mx-auto">
@@ -237,10 +237,10 @@ export default async function Home() {
            </div>
         </section>
 
-        <section id="sobre-nos" className="py-24 border-t border-red-500/10">
+        <section id="sobre-nos" className="py-12 border-t border-red-500/10">
           <div className="container mx-auto px-4">
             <ScrollReveal direction="left">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
                 <div className="relative">
                   <div className="absolute -top-10 -left-10 w-40 h-40 bg-red-600/10 blur-[60px] rounded-full" />
                   <Badge className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20 mb-4 px-4">NOSSA HONRA</Badge>
@@ -294,18 +294,18 @@ export default async function Home() {
       </main>
 
       {/* Social Media Section */}
-      <section className="py-12 border-t border-border/40 bg-card/10">
+      <section className="py-8 border-t border-border/40 bg-card/10">
         <div className="container mx-auto px-4 text-center">
-          <h3 className="text-2xl font-black italic uppercase mb-8">Siga o Império</h3>
+          <h3 className="text-xl font-black italic uppercase mb-5">Siga o Império</h3>
           <div className="flex justify-center gap-6">
-            <Link href="#" className="group p-5 rounded-3xl bg-muted/20 border border-border/50 hover:border-pink-500/50 hover:bg-pink-500/5 hover:text-pink-500 transition-all duration-500 hover:-translate-y-2 shadow-xl hover:shadow-pink-500/20">
-              <Instagram className="h-7 w-7 transition-all duration-500 group-hover:rotate-12 group-hover:scale-125" />
+            <Link href="#" className="group p-4 rounded-2xl bg-muted/20 border border-border/50 hover:border-pink-500/50 hover:bg-pink-500/5 hover:text-pink-500 transition-all duration-500 hover:-translate-y-1 shadow-lg hover:shadow-pink-500/20">
+              <Instagram className="h-6 w-6 transition-all duration-500 group-hover:rotate-12 group-hover:scale-125" />
             </Link>
-            <Link href="#" className="group p-5 rounded-3xl bg-muted/20 border border-border/50 hover:border-blue-400/50 hover:bg-blue-400/5 hover:text-blue-400 transition-all duration-500 hover:-translate-y-2 shadow-xl hover:shadow-blue-400/20">
-              <Twitter className="h-7 w-7 transition-all duration-500 group-hover:-rotate-12 group-hover:scale-125" />
+            <Link href="#" className="group p-4 rounded-2xl bg-muted/20 border border-border/50 hover:border-blue-400/50 hover:bg-blue-400/5 hover:text-blue-400 transition-all duration-500 hover:-translate-y-1 shadow-lg hover:shadow-blue-400/20">
+              <Twitter className="h-6 w-6 transition-all duration-500 group-hover:-rotate-12 group-hover:scale-125" />
             </Link>
-            <Link href="#" className="group p-5 rounded-3xl bg-muted/20 border border-border/50 hover:border-sky-500/50 hover:bg-sky-500/5 hover:text-sky-500 transition-all duration-500 hover:-translate-y-2 shadow-xl hover:shadow-sky-500/20">
-              <Send className="h-7 w-7 transition-all duration-500 group-hover:rotate-12 group-hover:scale-125 group-hover:translate-x-1 group-hover:-translate-y-1" />
+            <Link href="#" className="group p-4 rounded-2xl bg-muted/20 border border-border/50 hover:border-sky-500/50 hover:bg-sky-500/5 hover:text-sky-500 transition-all duration-500 hover:-translate-y-1 shadow-lg hover:shadow-sky-500/20">
+              <Send className="h-6 w-6 transition-all duration-500 group-hover:rotate-12 group-hover:scale-125 group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Link>
             <Link href="https://wa.me/5500000000000" target="_blank" className="group p-5 rounded-3xl bg-muted/20 border border-border/50 hover:border-green-500/50 hover:bg-green-500/5 hover:text-green-500 transition-all duration-500 hover:-translate-y-2 shadow-xl hover:shadow-green-500/20">
               <svg 
@@ -317,7 +317,7 @@ export default async function Home() {
               </svg>
             </Link>
           </div>
-          <p className="mt-8 text-sm text-muted-foreground italic">Fique por dentro das novidades e sorteios exclusivos do Dragão.</p>
+          <p className="mt-4 text-xs text-muted-foreground italic">Fique por dentro das novidades e sorteios exclusivos do Dragão.</p>
         </div>
       </section>
 
