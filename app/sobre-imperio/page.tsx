@@ -1,5 +1,5 @@
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { ShieldCheck, Target, Heart, Award, Globe, ArrowLeft, Star, Crown } from "lucide-react";
+import { ShieldCheck, Target, Heart, Award, Globe, ArrowLeft, Star, Crown, Rocket, Zap } from "lucide-react";
 import Link from "next/link";
 
 export default function SobreImperioPage() {
@@ -43,8 +43,17 @@ export default function SobreImperioPage() {
               <Crown className="h-3 w-3 animate-bounce" />
               Nossa Linhagem
             </div>
-            <h1 className="text-6xl md:text-9xl font-black tracking-tighter mb-10 italic leading-[0.9] drop-shadow-2xl group-hover/hero:scale-[1.02] transition-transform duration-700">
-              O <span className="inline-block py-3 text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 drop-shadow-[0_0_30px_rgba(220,38,38,0.3)] group-hover/hero:drop-shadow-[0_0_50px_rgba(220,38,38,0.5)] transition-all duration-700">IMPÉRIO</span> BIGULIN
+            <h1 className="text-5xl md:text-8xl lg:text-[130px] font-black tracking-tighter mb-12 italic leading-[0.8] drop-shadow-2xl group-hover/hero:scale-[1.02] transition-transform duration-700">
+              <div className="flex flex-col items-center">
+                <div className="flex items-baseline gap-3 md:gap-6 mb-2">
+                  <span className="text-2xl md:text-5xl font-light text-zinc-500 not-italic uppercase tracking-[0.2em]">O</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 py-4 drop-shadow-[0_0_30px_rgba(220,38,38,0.3)]">IMPÉRIO</span>
+                </div>
+                <div className="text-white relative">
+                  BIGULIN
+                  <div className="absolute -bottom-4 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500/50 to-transparent blur-sm" />
+                </div>
+              </div>
             </h1>
             <p className="text-xl md:text-2xl text-zinc-400 leading-relaxed font-medium max-w-3xl mx-auto italic group-hover/hero:text-zinc-300 transition-colors duration-500">
               "Forjando um novo padrão de honra no entretenimento digital."
@@ -142,9 +151,12 @@ export default function SobreImperioPage() {
               { icon: ShieldCheck, color: "text-red-500", title: "Honra", desc: "Nossa palavra é lei. Se prometemos entrega imediata, você receberá instantaneamente sem burocracias." },
               { icon: Target, color: "text-yellow-500", title: "Foco", desc: "Nossa mira está sempre voltada para a melhor experiência do usuário e curadoria de serviços." },
               { icon: Heart, color: "text-pink-500", title: "Lealdade", desc: "Tratamos nossos clientes como aliados imperiais de longa data em nossa jornada ao topo." },
+              { icon: Zap, color: "text-blue-400", title: "Agilidade", desc: "O tempo é o recurso mais precioso. No Império, sua entrega acontece na velocidade do pensamento." },
+              { icon: Globe, color: "text-emerald-400", title: "Sabedoria", desc: "Curadoria de elite para selecionar apenas os melhores serviços disponíveis no mercado global." },
+              { icon: Rocket, color: "text-purple-400", title: "Domínio", desc: "Infraestrutura de ponta para garantir que seu acesso nunca sofra interrupções ou falhas." },
             ].map((v, i) => (
-              <ScrollReveal key={i} delay={i * 150} direction="up">
-                <div className="group bg-gradient-to-b from-white/[0.03] to-transparent border border-white/5 p-10 rounded-[40px] hover:from-white/[0.05] transition-all duration-500 hover:border-red-500/20 hover:-translate-y-3 relative overflow-hidden group/pcard">
+              <ScrollReveal key={i} delay={i * 100} direction="up">
+                <div className="group bg-gradient-to-b from-white/[0.03] to-transparent border border-white/5 p-10 rounded-[40px] hover:from-white/[0.05] transition-all duration-500 hover:border-red-500/20 hover:-translate-y-3 relative overflow-hidden group/pcard h-full">
                   <div className="absolute top-0 right-0 w-24 h-24 bg-white/[0.02] -mr-12 -mt-12 rounded-full group-hover:scale-150 group-hover:bg-red-500/[0.02] transition-all duration-700" />
                   
                   <div className={`w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-red-500/10 transition-all duration-500 shadow-xl group-hover:shadow-red-500/10`}>

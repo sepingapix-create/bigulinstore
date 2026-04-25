@@ -237,7 +237,7 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
         <button 
           onClick={() => setActiveTab("overview")}
           className={cn(
-            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all",
+            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105 active:scale-95",
             activeTab === "overview" ? "bg-background text-primary shadow-sm" : "text-muted-foreground hover:bg-muted/50"
           )}
         >
@@ -246,7 +246,7 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
         <button 
           onClick={() => setActiveTab("visits")}
           className={cn(
-            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all",
+            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105 active:scale-95",
             activeTab === "visits" ? "bg-background text-primary shadow-sm" : "text-muted-foreground hover:bg-muted/50"
           )}
         >
@@ -255,7 +255,7 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
         <button 
           onClick={() => setActiveTab("tools")}
           className={cn(
-            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all",
+            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105 active:scale-95",
             activeTab === "tools" ? "bg-background text-primary shadow-sm" : "text-muted-foreground hover:bg-muted/50"
           )}
         >
@@ -264,7 +264,7 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
         <button 
           onClick={() => setActiveTab("leaderboard")}
           className={cn(
-            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all",
+            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105 active:scale-95",
             activeTab === "leaderboard" ? "bg-background text-primary shadow-sm" : "text-muted-foreground hover:bg-muted/50"
           )}
         >
@@ -273,7 +273,7 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
         <button 
           onClick={() => setActiveTab("payouts")}
           className={cn(
-            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all",
+            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105 active:scale-95",
             activeTab === "payouts" ? "bg-background text-primary shadow-sm" : "text-muted-foreground hover:bg-muted/50"
           )}
         >
@@ -285,42 +285,42 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
           {/* Main Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card className="bg-card/30 border-border/50 relative overflow-hidden group">
-               <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+            <Card className="bg-card/30 border-border/50 relative overflow-hidden group hover:border-green-500/30 hover:-translate-y-2 transition-all duration-500 hover:shadow-[0_20px_40px_-15px_rgba(34,197,94,0.1)]">
+               <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 group-hover:scale-125 transition-all duration-700">
                   <DollarSign className="h-24 w-24 text-green-500" />
                </div>
                <CardContent className="p-6">
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Saldo Disponível</p>
-                  <h3 className="text-4xl font-black text-green-500 mb-2">
+                  <h3 className="text-4xl font-black text-green-500 mb-2 group-hover:scale-105 origin-left transition-transform duration-500">
                     {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(Number(stats.balance))}
                   </h3>
-                  <div className="flex items-center gap-2 text-[10px] text-green-500 font-bold bg-green-500/10 w-fit px-2 py-0.5 rounded-full">
+                  <div className="flex items-center gap-2 text-[10px] text-green-500 font-bold bg-green-500/10 w-fit px-2 py-0.5 rounded-full group-hover:bg-green-500/20 transition-colors">
                     <TrendingUp className="h-3 w-3" /> +12% esta semana
                   </div>
                </CardContent>
             </Card>
 
-            <Card className="bg-card/30 border-border/50 relative overflow-hidden group">
-               <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+            <Card className="bg-card/30 border-border/50 relative overflow-hidden group hover:border-primary/30 hover:-translate-y-2 transition-all duration-500 hover:shadow-[0_20px_40px_-15px_rgba(220,38,38,0.1)]">
+               <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 group-hover:scale-125 transition-all duration-700">
                   <TrendingUp className="h-24 w-24 text-primary" />
                </div>
                <CardContent className="p-6">
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Total Acumulado</p>
-                  <h3 className="text-4xl font-black mb-2">
+                  <h3 className="text-4xl font-black mb-2 group-hover:scale-105 origin-left transition-transform duration-500">
                     {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(Number(stats.totalEarned))}
                   </h3>
                   <p className="text-[10px] text-muted-foreground font-medium italic">Desde o início da parceria</p>
                </CardContent>
             </Card>
 
-            <Card className="bg-card/30 border-border/50 relative overflow-hidden group">
-               <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+            <Card className="bg-card/30 border-border/50 relative overflow-hidden group hover:border-blue-500/30 hover:-translate-y-2 transition-all duration-500 hover:shadow-[0_20px_40px_-15px_rgba(59,130,246,0.1)]">
+               <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 group-hover:scale-125 transition-all duration-700">
                   <MousePointerClick className="h-24 w-24 text-blue-500" />
                </div>
                <CardContent className="p-6">
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Total de Visitas</p>
-                  <h3 className="text-4xl font-black mb-2">{stats.visitStats?.totalVisits || 0}</h3>
-                  <div className="flex items-center gap-1 text-[10px] text-blue-500 font-bold">
+                  <h3 className="text-4xl font-black mb-2 group-hover:scale-105 origin-left transition-transform duration-500">{stats.visitStats?.totalVisits || 0}</h3>
+                  <div className="flex items-center gap-1 text-[10px] text-blue-500 font-bold group-hover:text-blue-400 transition-colors">
                     <Globe className="h-3 w-3" /> Tráfego via link de indicação
                   </div>
                </CardContent>
@@ -352,12 +352,15 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
                </CardContent>
             </Card>
 
-            <Card className="bg-primary border-none shadow-xl shadow-primary/20 relative overflow-hidden group">
-               <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" />
+            <Card className="bg-primary border-none shadow-xl shadow-primary/20 relative overflow-hidden group hover:scale-[1.03] transition-all duration-500 cursor-default">
+               <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent group-hover:from-white/30 transition-all duration-500" />
+               <div className="absolute -right-6 -bottom-6 opacity-20 group-hover:scale-125 group-hover:rotate-12 transition-all duration-700">
+                  <Trophy className="h-24 w-24 text-white" />
+               </div>
                <CardContent className="p-6 relative z-10 text-white">
                   <p className="text-xs font-bold text-white/70 uppercase tracking-widest mb-1">Sua Comissão</p>
-                  <h3 className="text-5xl font-black mb-2">{stats.commissionRate}%</h3>
-                  <Badge className="bg-white/20 text-white border-none text-[9px] uppercase font-bold">
+                  <h3 className="text-5xl font-black mb-2 group-hover:scale-110 origin-left transition-transform duration-500">{stats.commissionRate}%</h3>
+                  <Badge className="bg-white/20 text-white border-none text-[9px] uppercase font-bold group-hover:bg-white/30 transition-colors">
                     Nível Bronze
                   </Badge>
                </CardContent>
@@ -367,37 +370,32 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Tier Progress */}
             <div className="lg:col-span-2 space-y-8">
-              <Card className="bg-card/30 border-border/50 p-8 overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/5 blur-[100px] rounded-full -mr-48 -mt-48" />
+              <Card className="bg-card/30 border-border/50 p-8 overflow-hidden relative group hover:border-primary/20 transition-all duration-500">
+                <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/5 blur-[100px] rounded-full -mr-48 -mt-48 group-hover:bg-primary/10 transition-all duration-700" />
                 <div className="relative z-10">
                   <div className="flex justify-between items-end mb-6">
-                    <div>
+                    <div className="group-hover:translate-x-1 transition-transform duration-500">
                       <h4 className="text-xl font-bold mb-1">Rumo ao Nível Silver 🥈</h4>
                       <p className="text-sm text-muted-foreground">Complete {nextTierGoal - currentReferrals} vendas para subir sua comissão para 15%.</p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-right group-hover:-translate-x-1 transition-transform duration-500">
                        <span className="text-3xl font-black text-primary">{currentReferrals}</span>
                        <span className="text-muted-foreground font-bold"> / {nextTierGoal}</span>
                     </div>
                   </div>
-                  <Progress value={progressToNextTier} className="h-3 bg-muted/50" />
+                  <Progress value={progressToNextTier} className="h-3 bg-muted/50 overflow-hidden" />
                   <div className="grid grid-cols-4 mt-8 gap-4">
-                     <div className="flex flex-col items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-primary" />
-                        <span className="text-[10px] font-bold text-muted-foreground uppercase">Bronze (10%)</span>
-                     </div>
-                     <div className="flex flex-col items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-muted" />
-                        <span className="text-[10px] font-bold text-muted-foreground uppercase">Silver (15%)</span>
-                     </div>
-                     <div className="flex flex-col items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-muted" />
-                        <span className="text-[10px] font-bold text-muted-foreground uppercase">Gold (20%)</span>
-                     </div>
-                     <div className="flex flex-col items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-muted" />
-                        <span className="text-[10px] font-bold text-muted-foreground uppercase">Platinum (25%)</span>
-                     </div>
+                     {[
+                       { label: "Bronze (10%)", active: true },
+                       { label: "Silver (15%)", active: false },
+                       { label: "Gold (20%)", active: false },
+                       { label: "Platinum (25%)", active: false }
+                     ].map((tier, idx) => (
+                       <div key={idx} className="flex flex-col items-center gap-2 group/tier cursor-default">
+                          <div className={cn("w-2 h-2 rounded-full transition-all duration-500", tier.active ? "bg-primary scale-125 shadow-[0_0_10px_rgba(220,38,38,0.5)]" : "bg-muted group-hover/tier:bg-muted-foreground")} />
+                          <span className={cn("text-[10px] font-bold uppercase transition-colors duration-500", tier.active ? "text-primary" : "text-muted-foreground group-hover/tier:text-zinc-400")}>{tier.label}</span>
+                       </div>
+                     ))}
                   </div>
                 </div>
               </Card>
