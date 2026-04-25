@@ -46,12 +46,12 @@ export default function SobreImperioPage() {
               </div>
             </ScrollReveal>
             
-            <ScrollReveal delay={200}>
-              <h1 className="text-6xl md:text-[140px] font-black italic leading-[0.8] tracking-tighter uppercase flex flex-col items-center">
+            <div className="animate-in fade-in zoom-in duration-1000 fill-mode-both">
+              <h1 className="text-6xl md:text-[130px] font-black italic leading-[0.8] tracking-tighter uppercase flex flex-col items-center">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 py-4 drop-shadow-[0_10px_40px_rgba(220,38,38,0.3)] group-hover/title:scale-[1.02] transition-transform duration-700">IMPÉRIO</span>
-                <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)] group-hover/title:translate-y-[-10px] transition-transform duration-700">BIGULIN</span>
+                <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)] group-hover/title:translate-y-[-10px] transition-transform duration-700">DO BIGULIN</span>
               </h1>
-            </ScrollReveal>
+            </div>
           </div>
           <ScrollReveal delay={400}>
             <p className="text-xl md:text-2xl text-zinc-500 leading-relaxed font-medium max-w-3xl mx-auto italic group-hover/hero:text-zinc-400 transition-colors duration-500">
