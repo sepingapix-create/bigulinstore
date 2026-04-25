@@ -136,7 +136,7 @@ export default function SobreImperioPage() {
             <div className="h-px w-20 bg-red-500 mx-auto group-hover/pillars:w-40 transition-all duration-700" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               { icon: ShieldCheck, color: "text-red-500", title: "Honra", desc: "Nossa palavra é lei. Se prometemos entrega imediata, você receberá instantaneamente sem burocracias." },
               { icon: Target, color: "text-yellow-500", title: "Foco", desc: "Nossa mira está sempre voltada para a melhor experiência do usuário e curadoria de serviços." },
@@ -147,19 +147,24 @@ export default function SobreImperioPage() {
               { icon: ShieldCheck, color: "text-orange-500", title: "Transparência", desc: "Clareza total em cada transação, sem letras miúdas, taxas ocultas ou surpresas desagradáveis." },
               { icon: Star, color: "text-amber-400", title: "Excelência", desc: "Busca incansável pela perfeição absoluta em cada detalhe dos serviços que oferecemos." },
               { icon: Users, color: "text-cyan-400", title: "União", desc: "Uma comunidade forte de parceiros e clientes que crescem e prosperam juntos no nosso Império." },
+              { icon: Crown, color: "text-yellow-600", title: "Soberania", desc: "Liderança absoluta que define os padrões do mercado de assinaturas premium." },
+              { icon: Award, color: "text-blue-500", title: "Prestígio", desc: "O status de pertencer à elite do entretenimento digital de alta performance." },
+              { icon: Rocket, color: "text-orange-600", title: "Vanguarda", desc: "Inovação constante para trazer as soluções mais modernas até você hoje." },
             ].map((v, i) => (
-              <ScrollReveal key={i} delay={i * 50} direction="up">
-                <div className="group bg-gradient-to-b from-white/[0.03] to-transparent border border-white/5 p-10 rounded-[40px] hover:from-white/[0.05] transition-all duration-500 hover:border-red-500/20 hover:-translate-y-3 relative overflow-hidden group/pcard h-full">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-white/[0.02] -mr-12 -mt-12 rounded-full group-hover:scale-150 group-hover:bg-red-500/[0.02] transition-all duration-700" />
-                  
-                  <div className={`w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-red-500/10 transition-all duration-500 shadow-xl group-hover:shadow-red-500/10`}>
-                    <v.icon className={`h-8 w-8 ${v.color} group-hover:rotate-12 group-hover:scale-110 transition-all duration-500`} />
-                  </div>
-                  
-                  <h4 className="text-2xl font-black mb-4 uppercase italic tracking-tighter group-hover:text-white transition-colors">{v.title}</h4>
-                  <p className="text-zinc-500 leading-relaxed text-sm font-medium group-hover:text-zinc-300 transition-colors">{v.desc}</p>
+              <div 
+                key={i} 
+                className="group bg-gradient-to-b from-white/[0.03] to-transparent border border-white/5 p-10 rounded-[40px] hover:from-white/[0.05] transition-all duration-500 hover:border-red-500/20 hover:-translate-y-3 relative overflow-hidden group/pcard h-full animate-in fade-in slide-in-from-bottom-8 fill-mode-both"
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                <div className="absolute top-0 right-0 w-24 h-24 bg-white/[0.02] -mr-12 -mt-12 rounded-full group-hover:scale-150 group-hover:bg-red-500/[0.02] transition-all duration-700" />
+                
+                <div className={`w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-red-500/10 transition-all duration-500 shadow-xl group-hover:shadow-red-500/10`}>
+                  <v.icon className={`h-8 w-8 ${v.color} group-hover:rotate-12 group-hover:scale-110 transition-all duration-500`} />
                 </div>
-              </ScrollReveal>
+                
+                <h4 className="text-2xl font-black mb-4 uppercase italic tracking-tighter group-hover:text-white transition-colors">{v.title}</h4>
+                <p className="text-zinc-500 leading-relaxed text-sm font-medium group-hover:text-zinc-300 transition-colors">{v.desc}</p>
+              </div>
             ))}
           </div>
         </div>

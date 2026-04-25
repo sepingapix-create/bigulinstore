@@ -68,8 +68,8 @@ export default function ComoFuncionaPage() {
             <div className="inline-flex items-center gap-2 bg-red-600/10 border border-red-600/20 text-red-500 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-6">
               O Caminho do Guerreiro
             </div>
-            <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 italic leading-none">
-              COMO <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-500">FUNCIONA</span>
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 italic leading-none cursor-default transition-all duration-500 hover:scale-[1.03] hover:drop-shadow-[0_0_20px_rgba(220,38,38,0.3)] group">
+              COMO <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-500 py-2 inline-block group-hover:drop-shadow-[0_0_30px_rgba(220,38,38,0.5)] transition-all duration-500">FUNCIONA</span>
             </h1>
             <p className="text-zinc-500 max-w-2xl mx-auto text-lg leading-relaxed">
               Entrar para o Império Bigulin é simples e rápido. Criamos um sistema automatizado para que você gaste menos tempo esperando e mais tempo aproveitando.
