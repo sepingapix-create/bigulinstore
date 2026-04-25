@@ -65,8 +65,10 @@ export default function ComoFuncionaPage() {
         {/* Header Section */}
         <div className="text-center mb-20">
           <ScrollReveal>
-            <div className="inline-flex items-center gap-2 bg-red-600/10 border border-red-600/20 text-red-500 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-6">
-              O Caminho do Guerreiro
+            <div className="inline-flex items-center gap-4 mb-8">
+              <div className="h-[2px] w-8 md:w-12 bg-red-600 rounded-full shadow-[0_0_10px_rgba(220,38,38,0.5)]" />
+              <span className="text-red-500 font-black uppercase tracking-[0.5em] md:tracking-[0.8em] text-[10px]">O Caminho do Guerreiro</span>
+              <div className="h-[2px] w-8 md:w-12 bg-red-600 rounded-full shadow-[0_0_10px_rgba(220,38,38,0.5)]" />
             </div>
             <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 italic leading-none cursor-default transition-all duration-500 hover:scale-[1.03] hover:drop-shadow-[0_0_20px_rgba(220,38,38,0.3)] group">
               COMO <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-500 py-2 inline-block group-hover:drop-shadow-[0_0_30px_rgba(220,38,38,0.5)] transition-all duration-500">FUNCIONA</span>
