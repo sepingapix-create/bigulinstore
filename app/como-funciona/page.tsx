@@ -116,12 +116,12 @@ export default function ComoFuncionaPage() {
                 { icon: Target, title: "Foco no Cliente", desc: "Suporte especializado pronto para resolver qualquer dúvida." },
                 { icon: Heart, title: "Lealdade Imperial", desc: "Buscamos sempre as melhores ofertas para nossos membros." },
               ].map((feature, i) => (
-                <div key={i} className="flex flex-col items-center">
-                  <div className="w-12 h-12 bg-red-600/10 rounded-xl flex items-center justify-center mb-4 border border-red-500/20">
-                    <feature.icon className="h-6 w-6 text-red-500" />
+                <div key={i} className="flex flex-col items-center group cursor-default">
+                  <div className="w-16 h-16 bg-red-600/10 rounded-2xl flex items-center justify-center mb-6 border border-red-500/20 group-hover:scale-110 group-hover:bg-red-600/20 group-hover:border-red-500/50 group-hover:shadow-[0_0_20px_rgba(220,38,38,0.2)] transition-all duration-500">
+                    <feature.icon className="h-8 w-8 text-red-500 transition-transform duration-500 group-hover:rotate-12" />
                   </div>
-                  <h4 className="font-bold mb-2">{feature.title}</h4>
-                  <p className="text-xs text-zinc-500 leading-relaxed">{feature.desc}</p>
+                  <h4 className="font-bold mb-3 uppercase tracking-tighter text-lg group-hover:text-red-500 transition-colors duration-300">{feature.title}</h4>
+                  <p className="text-xs text-zinc-500 leading-relaxed group-hover:text-zinc-400 transition-colors duration-300 max-w-[200px]">{feature.desc}</p>
                 </div>
               ))}
             </div>
