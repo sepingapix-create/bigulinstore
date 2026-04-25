@@ -206,40 +206,41 @@ export default async function Home() {
         </section>
 
         {/* How it Works Section */}
-        <section id="como-funciona" className="py-12 bg-card/10 backdrop-blur-sm relative overflow-hidden border-t border-border/20">
-           <div className="absolute top-0 right-0 p-24 opacity-5 rotate-12">
-              <Zap className="h-64 w-64 text-yellow-500" />
-           </div>
-           
+        <section id="como-funciona" className="py-12 relative overflow-hidden border-t border-border/10">
            <div className="container mx-auto px-4 relative z-10">
               <ScrollReveal>
-              <div className="text-center mb-8">
-                 <Badge className="bg-red-600/10 text-red-600 border-red-600/20 px-4 py-1 rounded-full mb-4">O CAMINHO DO DRAGÃO</Badge>
-                 <h2 className="text-4xl md:text-5xl font-black italic uppercase mb-4">Como o Império Funciona</h2>
-                 <p className="text-muted-foreground max-w-xl mx-auto">
-                    Nosso sistema é otimizado para velocidade. Do pagamento à entrega, tudo acontece em questão de minutos.
-                 </p>
+              {/* Section header — same style as catalog */}
+              <div className="flex items-center gap-4 mb-10">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-red-500 mb-1">Passo a passo</p>
+                  <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                    Como funciona
+                    <span className="text-zinc-500 font-light ml-2">o império</span>
+                  </h2>
+                </div>
+                <div className="flex-1 h-px bg-gradient-to-r from-red-500/30 to-transparent ml-4" />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              {/* Steps */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-white/5 rounded-2xl overflow-hidden border border-white/5">
                  {[
-                   { step: "01", title: "Escolha", desc: "Selecione seu serviço premium preferido em nosso catálogo imperial.", icon: ShoppingCart },
-                   { step: "02", title: "Pagamento", desc: "Pague via PIX com segurança. O sistema identifica seu pagamento instantaneamente.", icon: Zap },
-                   { step: "03", title: "Processamento", desc: "Nossos guardiões preparam seu acesso único com a máxima velocidade.", icon: User },
-                   { step: "04", title: "Domínio", desc: "Receba seus dados de acesso no perfil e e-mail. Agora o império é seu!", icon: Rocket }
+                   { step: "01", title: "Escolha", desc: "Selecione seu serviço premium preferido em nosso catálogo.", icon: ShoppingCart },
+                   { step: "02", title: "Pagamento", desc: "Pague via PIX com segurança. Aprovação em segundos.", icon: Zap },
+                   { step: "03", title: "Processamento", desc: "Nosso sistema prepara seu acesso com a máxima velocidade.", icon: User },
+                   { step: "04", title: "Domínio", desc: "Receba seus dados de acesso no perfil e no e-mail.", icon: Rocket }
                  ].map((item, idx) => (
-                   <div key={idx} className={cn(
-                      "relative group p-6 rounded-3xl border border-red-500/10 bg-card/30 hover:bg-card/50 transition-all duration-500 hover:border-red-500/30 hover:-translate-y-2 hover:shadow-2xl hover:shadow-red-500/10 animate-in fade-in slide-in-from-bottom-12 fill-mode-both",
-                      idx === 0 ? "delay-0" : idx === 1 ? "delay-100" : idx === 2 ? "delay-200" : "delay-300"
-                    )}>
-                      <div className="absolute -top-4 -left-4 w-12 h-12 rounded-2xl bg-red-600 flex items-center justify-center font-black text-white shadow-lg shadow-red-600/20 group-hover:rotate-12 transition-transform">
-                         {item.step}
-                      </div>
-                      <div className="mb-6 pt-4">
-                         <item.icon className="h-10 w-10 text-yellow-500 mb-4 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500" />
-                         <h4 className="text-xl font-bold uppercase italic mb-2 group-hover:text-primary transition-colors">{item.title}</h4>
-                         <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
-                      </div>
+                   <div key={idx} className="group bg-[#0d0d10] hover:bg-zinc-900/80 transition-colors duration-300 p-6 flex flex-col gap-4">
+                     <div className="flex items-center justify-between">
+                       <span className="text-[10px] font-black text-zinc-700 tracking-[0.2em]">{item.step}</span>
+                       <item.icon className="h-4 w-4 text-zinc-700 group-hover:text-red-500 transition-colors duration-300" />
+                     </div>
+                     <div>
+                       <h4 className="text-sm font-bold text-white mb-1.5 group-hover:text-red-400 transition-colors">{item.title}</h4>
+                       <p className="text-xs text-zinc-600 leading-relaxed">{item.desc}</p>
+                     </div>
+                     <div className="mt-auto pt-4 border-t border-white/5">
+                       <div className={`h-0.5 rounded-full bg-gradient-to-r from-red-600 to-red-600/0 transition-all duration-500 group-hover:w-full`} style={{ width: `${(idx + 1) * 25}%` }} />
+                     </div>
                    </div>
                  ))}
               </div>
@@ -247,55 +248,64 @@ export default async function Home() {
            </div>
         </section>
 
-        <section id="sobre-nos" className="py-12 border-t border-red-500/10">
+
+        <section id="sobre-nos" className="py-12 border-t border-border/10">
           <div className="container mx-auto px-4">
             <ScrollReveal direction="left">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-                <div className="relative">
-                  <div className="absolute -top-10 -left-10 w-40 h-40 bg-red-600/10 blur-[60px] rounded-full" />
-                  <Badge className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20 mb-4 px-4">NOSSA HONRA</Badge>
-                  <h2 className="text-4xl md:text-5xl font-black italic uppercase mb-6 leading-tight">
-                    Forjados na <span className="text-red-500">Transparência</span> e Rapidez
+              {/* Section header */}
+              <div className="flex items-center gap-4 mb-10">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-red-500 mb-1">Nossa missão</p>
+                  <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                    Sobre
+                    <span className="text-zinc-500 font-light ml-2">o império</span>
                   </h2>
-                  <div className="space-y-6 text-muted-foreground leading-relaxed">
+                </div>
+                <div className="flex-1 h-px bg-gradient-to-r from-red-500/30 to-transparent ml-4" />
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                {/* Left: text content */}
+                <div>
+                  <div className="space-y-4 text-zinc-500 text-sm leading-relaxed mb-8">
                     <p>
-                      A <span className="text-foreground font-bold">Bigulin</span> nasceu com uma missão clara: democratizar o acesso ao entretenimento premium com a honra e a velocidade que nossos clientes merecem.
+                      A <span className="text-white font-semibold">Bigulin</span> nasceu com uma missão clara: democratizar o acesso ao entretenimento premium com a honra e a velocidade que nossos clientes merecem.
                     </p>
                     <p>
-                      Em um mercado saturado de incertezas, nós nos erguemos como um porto seguro. Cada assinatura entregue pelo nosso império carrega o selo de autenticidade e suporte incondicional. Não vendemos apenas acessos, vendemos tranquilidade e diversão imediata.
+                      Em um mercado saturado de incertezas, nós nos erguemos como um porto seguro. Cada assinatura entregue carrega o selo de autenticidade e suporte incondicional.
                     </p>
                   </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
-                    <div className="p-4 rounded-2xl bg-card/40 border border-border/50">
-                      <ShieldCheck className="h-6 w-6 text-red-500 mb-2" />
-                      <h5 className="font-bold text-sm uppercase italic">Segurança</h5>
-                      <p className="text-[10px] text-muted-foreground">Proteção total em cada transação.</p>
-                    </div>
-                    <div className="p-4 rounded-2xl bg-card/40 border border-border/50">
-                      <Target className="h-6 w-6 text-yellow-500 mb-2" />
-                      <h5 className="font-bold text-sm uppercase italic">Precisão</h5>
-                      <p className="text-[10px] text-muted-foreground">Entrega instantânea via sistema.</p>
-                    </div>
-                    <div className="p-4 rounded-2xl bg-card/40 border border-border/50">
-                      <Heart className="h-6 w-6 text-red-500 mb-2" />
-                      <h5 className="font-bold text-sm uppercase italic">Paixão</h5>
-                      <p className="text-[10px] text-muted-foreground">Suporte que realmente se importa.</p>
-                    </div>
+
+                  {/* Stats row */}
+                  <div className="grid grid-cols-3 gap-px bg-white/5 rounded-xl overflow-hidden border border-white/5">
+                    {[
+                      { icon: ShieldCheck, label: "Segurança", desc: "Total em cada transação", color: "text-red-500" },
+                      { icon: Target,      label: "Precisão",  desc: "Entrega instantânea",    color: "text-zinc-400" },
+                      { icon: Heart,       label: "Paixão",    desc: "Suporte que se importa", color: "text-red-500" },
+                    ].map((s) => (
+                      <div key={s.label} className="bg-[#0d0d10] hover:bg-zinc-900/80 transition-colors p-4 flex flex-col gap-2">
+                        <s.icon className={`h-4 w-4 ${s.color}`} />
+                        <p className="text-xs font-bold text-white">{s.label}</p>
+                        <p className="text-[10px] text-zinc-600 leading-snug">{s.desc}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                
-                <div className="relative group">
-                   <div className="absolute inset-0 bg-gradient-to-tr from-red-600/20 to-transparent blur-2xl rounded-3xl opacity-50 group-hover:opacity-100 transition-opacity" />
-                   <div className="relative aspect-square md:aspect-video rounded-3xl border-2 border-red-500/20 overflow-hidden bg-muted/20 flex items-center justify-center p-8 text-center">
-                      <div>
-                         <div className="text-7xl mb-4">🏮</div>
-                         <h3 className="text-2xl font-black italic uppercase text-red-500 mb-2">O Selo do Dragão</h3>
-                         <p className="text-sm text-muted-foreground max-w-xs mx-auto italic">
-                            "Onde há fumaça, há fogo. Onde há Bigulin, há qualidade garantida."
-                         </p>
-                      </div>
-                   </div>
+
+                {/* Right: minimal quote card */}
+                <div className="relative">
+                  <div className="bg-[#0d0d10] border border-white/5 rounded-2xl p-8 flex flex-col items-center text-center">
+                    <span className="text-5xl mb-5 select-none">愛</span>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-red-500 mb-3">O Selo do Dragão</p>
+                    <p className="text-sm text-zinc-500 italic leading-relaxed max-w-xs">
+                      "Onde há fumaça, há fogo. Onde há Bigulin, há qualidade garantida."
+                    </p>
+                    <div className="mt-6 flex items-center gap-3">
+                      <div className="h-px w-12 bg-gradient-to-r from-transparent to-red-500/40" />
+                      <span className="text-[9px] font-black uppercase tracking-widest text-zinc-700">Império Bigulin</span>
+                      <div className="h-px w-12 bg-gradient-to-l from-transparent to-red-500/40" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </ScrollReveal>
