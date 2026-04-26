@@ -114,7 +114,7 @@ export function OrderClient({
               <div className="flex justify-center p-4 sm:p-8 bg-white rounded-xl max-w-[280px] sm:max-w-sm mx-auto shadow-inner border border-border/20">
                 {qrCodeImage ? (
                   <img 
-                    src={`data:image/png;base64,${qrCodeImage}`} 
+                    src={qrCodeImage.startsWith("data:image") ? qrCodeImage : `data:image/png;base64,${qrCodeImage}`} 
                     alt="QR Code PIX" 
                     className="w-full h-auto aspect-square object-contain mix-blend-multiply"
                   />
