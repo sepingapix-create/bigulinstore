@@ -75,15 +75,20 @@ export default async function Home() {
 
           <div className="container mx-auto px-4 relative z-10 text-center w-full">
             {/* Badge above title */}
-            <div className="inline-flex items-center gap-2 bg-red-600/10 border border-red-600/20 text-red-500 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 animate-in fade-in slide-in-from-top-4 duration-700">
-              <span className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_6px_rgba(220,38,38,0.8)] animate-pulse" />
-              Entrega instantânea · Qualidade imperial
+            <div className="flex flex-col items-center mb-8">
+              <div className="inline-flex items-center gap-4 animate-in fade-in slide-in-from-top-4 duration-700">
+                <div className="h-[2px] w-8 md:w-16 bg-red-600 rounded-full shadow-[0_0_10px_rgba(220,38,38,0.5)]" />
+                <span className="text-red-500 font-black uppercase tracking-[0.4em] text-[10px]">O Legítimo</span>
+                <div className="h-[2px] w-8 md:w-16 bg-red-600 rounded-full shadow-[0_0_10px_rgba(220,38,38,0.5)]" />
+              </div>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4 italic animate-in fade-in slide-in-from-top-12 duration-1000 ease-out leading-none">
-              IMPÉRIO <br />
-              <span className="inline-block pb-2 pr-4 text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600">
-                BIGULIN
+            <h1 className="text-6xl md:text-8xl font-black italic leading-[0.85] tracking-tighter uppercase flex flex-col items-center mb-6 animate-in fade-in slide-in-from-top-12 duration-1000 ease-out">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 py-2 drop-shadow-[0_10px_40px_rgba(220,38,38,0.3)]">
+                IMPÉRIO
+              </span>
+              <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+                DO BIGULIN
               </span>
             </h1>
 
