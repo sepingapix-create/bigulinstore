@@ -4,106 +4,98 @@ import { orders } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { fulfillOrder } from "@/actions/checkout";
 
-interface StylepayWebhookPaid {
-  event: "pix.cashin.paid";
-  requestNumber: string;       // = orderId (external_id sent by us)
-  statusTransaction: "PAID";
-  idTransaction: string;       // Stylepay's own transaction ID
-  value: number;
-  debtorName: string;
-  date: string;
-}
-
-interface StylepayWebhookCancelled {
-  event: "pix.cashout.cancelled";
-  idTransaction: string;
-  statusTransaction: "CANCELLED";
-  value: number;
-  message: string;
-}
-
-type StylepayWebhookPayload = StylepayWebhookPaid | StylepayWebhookCancelled;
-
 export async function POST(req: NextRequest) {
   try {
-    const payload = (await req.json()) as StylepayWebhookPayload;
+    const rawPayload = await req.json();
+    const payload = rawPayload as any;
 
-    console.log("[WEBHOOK] Stylepay event received:", (payload as any).event, JSON.stringify(payload));
+    // Log detalhado para debug
+    const eventName = payload.event || payload.event_type || "indefinido";
+    console.log(`[WEBHOOK] Evento Stylepay recebido: ${eventName}`, JSON.stringify(payload));
 
-    // ── PIX Payment confirmed ──────────────────────────────────────────────
-    if (payload.event === "pix.cashin.paid") {
-      const { requestNumber, idTransaction } = payload;
+    // 1. Extrair identificadores (tentar vários campos possíveis)
+    const requestNumber = payload.requestNumber || payload.metadata?.requestNumber || payload.external_id;
+    const idTransaction = payload.idTransaction || payload.transaction_id || payload.id;
+    const status = (payload.statusTransaction || payload.status || "").toUpperCase();
 
-      if (!requestNumber) {
-        console.error("[WEBHOOK] Missing requestNumber in payload");
-        return NextResponse.json({ error: "Missing requestNumber" }, { status: 400 });
+    // 2. Verificar se é um evento de SUCESSO (Pagamento Confirmado)
+    // Aceita: PAID, PAID_OUT ou eventos específicos de cashin
+    const isPaid = 
+      status === "PAID" || 
+      status === "PAID_OUT" || 
+      eventName === "pix.cashin.paid" ||
+      (eventName === "payment.updated" && status === "PAID");
+
+    if (isPaid) {
+      if (!requestNumber && !idTransaction) {
+        console.error("[WEBHOOK] Nenhum identificador encontrado no payload");
+        return NextResponse.json({ error: "Missing identifiers" }, { status: 400 });
       }
 
-      console.log(`[WEBHOOK] Looking up order for requestNumber: ${requestNumber}`);
+      console.log(`[WEBHOOK] Processando pagamento aprovado. Ref: ${requestNumber}, ID: ${idTransaction}`);
 
-      // Try lookup in this order:
-      // 1. UUID do pedido (nosso orderId)
-      // 2. ID salvo no checkout (stylepayTransactionId) via requestNumber
-      // 3. ID salvo no checkout (stylepayTransactionId) via idTransaction
-      let [order] = await db.select().from(orders).where(eq(orders.id, requestNumber));
-
-      if (!order) {
-        console.log(`[WEBHOOK] Not found by UUID, trying stylepayTransactionId with requestNumber: ${requestNumber}`);
-        [order] = await db.select().from(orders).where(eq(orders.stylepayTransactionId, requestNumber));
+      // Busca o pedido
+      let order = null;
+      
+      // Tenta por UUID (orderId)
+      if (requestNumber) {
+        const [found] = await db.select().from(orders).where(eq(orders.id, requestNumber));
+        order = found;
       }
 
+      // Tenta por Transaction ID salvo no checkout
+      if (!order && requestNumber) {
+        const [found] = await db.select().from(orders).where(eq(orders.stylepayTransactionId, String(requestNumber)));
+        order = found;
+      }
+      
       if (!order && idTransaction) {
-        console.log(`[WEBHOOK] Still not found, trying stylepayTransactionId with idTransaction: ${idTransaction}`);
-        [order] = await db.select().from(orders).where(eq(orders.stylepayTransactionId, idTransaction));
+        const [found] = await db.select().from(orders).where(eq(orders.stylepayTransactionId, String(idTransaction)));
+        order = found;
       }
 
       if (!order) {
-        console.error(`[WEBHOOK] Order not found. requestNumber: ${requestNumber}, idTransaction: ${idTransaction}`);
+        console.error(`[WEBHOOK] Pedido não encontrado. requestNumber: ${requestNumber}, idTransaction: ${idTransaction}`);
         return NextResponse.json({ ok: false, message: "Order not found" }, { status: 200 });
       }
 
-      console.log(`[WEBHOOK] Found order ${order.id} — fulfilling (txId: ${idTransaction})`);
-
+      // Executa a entrega
       const result = await fulfillOrder(order.id, idTransaction || requestNumber);
 
       if (!result.success) {
-        console.error(`[WEBHOOK] fulfillOrder failed for order ${order.id}:`, result.error);
+        console.error(`[WEBHOOK] Erro ao entregar pedido ${order.id}:`, result.error);
         return NextResponse.json({ ok: false, error: result.error }, { status: 500 });
       }
 
-      console.log(`[WEBHOOK] ✅ Order ${order.id} fulfilled successfully`);
+      console.log(`[WEBHOOK] ✅ Pedido ${order.id} entregue com sucesso!`);
       return NextResponse.json({ ok: true }, { status: 200 });
     }
 
-    // ── PIX Payment cancelled ──────────────────────────────────────────────
-    if (payload.event === "pix.cashout.cancelled") {
-      const { idTransaction } = payload;
+    // 3. Verificar se é CANCELADO
+    const isCancelled = 
+      status === "CANCELLED" || 
+      status === "REFUNDED" || 
+      eventName === "pix.cashout.cancelled";
 
-      // Look up order by the stored stylepayTransactionId
-      const [order] = await db
-        .select()
-        .from(orders)
-        .where(eq(orders.stylepayTransactionId, idTransaction));
-
-      if (order && order.status === "PENDING") {
-        await db
-          .update(orders)
-          .set({ status: "CANCELLED", updatedAt: new Date() })
-          .where(eq(orders.id, order.id));
-
-        console.log(`[WEBHOOK] ❌ Order ${order.id} marked as CANCELLED`);
+    if (isCancelled) {
+      const lookupId = idTransaction || requestNumber;
+      if (lookupId) {
+        const [order] = await db.select().from(orders).where(eq(orders.stylepayTransactionId, String(lookupId)));
+        
+        if (order && order.status === "PENDING") {
+          await db.update(orders).set({ status: "CANCELLED", updatedAt: new Date() }).where(eq(orders.id, order.id));
+          console.log(`[WEBHOOK] ❌ Pedido ${order.id} marcado como CANCELADO`);
+        }
       }
-
       return NextResponse.json({ ok: true }, { status: 200 });
     }
 
-    // Unknown event – acknowledge so Stylepay doesn't retry
-    const unknownPayload = payload as any;
-    console.log("[WEBHOOK] Unknown event, ignoring:", unknownPayload.event);
+    // Outros eventos (como PENDING do payment.updated) apenas ignoramos
+    console.log(`[WEBHOOK] Evento ignorado (status: ${status})`);
     return NextResponse.json({ ok: true }, { status: 200 });
 
   } catch (error: any) {
-    console.error("[WEBHOOK] Unhandled error:", error);
+    console.error("[WEBHOOK] Erro fatal no processamento:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
