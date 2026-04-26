@@ -41,17 +41,24 @@ export async function POST(req: NextRequest) {
 
       console.log(`[WEBHOOK] Looking up order for requestNumber: ${requestNumber}`);
 
-      // Try first by our orderId UUID, then by the Stylepay paymentId saved at checkout
+      // Try lookup in this order:
+      // 1. UUID do pedido (nosso orderId)
+      // 2. ID salvo no checkout (stylepayTransactionId) via requestNumber
+      // 3. ID salvo no checkout (stylepayTransactionId) via idTransaction
       let [order] = await db.select().from(orders).where(eq(orders.id, requestNumber));
 
       if (!order) {
-        console.log(`[WEBHOOK] Not found by orderId, trying stylepayTransactionId: ${requestNumber}`);
+        console.log(`[WEBHOOK] Not found by UUID, trying stylepayTransactionId with requestNumber: ${requestNumber}`);
         [order] = await db.select().from(orders).where(eq(orders.stylepayTransactionId, requestNumber));
       }
 
+      if (!order && idTransaction) {
+        console.log(`[WEBHOOK] Still not found, trying stylepayTransactionId with idTransaction: ${idTransaction}`);
+        [order] = await db.select().from(orders).where(eq(orders.stylepayTransactionId, idTransaction));
+      }
+
       if (!order) {
-        console.error(`[WEBHOOK] Order not found for requestNumber: ${requestNumber}`);
-        // Return 200 so Stylepay doesn't keep retrying
+        console.error(`[WEBHOOK] Order not found. requestNumber: ${requestNumber}, idTransaction: ${idTransaction}`);
         return NextResponse.json({ ok: false, message: "Order not found" }, { status: 200 });
       }
 
