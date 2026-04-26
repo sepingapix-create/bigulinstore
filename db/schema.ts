@@ -79,6 +79,7 @@ export const orders = mysqlTable("orders", {
   couponCode: varchar("couponCode", { length: 50 }),
   pixCode: text("pixCode"),
   qrCodeImage: text("qrCodeImage"),
+  stylepayTransactionId: varchar("stylepayTransactionId", { length: 255 }), // idTransaction from Stylepay webhook
   createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
   updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().onUpdateNow(),
 });

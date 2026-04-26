@@ -244,40 +244,54 @@ export async function processCheckout(
   }
 }
 
-export async function simulatePaymentAction(orderId: string) {
+/**
+ * Core fulfillment logic: marks an order as PAID, delivers digital inventory,
+ * and credits affiliate commissions. Called by both admin simulation and the
+ * Stylepay webhook.
+ */
+export async function fulfillOrder(
+  orderId: string,
+  stylepayTransactionId?: string
+): Promise<{ success: boolean; error?: string }> {
   try {
     await db.transaction(async (tx) => {
-      // 1. Update order status
+      // 1. Check if already paid (idempotency guard)
+      const [existing] = await tx.select().from(orders).where(eq(orders.id, orderId));
+      if (!existing) throw new Error(`Pedido ${orderId} não encontrado`);
+      if (existing.status === "PAID") {
+        console.log(`[FULFILL] Order ${orderId} already PAID – skipping.`);
+        return;
+      }
+
+      // 2. Update order status
       await tx.update(orders)
-        .set({ status: "PAID", updatedAt: new Date() })
+        .set({
+          status: "PAID",
+          updatedAt: new Date(),
+          ...(stylepayTransactionId ? { stylepayTransactionId } : {}),
+        })
         .where(eq(orders.id, orderId));
 
-      // 2. Affiliate Commission Logic
-      const [orderData] = await tx.select().from(orders).where(eq(orders.id, orderId));
-      let attributionAffiliateId = null;
+      const orderData = existing;
+      let attributionAffiliateId: string | null = null;
 
+      // 3. Affiliate commission attribution
       if (orderData.couponCode) {
         const coupon = await tx.query.coupons.findFirst({
           where: eq(coupons.code, orderData.couponCode),
         });
-        if (coupon?.affiliateId) {
-          attributionAffiliateId = coupon.affiliateId;
-        }
+        if (coupon?.affiliateId) attributionAffiliateId = coupon.affiliateId;
       } else {
-        // No coupon used, check for referral cookie
         try {
           const { cookies } = await import("next/headers");
           const cookieStore = await cookies();
           const visitId = cookieStore.get("referral_visit_id")?.value;
-          
           if (visitId) {
             const [visit] = await tx.select().from(affiliateVisits).where(eq(affiliateVisits.id, visitId)).limit(1);
-            if (visit) {
-              attributionAffiliateId = visit.affiliateId;
-            }
+            if (visit) attributionAffiliateId = visit.affiliateId;
           }
         } catch (err) {
-          console.error("Error reading referral cookie on payment:", err);
+          console.error("[FULFILL] Error reading referral cookie:", err);
         }
       }
 
@@ -288,8 +302,7 @@ export async function simulatePaymentAction(orderId: string) {
 
         if (affiliate) {
           const commissionAmount = (Number(orderData.totalAmount) * affiliate.commissionRate!) / 100;
-          
-          // Create referral record
+
           await tx.insert(affiliateReferrals).values({
             id: crypto.randomUUID(),
             affiliateId: affiliate.id,
@@ -298,15 +311,13 @@ export async function simulatePaymentAction(orderId: string) {
             status: "PAID",
           });
 
-          // Update affiliate balance
           await tx.update(affiliates)
-            .set({ 
+            .set({
               balance: (Number(affiliate.balance) + commissionAmount).toFixed(2),
-              totalEarned: (Number(affiliate.totalEarned) + commissionAmount).toFixed(2)
+              totalEarned: (Number(affiliate.totalEarned) + commissionAmount).toFixed(2),
             })
             .where(eq(affiliates.id, affiliate.id));
 
-          // ─── Mark Visit as Converted to Sale ───
           try {
             const [latestVisit] = await tx
               .select()
@@ -319,11 +330,8 @@ export async function simulatePaymentAction(orderId: string) {
               .limit(1);
 
             if (latestVisit) {
-              await tx.update(affiliateVisits)
-                .set({ convertedToSale: true })
-                .where(eq(affiliateVisits.id, latestVisit.id));
+              await tx.update(affiliateVisits).set({ convertedToSale: true }).where(eq(affiliateVisits.id, latestVisit.id));
             } else {
-              // If no userId link found, try by affiliateId only (last visit for this affiliate)
               const [lastAffiliateVisit] = await tx
                 .select()
                 .from(affiliateVisits)
@@ -333,27 +341,22 @@ export async function simulatePaymentAction(orderId: string) {
                 ))
                 .orderBy(desc(affiliateVisits.createdAt))
                 .limit(1);
-              
               if (lastAffiliateVisit) {
-                await tx.update(affiliateVisits)
-                  .set({ convertedToSale: true })
-                  .where(eq(affiliateVisits.id, lastAffiliateVisit.id));
+                await tx.update(affiliateVisits).set({ convertedToSale: true }).where(eq(affiliateVisits.id, lastAffiliateVisit.id));
               }
             }
           } catch (vErr) {
-            console.error("Error updating visit conversion:", vErr);
+            console.error("[FULFILL] Error updating visit conversion:", vErr);
           }
         }
       }
 
-      // 2. Find order items
+      // 4. Deliver digital inventory
       const items = await tx.query.orderItems.findMany({
         where: eq(orderItems.orderId, orderId),
       });
 
-      // 3. Deliver content for each item
       for (const item of items) {
-        // Find unsold items for this product
         const availableContent = await tx.query.productInventory.findMany({
           where: and(
             eq(productInventory.productId, item.productId),
@@ -363,23 +366,25 @@ export async function simulatePaymentAction(orderId: string) {
           orderBy: (inventory, { asc }) => [asc(inventory.createdAt)],
         });
 
-        // Link them to the order
         for (const content of availableContent) {
           await tx.update(productInventory)
-            .set({ 
-              isSold: true, 
-              orderId: orderId 
-            })
+            .set({ isSold: true, orderId: orderId })
             .where(eq(productInventory.id, content.id));
         }
       }
     });
-    
+
     revalidatePath(`/order/${orderId}`);
     revalidatePath("/profile");
     return { success: true };
-  } catch (error) {
-    console.error("Erro ao aprovar pedido:", error);
-    return { error: "Erro ao aprovar pedido" };
+  } catch (error: any) {
+    console.error("[FULFILL] Error fulfilling order:", error);
+    return { success: false, error: error.message || "Erro ao processar pedido" };
   }
+}
+
+export async function simulatePaymentAction(orderId: string) {
+  const result = await fulfillOrder(orderId);
+  if (!result.success) return { error: result.error || "Erro ao aprovar pedido" };
+  return { success: true };
 }

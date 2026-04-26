@@ -1,15 +1,16 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/db";
-import { orders, orderItems, products } from "@/db/schema";
+import { orders, orderItems, products, productInventory } from "@/db/schema";
 import { eq, desc, inArray } from "drizzle-orm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Package, User, Clock, ArrowRight, Download } from "lucide-react";
+import { Package, User, Clock, ArrowRight, Copy, Key, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { ProfileDeliveryReveal } from "@/components/profile/ProfileDeliveryReveal";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -18,7 +19,7 @@ export default async function ProfilePage() {
     redirect("/login");
   }
 
-  // Fetch user orders with basic select (Compatible with XAMPP MariaDB)
+  // Fetch user orders
   const rawOrders = await db
     .select()
     .from(orders)
@@ -28,41 +29,58 @@ export default async function ProfilePage() {
   let userOrders: any[] = [];
 
   if (rawOrders.length > 0) {
-    const orderIds = rawOrders.map(o => o.id);
-    
+    const orderIds = rawOrders.map((o) => o.id);
+
     // Fetch items with joined products
     const itemsWithProducts = await db
-      .select({
-        item: orderItems,
-        product: products,
-      })
+      .select({ item: orderItems, product: products })
       .from(orderItems)
       .innerJoin(products, eq(orderItems.productId, products.id))
       .where(inArray(orderItems.orderId, orderIds));
 
-    // Map them together in JS
-    userOrders = rawOrders.map(order => ({
+    // Fetch delivered digital inventory for PAID orders
+    const paidOrderIds = rawOrders.filter((o) => o.status === "PAID").map((o) => o.id);
+    let deliveredItems: { orderId: string; productId: string; content: string }[] = [];
+    if (paidOrderIds.length > 0) {
+      const inventory = await db
+        .select({
+          orderId: productInventory.orderId,
+          productId: productInventory.productId,
+          content: productInventory.content,
+        })
+        .from(productInventory)
+        .where(inArray(productInventory.orderId, paidOrderIds));
+      deliveredItems = inventory as typeof deliveredItems;
+    }
+
+    userOrders = rawOrders.map((order) => ({
       ...order,
       items: itemsWithProducts
-        .filter(row => row.item.orderId === order.id)
-        .map(row => ({
+        .filter((row) => row.item.orderId === order.id)
+        .map((row) => ({
           ...row.item,
-          product: row.product
-        }))
+          product: row.product,
+          // Attach delivered content for this specific product in this order
+          deliveredContent: deliveredItems
+            .filter((d) => d.orderId === order.id && d.productId === row.item.productId)
+            .map((d) => d.content),
+        })),
     }));
   }
+
+  const paidCount = userOrders.filter((o) => o.status === "PAID").length;
 
   return (
     <div className="flex-1 container mx-auto px-4 py-12 max-w-5xl">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight mb-2 italic uppercase italic">Meu Perfil</h1>
+          <h1 className="text-4xl font-bold tracking-tight mb-2 italic uppercase">Meu Perfil</h1>
           <p className="text-muted-foreground text-lg">Gerencie seus dados e acesse suas assinaturas.</p>
         </div>
         <Link href="/">
           <Button className="rounded-full px-8 h-12 bg-primary hover:bg-primary/90 text-white font-black italic uppercase transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(220,38,38,0.4)] active:scale-95 group border-2 border-white/10">
-             <ArrowRight className="mr-2 h-5 w-5 rotate-180 group-hover:-translate-x-1 transition-transform" />
-             Voltar ao Menu Principal
+            <ArrowRight className="mr-2 h-5 w-5 rotate-180 group-hover:-translate-x-1 transition-transform" />
+            Voltar ao Menu Principal
           </Button>
         </Link>
       </div>
@@ -84,12 +102,15 @@ export default async function ProfilePage() {
                 <p className="text-muted-foreground flex items-center gap-2 mt-1">
                   <User className="h-4 w-4" /> {session.user.email}
                 </p>
-                <div className="mt-6 flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-border/50">
-                  <div className="flex flex-col">
-                    <span className="text-sm text-muted-foreground">Total de Pedidos</span>
+                <div className="mt-6 grid grid-cols-2 gap-3">
+                  <div className="flex flex-col items-center p-3 bg-muted/30 rounded-lg border border-border/50">
+                    <span className="text-xs text-muted-foreground mb-1">Pedidos</span>
                     <span className="text-2xl font-bold">{userOrders.length}</span>
                   </div>
-                  <Package className="h-8 w-8 text-primary/40" />
+                  <div className="flex flex-col items-center p-3 bg-green-500/10 rounded-lg border border-green-500/20">
+                    <span className="text-xs text-green-400 mb-1">Pagos</span>
+                    <span className="text-2xl font-bold text-green-400">{paidCount}</span>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -110,7 +131,10 @@ export default async function ProfilePage() {
                 <div className="p-12 text-center text-muted-foreground flex flex-col items-center">
                   <Package className="h-16 w-16 mb-4 opacity-20" />
                   <p className="text-lg font-medium">Nenhuma compra encontrada.</p>
-                  <Link href="/" className="mt-6 inline-flex items-center justify-center h-9 px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full shadow">
+                  <Link
+                    href="/"
+                    className="mt-6 inline-flex items-center justify-center h-9 px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full shadow"
+                  >
                     Explorar Catálogo
                   </Link>
                 </div>
@@ -140,8 +164,8 @@ export default async function ProfilePage() {
                             )}
                           </span>
                           {order.status === "PAID" ? (
-                            <Badge className="bg-green-500/20 text-green-500 hover:bg-green-500/30 border-green-500/20">
-                              Aprovado
+                            <Badge className="bg-green-500/20 text-green-500 hover:bg-green-500/30 border-green-500/20 gap-1">
+                              <CheckCircle2 className="h-3 w-3" /> Aprovado
                             </Badge>
                           ) : order.status === "PENDING" ? (
                             <Badge variant="outline" className="text-yellow-500 border-yellow-500/30 bg-yellow-500/10">
@@ -153,32 +177,48 @@ export default async function ProfilePage() {
                         </div>
                       </div>
 
-                      <div className="space-y-4">
+                      <div className="space-y-3">
                         {order.items.map((item: any) => (
-                          <div key={item.id} className="flex gap-4 p-3 rounded-lg bg-muted/20 border border-border/30">
-                            <div className="relative h-16 w-16 rounded-md overflow-hidden bg-background shrink-0">
-                              <Image 
-                                src={item.product.imageUrl} 
-                                alt={item.product.name}
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
-                            <div className="flex-1 flex items-center justify-between">
-                              <div>
-                                <h4 className="font-semibold text-sm line-clamp-1">{item.product.name}</h4>
-                                <p className="text-xs text-muted-foreground mt-1">Qtd: {item.quantity}</p>
+                          <div key={item.id} className="rounded-xl border border-border/30 overflow-hidden">
+                            <div className="flex gap-4 p-3 bg-muted/20">
+                              <div className="relative h-16 w-16 rounded-md overflow-hidden bg-background shrink-0">
+                                <Image
+                                  src={item.product.imageUrl}
+                                  alt={item.product.name}
+                                  fill
+                                  className="object-cover"
+                                />
                               </div>
-                              {order.status === "PAID" ? (
-                                <Button size="sm" className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white shadow-lg shadow-blue-500/25">
-                                  <Download className="mr-2 h-3 w-3" /> Resgatar
-                                </Button>
-                              ) : order.status === "PENDING" ? (
-                                <Link href={`/order/${order.id}?pixCode=${order.pixCode || ""}`} className="inline-flex items-center justify-center h-8 px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-primary/50 text-primary hover:bg-primary/10 rounded-md shadow-sm bg-background">
-                                  Pagar PIX <ArrowRight className="ml-2 h-3 w-3" />
-                                </Link>
-                              ) : null}
+                              <div className="flex-1 flex items-center justify-between">
+                                <div>
+                                  <h4 className="font-semibold text-sm line-clamp-1">{item.product.name}</h4>
+                                  <p className="text-xs text-muted-foreground mt-1">Qtd: {item.quantity}</p>
+                                </div>
+                                {order.status === "PENDING" && (
+                                  <Link
+                                    href={`/order/${order.id}?pixCode=${order.pixCode || ""}`}
+                                    className="inline-flex items-center justify-center h-8 px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-primary/50 text-primary hover:bg-primary/10 rounded-md shadow-sm bg-background"
+                                  >
+                                    Pagar PIX <ArrowRight className="ml-2 h-3 w-3" />
+                                  </Link>
+                                )}
+                              </div>
                             </div>
+
+                            {/* Delivered content – only shown when PAID */}
+                            {order.status === "PAID" && item.deliveredContent.length > 0 && (
+                              <ProfileDeliveryReveal
+                                productName={item.product.name}
+                                contents={item.deliveredContent}
+                              />
+                            )}
+
+                            {order.status === "PAID" && item.deliveredContent.length === 0 && (
+                              <div className="px-4 py-3 bg-yellow-500/5 border-t border-yellow-500/20 text-xs text-yellow-400 flex items-center gap-2">
+                                <Package className="h-3 w-3" />
+                                Entrega pendente – entre em contato com o suporte.
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>
