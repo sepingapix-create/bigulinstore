@@ -263,12 +263,12 @@ export async function fulfillOrder(
         return;
       }
 
-      // 2. Update order status
+      // 2. Update order status (explicit assignment so Drizzle always includes the column)
       await tx.update(orders)
         .set({
           status: "PAID",
           updatedAt: new Date(),
-          ...(stylepayTransactionId ? { stylepayTransactionId } : {}),
+          stylepayTransactionId: stylepayTransactionId ?? null,
         })
         .where(eq(orders.id, orderId));
 
