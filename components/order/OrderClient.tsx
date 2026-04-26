@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Copy, Download, QrCode, Loader2 } from "lucide-react";
-import { simulatePaymentAction } from "@/actions/checkout";
+import { simulatePaymentAction, checkOrderStatus } from "@/actions/checkout";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -29,6 +29,23 @@ export function OrderClient({
   const [isSimulating, setIsSimulating] = useState(false);
   const router = useRouter();
 
+  // Polling for status update
+  useEffect(() => {
+    if (status !== "PENDING") return;
+
+    const interval = setInterval(async () => {
+      const result = await checkOrderStatus(orderId);
+      if (result.status === "PAID") {
+        setStatus("PAID");
+        toast.success("Pagamento confirmado com sucesso!");
+        router.refresh();
+        clearInterval(interval);
+      }
+    }, 5000); // Check every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [orderId, status, router]);
+
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success("Copiado!");
@@ -40,23 +57,16 @@ export function OrderClient({
       setCopied(true);
       toast.success("Código PIX copiado!");
       setTimeout(() => setCopied(false), 2000);
-      
-      if (status === "PENDING" && !isSimulating) {
-        toast.info("Simulando aprovação de pagamento em 5 segundos...");
-        handleSimulatePayment();
-      }
     }
   };
 
   async function handleSimulatePayment() {
     setIsSimulating(true);
-    await new Promise(resolve => setTimeout(resolve, 5000));
-    
     const result = await simulatePaymentAction(orderId);
     
     if (result.success) {
       setStatus("PAID");
-      toast.success("Pagamento aprovado!");
+      toast.success("Pagamento simulado com sucesso!");
       router.refresh();
     } else {
       toast.error("Erro ao simular pagamento");

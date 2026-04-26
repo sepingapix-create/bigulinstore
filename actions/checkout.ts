@@ -390,3 +390,22 @@ export async function simulatePaymentAction(orderId: string) {
   if (!result.success) return { error: result.error || "Erro ao aprovar pedido" };
   return { success: true };
 }
+
+export async function checkOrderStatus(orderId: string) {
+  try {
+    const order = await db.query.orders.findFirst({
+      where: eq(orders.id, orderId),
+      columns: {
+        status: true,
+      },
+    });
+
+    if (!order) return { error: "Pedido não encontrado" };
+
+    return { status: order.status };
+  } catch (error) {
+    console.error("Error checking order status:", error);
+    return { error: "Erro ao verificar status" };
+  }
+}
+
