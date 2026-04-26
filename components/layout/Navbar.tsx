@@ -26,11 +26,11 @@ export async function Navbar() {
         
         {/* Brand */}
         <Link href="/" className="flex items-center gap-1 group">
-          <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 italic mr-1">
+          <span className="text-3xl font-bold text-white transition-all duration-300 italic mr-1">
             爱
           </span>
-          <span className="font-black text-2xl tracking-tighter hidden sm:inline-block uppercase italic">
-            Bi<span className="text-yellow-500">gulin</span>
+          <span className="font-black text-2xl tracking-tighter hidden sm:inline-block uppercase italic text-red-600">
+            BIGULIN
           </span>
         </Link>
 

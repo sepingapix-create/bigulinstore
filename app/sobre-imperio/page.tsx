@@ -4,25 +4,25 @@ import Link from "next/link";
 
 export default function SobreImperioPage() {
   return (
-    <div className="min-h-screen bg-[#050505] text-white pt-20 pb-16 overflow-hidden relative group/page">
+    <div className="min-h-screen bg-[#050505] text-white pt-12 pb-12 overflow-hidden relative group/page">
       {/* Immersive Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <div className="absolute top-20 -left-20 w-[600px] h-[600px] bg-red-600/5 blur-[140px] rounded-full group-hover/page:bg-red-600/10 transition-colors duration-1000" />
         <div className="absolute bottom-20 -right-20 w-[600px] h-[600px] bg-yellow-500/5 blur-[140px] rounded-full group-hover/page:bg-yellow-500/10 transition-colors duration-1000" />
         
         {/* Balanced Watermark Kanji */}
-        <div className="absolute top-1/4 right-0 text-[180px] font-bold text-white/[0.01] select-none pointer-events-none -rotate-12 italic group-hover/page:translate-x-4 group-hover/page:-translate-y-4 transition-transform duration-[3000ms] ease-out">
+        <div className="absolute top-1/4 right-0 text-[140px] font-bold text-white/[0.01] select-none pointer-events-none -rotate-12 italic group-hover/page:translate-x-4 group-hover/page:-translate-y-4 transition-transform duration-[3000ms] ease-out">
           龍
         </div>
-        <div className="absolute bottom-1/4 left-0 text-[180px] font-bold text-white/[0.01] select-none pointer-events-none rotate-12 italic group-hover/page:-translate-x-4 group-hover/page:translate-y-4 transition-transform duration-[3000ms] ease-out">
+        <div className="absolute bottom-1/4 left-0 text-[140px] font-bold text-white/[0.01] select-none pointer-events-none rotate-12 italic group-hover/page:-translate-x-4 group-hover/page:translate-y-4 transition-transform duration-[3000ms] ease-out">
           帝
         </div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-20">
         {/* Top Navigation */}
         <ScrollReveal direction="down">
-          <div className="flex justify-between items-center mb-10">
+          <div className="flex justify-between items-center mb-6">
             <Link 
               href="/" 
               className="inline-flex items-center gap-3 text-zinc-500 hover:text-red-500 transition-all group"
@@ -36,31 +36,38 @@ export default function SobreImperioPage() {
         </ScrollReveal>
 
         {/* Hero Section - Refined Proportions */}
-        <div className="max-w-5xl mx-auto text-center mb-20 group/hero">
-          <div className="flex flex-col items-center mb-10 group/title cursor-default">
-            
+        <div className="max-w-5xl mx-auto text-center mb-12 group/hero">
+          <div className="flex flex-col items-center mb-6 group/title cursor-default">
             <div className="animate-in fade-in zoom-in duration-1000 fill-mode-both">
-              <h1 className="text-5xl md:text-[100px] font-black italic leading-[0.8] tracking-tighter uppercase flex flex-col items-center">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 py-4 drop-shadow-[0_10px_40px_rgba(220,38,38,0.3)] group-hover/title:scale-[1.02] transition-transform duration-700">IMPÉRIO</span>
-                <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)] group-hover/title:translate-y-[-10px] transition-transform duration-700">BIGULIN</span>
+              <h1 className="flex flex-col items-center">
+                <span className="text-[10px] md:text-xs font-black tracking-[0.5em] text-white mb-1 uppercase opacity-80">
+                  O IMPÉRIO
+                </span>
+
+                {/* Wrapper para a escala */}
+                <span className="relative inline-block transition-transform duration-700 hover:scale-[1.02]">
+                  <span className="text-5xl md:text-[90px] font-black italic tracking-tighter uppercase leading-[0.8] text-red-600 py-4 px-4 block">
+                    BIGULIN
+                  </span>
+                </span>
               </h1>
             </div>
           </div>
           <ScrollReveal delay={400}>
-            <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium max-w-2xl mx-auto italic group-hover/hero:text-zinc-400 transition-colors duration-500">
+            <p className="text-base md:text-lg text-zinc-500 leading-relaxed font-medium max-w-xl mx-auto italic group-hover/hero:text-zinc-400 transition-colors duration-500">
               "Forjando um novo padrão de honra no entretenimento digital."
             </p>
           </ScrollReveal>
         </div>
 
         {/* Pillar Values Section */}
-        <div className="relative mb-24">
-          <div className="text-center mb-12 group/pillars">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-600 mb-3 group-hover/pillars:text-zinc-400 transition-colors">Nossos Pilares</h3>
+        <div className="relative mb-16">
+          <div className="text-center mb-8 group/pillars">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-600 mb-2 group-hover/pillars:text-zinc-400 transition-colors">Nossos Pilares</h3>
             <div className="h-px w-20 bg-red-500 mx-auto group-hover/pillars:w-40 transition-all duration-700" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { icon: ShieldCheck, color: "text-red-500", title: "Honra", desc: "Nossa palavra é lei. Se prometemos entrega imediata, você receberá instantaneamente sem burocracias." },
               { icon: Target, color: "text-yellow-500", title: "Foco", desc: "Nossa mira está sempre voltada para a melhor experiência do usuário e curadoria de serviços." },
@@ -71,7 +78,7 @@ export default function SobreImperioPage() {
             ].map((v, i) => (
               <div 
                 key={i} 
-                className="group bg-gradient-to-b from-white/[0.03] to-transparent border border-white/5 p-8 rounded-[32px] hover:from-white/[0.05] transition-all duration-500 hover:border-red-500/20 hover:-translate-y-2 relative overflow-hidden group/pcard h-full animate-in fade-in slide-in-from-bottom-8 fill-mode-both"
+                className="group bg-gradient-to-b from-white/[0.03] to-transparent border border-white/5 p-6 rounded-[24px] hover:from-white/[0.05] transition-all duration-500 hover:border-red-500/20 hover:-translate-y-2 relative overflow-hidden group/pcard h-full animate-in fade-in slide-in-from-bottom-8 fill-mode-both"
                 style={{ animationDelay: `${i * 100}ms` }}
               >
                 <div className="absolute top-0 right-0 w-24 h-24 bg-white/[0.02] -mr-12 -mt-12 rounded-full group-hover:scale-150 group-hover:bg-red-500/[0.02] transition-all duration-700" />
@@ -88,15 +95,15 @@ export default function SobreImperioPage() {
         </div>
 
         {/* Split Content Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7 space-y-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="lg:col-span-7 space-y-6">
             <ScrollReveal direction="left">
               <div className="relative group/text">
                 <div className="absolute -left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-red-600 to-transparent rounded-full group-hover/text:h-full transition-all duration-500" />
-                <h2 className="text-3xl md:text-4xl font-black uppercase italic tracking-tighter mb-4 group-hover/text:translate-x-2 transition-transform duration-500">
+                <h2 className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter mb-3 group-hover/text:translate-x-2 transition-transform duration-500">
                   Nossa <span className="text-red-500">Missão</span>
                 </h2>
-                <p className="text-zinc-400 leading-relaxed text-lg font-light group-hover/text:text-zinc-300 transition-colors duration-500">
+                <p className="text-zinc-400 leading-relaxed text-base font-light group-hover/text:text-zinc-300 transition-colors duration-500">
                   A Bigulin nasceu da necessidade de um mercado mais transparente e ágil. Percebemos que o acesso ao conteúdo premium era muitas vezes burocrático e incerto. <span className="text-white font-medium italic">Nossa missão é democratizar esse acesso</span>, garantindo que cada cliente se sinta como parte da realeza.
                 </p>
               </div>
@@ -105,10 +112,10 @@ export default function SobreImperioPage() {
             <ScrollReveal direction="left" delay={200}>
               <div className="relative group/text2">
                 <div className="absolute -left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-yellow-500 to-transparent rounded-full group-hover/text2:h-full transition-all duration-500" />
-                <h2 className="text-3xl md:text-4xl font-black uppercase italic tracking-tighter mb-4 group-hover/text2:translate-x-2 transition-transform duration-500">
+                <h2 className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter mb-3 group-hover/text2:translate-x-2 transition-transform duration-500">
                   A <span className="text-yellow-500">Filosofia</span>
                 </h2>
-                <p className="text-zinc-400 leading-relaxed text-lg font-light group-hover/text2:text-zinc-300 transition-colors duration-500">
+                <p className="text-zinc-400 leading-relaxed text-base font-light group-hover/text2:text-zinc-300 transition-colors duration-500">
                   O Dragão representa nossa força, proteção e sabedoria. Quando você vê o nosso selo, saiba que aquele produto foi testado e aprovado sob os mais <span className="text-white font-medium italic">rigorosos padrões imperiais</span>. Não aceitamos nada menos que a perfeição absoluta.
                 </p>
               </div>
@@ -138,19 +145,19 @@ export default function SobreImperioPage() {
                 <div className="absolute inset-0 bg-red-600/10 blur-[60px] rounded-[50px] group-hover/card:bg-red-600/20 group-hover/card:scale-105 transition-all duration-700" />
                 
                 {/* The Card */}
-                <div className="relative bg-gradient-to-br from-[#111115] to-[#0a0a0c] border border-white/10 rounded-[40px] p-10 flex flex-col items-center text-center shadow-2xl overflow-hidden group-hover/card:border-red-500/40 transition-all duration-500 group-hover/card:-translate-y-2">
+                <div className="relative bg-gradient-to-br from-[#111115] to-[#0a0a0c] border border-white/10 rounded-[32px] p-8 flex flex-col items-center text-center shadow-2xl overflow-hidden group-hover/card:border-red-500/40 transition-all duration-500 group-hover/card:-translate-y-2">
                   {/* Internal Decorative Lines */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 -mr-16 -mt-16 rounded-full blur-2xl group-hover/card:bg-red-500/10 transition-colors" />
                   <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow-500/5 -ml-16 -mt-16 rounded-full blur-2xl group-hover/card:bg-yellow-500/10 transition-colors" />
 
-                  <div className="mb-8 relative">
-                    <div className="text-[120px] font-bold text-red-500/10 select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-2xl group-hover/card:text-red-500/30 group-hover/card:scale-125 transition-all duration-1000">愛</div>
-                    <div className="text-[120px] font-bold text-red-500 select-none relative animate-pulse drop-shadow-[0_0_15px_rgba(220,38,38,0.5)] group-hover/card:drop-shadow-[0_0_25px_rgba(220,38,38,0.7)] transition-all">愛</div>
+                  <div className="mb-6 relative">
+                    <div className="text-[100px] font-bold text-red-500/10 select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-2xl group-hover/card:text-red-500/30 group-hover/card:scale-125 transition-all duration-1000">愛</div>
+                    <div className="text-[100px] font-bold text-red-500 select-none relative animate-pulse drop-shadow-[0_0_15px_rgba(220,38,38,0.5)] group-hover/card:drop-shadow-[0_0_25px_rgba(220,38,38,0.7)] transition-all">愛</div>
                   </div>
 
-                  <div className="space-y-5 relative z-10">
+                  <div className="space-y-4 relative z-10">
                     <p className="text-[10px] font-black uppercase tracking-[0.5em] text-red-500 group-hover/card:tracking-[0.7em] transition-all duration-700">O Selo do Dragão</p>
-                    <p className="text-2xl text-white italic font-light leading-snug group-hover/card:text-zinc-100 transition-colors">
+                    <p className="text-xl text-white italic font-light leading-snug group-hover/card:text-zinc-100 transition-colors">
                       "Onde há fumaça, há fogo. Onde há <span className="font-bold text-red-500">Bigulin</span>, há qualidade garantida."
                     </p>
                     <div className="flex items-center justify-center gap-4 pt-4">

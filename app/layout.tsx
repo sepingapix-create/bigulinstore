@@ -24,6 +24,7 @@ import { AffiliateTracker } from "@/components/affiliate/AffiliateTracker";
 import { Suspense } from "react";
 
 import { NavbarWrapper } from "@/components/layout/NavbarWrapper";
+import { Footer } from "@/components/layout/Footer";
 import NextTopLoader from 'nextjs-toploader';
 
 export default function RootLayout({
@@ -57,6 +58,7 @@ export default function RootLayout({
         <Suspense fallback={null}>
           <AffiliateTracker />
         </Suspense>
+        <Footer />
         <SupportButton />
         <Toaster position="top-right" richColors duration={2000} closeButton />
       </body>

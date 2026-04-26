@@ -71,16 +71,20 @@ export default async function Home() {
           <HeroVector />
 
           {/* Soft background radial */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-primary/10 blur-[140px] rounded-full pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-primary/10 blur-[140px] rounded-full pointer-events-none z-0" />
 
-          <div className="container mx-auto px-4 relative z-10 text-center w-full">
+          <div className="container mx-auto px-4 relative z-20 text-center w-full">
 
-            <h1 className="text-6xl md:text-8xl font-black italic leading-[0.85] tracking-tighter uppercase flex flex-col items-center mb-6 animate-in fade-in slide-in-from-top-12 duration-1000 ease-out">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 py-2 drop-shadow-[0_10px_40px_rgba(220,38,38,0.3)]">
-                IMPÉRIO
+            <h1 className="flex flex-col items-center mb-8 animate-in fade-in slide-in-from-top-12 duration-1000 ease-out">
+              <span className="text-xs md:text-sm font-black tracking-[0.6em] text-white mb-2 uppercase opacity-80">
+                O IMPÉRIO
               </span>
-              <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
-                BIGULIN
+              
+              {/* Wrapper para a escala */}
+              <span className="relative inline-block transition-transform duration-700 hover:scale-[1.02]">
+                <span className="text-7xl md:text-[120px] font-black italic tracking-tighter uppercase leading-[0.8] text-red-600 py-4 px-4 block">
+                  BIGULIN
+                </span>
               </span>
             </h1>
 
@@ -233,15 +237,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Simple Footer */}
-      <footer className="border-t border-border/40 bg-background py-10">
-        <div className="container mx-auto px-4 flex flex-col items-center justify-center gap-4 text-center">
-          <Link href="/termos" className="text-sm text-muted-foreground hover:text-red-500 transition-colors underline-offset-4 hover:underline">
-            Termos e Condições da Compra
-          </Link>
-          <p className="text-sm text-muted-foreground/60">&copy; {new Date().getFullYear()} Império Bigulin. Todos os direitos reservados.</p>
-        </div>
-      </footer>
     </div>
   );
 }
