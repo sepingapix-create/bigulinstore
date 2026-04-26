@@ -38,18 +38,11 @@ export default function SobreImperioPage() {
         {/* Hero Section - Refined Proportions */}
         <div className="max-w-5xl mx-auto text-center mb-20 group/hero">
           <div className="flex flex-col items-center mb-10 group/title cursor-default">
-            <ScrollReveal direction="down">
-              <div className="inline-flex items-center gap-4 mb-6">
-                <div className="h-[2px] w-6 md:w-12 bg-red-600 rounded-full shadow-[0_0_10px_rgba(220,38,38,0.5)]" />
-                <span className="text-red-500 font-black uppercase tracking-[0.5em] md:tracking-[0.8em] text-[10px]">O Legítimo</span>
-                <div className="h-[2px] w-6 md:w-12 bg-red-600 rounded-full shadow-[0_0_10px_rgba(220,38,38,0.5)]" />
-              </div>
-            </ScrollReveal>
             
             <div className="animate-in fade-in zoom-in duration-1000 fill-mode-both">
               <h1 className="text-5xl md:text-[100px] font-black italic leading-[0.8] tracking-tighter uppercase flex flex-col items-center">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 py-4 drop-shadow-[0_10px_40px_rgba(220,38,38,0.3)] group-hover/title:scale-[1.02] transition-transform duration-700">IMPÉRIO</span>
-                <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)] group-hover/title:translate-y-[-10px] transition-transform duration-700">DO BIGULIN</span>
+                <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)] group-hover/title:translate-y-[-10px] transition-transform duration-700">BIGULIN</span>
               </h1>
             </div>
           </div>

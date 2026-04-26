@@ -74,21 +74,13 @@ export default async function Home() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-primary/10 blur-[140px] rounded-full pointer-events-none" />
 
           <div className="container mx-auto px-4 relative z-10 text-center w-full">
-            {/* Badge above title */}
-            <div className="flex flex-col items-center mb-8">
-              <div className="inline-flex items-center gap-4 animate-in fade-in slide-in-from-top-4 duration-700">
-                <div className="h-[2px] w-8 md:w-16 bg-red-600 rounded-full shadow-[0_0_10px_rgba(220,38,38,0.5)]" />
-                <span className="text-red-500 font-black uppercase tracking-[0.4em] text-[10px]">O Legítimo</span>
-                <div className="h-[2px] w-8 md:w-16 bg-red-600 rounded-full shadow-[0_0_10px_rgba(220,38,38,0.5)]" />
-              </div>
-            </div>
 
             <h1 className="text-6xl md:text-8xl font-black italic leading-[0.85] tracking-tighter uppercase flex flex-col items-center mb-6 animate-in fade-in slide-in-from-top-12 duration-1000 ease-out">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 py-2 drop-shadow-[0_10px_40px_rgba(220,38,38,0.3)]">
                 IMPÉRIO
               </span>
               <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
-                DO BIGULIN
+                BIGULIN
               </span>
             </h1>
 
