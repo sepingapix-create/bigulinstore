@@ -58,7 +58,7 @@ export class StylepayService {
         external_id: externalId,
         payer,
         payerQuestion: `Pagamento do pedido #${externalId}`,
-        postbackUrl: `${process.env.NEXTAUTH_URL || "https://seusite.com"}/api/webhooks/stylepay`,
+        postbackUrl: `${process.env.NEXT_PUBLIC_URL || "http://localhost:3000"}/api/webhooks/stylepay`,
         products: products.map(p => ({
           ...p,
           price: Number(p.price.toFixed(2))
