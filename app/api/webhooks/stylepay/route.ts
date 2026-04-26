@@ -39,28 +39,32 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Missing requestNumber" }, { status: 400 });
       }
 
-      // Find the order by its id (which we sent as external_id)
-      const [order] = await db
-        .select()
-        .from(orders)
-        .where(eq(orders.id, requestNumber));
+      console.log(`[WEBHOOK] Looking up order for requestNumber: ${requestNumber}`);
+
+      // Try first by our orderId UUID, then by the Stylepay paymentId saved at checkout
+      let [order] = await db.select().from(orders).where(eq(orders.id, requestNumber));
 
       if (!order) {
-        console.error(`[WEBHOOK] Order not found: ${requestNumber}`);
-        // Return 200 so Stylepay doesn't keep retrying for unknown orders
+        console.log(`[WEBHOOK] Not found by orderId, trying stylepayTransactionId: ${requestNumber}`);
+        [order] = await db.select().from(orders).where(eq(orders.stylepayTransactionId, requestNumber));
+      }
+
+      if (!order) {
+        console.error(`[WEBHOOK] Order not found for requestNumber: ${requestNumber}`);
+        // Return 200 so Stylepay doesn't keep retrying
         return NextResponse.json({ ok: false, message: "Order not found" }, { status: 200 });
       }
 
-      console.log(`[WEBHOOK] Fulfilling order ${requestNumber} (txId: ${idTransaction})`);
+      console.log(`[WEBHOOK] Found order ${order.id} — fulfilling (txId: ${idTransaction})`);
 
-      const result = await fulfillOrder(requestNumber, idTransaction);
+      const result = await fulfillOrder(order.id, idTransaction || requestNumber);
 
       if (!result.success) {
-        console.error(`[WEBHOOK] fulfillOrder failed for ${requestNumber}:`, result.error);
+        console.error(`[WEBHOOK] fulfillOrder failed for order ${order.id}:`, result.error);
         return NextResponse.json({ ok: false, error: result.error }, { status: 500 });
       }
 
-      console.log(`[WEBHOOK] ✅ Order ${requestNumber} fulfilled successfully`);
+      console.log(`[WEBHOOK] ✅ Order ${order.id} fulfilled successfully`);
       return NextResponse.json({ ok: true }, { status: 200 });
     }
 

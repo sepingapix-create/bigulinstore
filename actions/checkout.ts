@@ -209,15 +209,17 @@ export async function processCheckout(
         throw err;
       }
 
-      // 7. Create the order
+      // 7. Create the order (saving Stylepay paymentId so we can match webhook events)
+      console.log(`[CHECKOUT DEBUG] Saving stylepayTransactionId: ${payment.paymentId}`);
       await tx.insert(orders).values({
         id: orderId,
         userId: userId!,
         totalAmount: totalAmount.toFixed(2),
         discountAmount: discountAmount.toFixed(2),
         couponCode: appliedCouponCode,
-        pixCode: payment.qrCode, // REAL PIX CODE
-        qrCodeImage: payment.qrCodeImage, // BASE64 IMAGE
+        pixCode: payment.qrCode,           // REAL PIX CODE
+        qrCodeImage: payment.qrCodeImage,  // BASE64 IMAGE
+        stylepayTransactionId: payment.paymentId ? String(payment.paymentId) : null,
       });
 
       // 8. Insert order items
