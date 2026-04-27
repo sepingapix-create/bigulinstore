@@ -59,18 +59,20 @@ export function CartSheet() {
       
       <SheetContent className="w-full sm:max-w-lg bg-background/95 backdrop-blur-xl border-l-border/50 flex flex-col">
         <SheetHeader className="pb-4 border-b border-border/50">
-          <SheetTitle className="flex items-center gap-2 text-xl font-bold">
+          <SheetTitle className="flex items-center justify-center gap-2 text-xl font-black uppercase italic tracking-tighter">
             <ShoppingCart className="h-5 w-5 text-primary" />
             Seu Carrinho
-            <Badge variant="secondary" className="ml-2 bg-muted/50">{totalItems} itens</Badge>
+            <Badge variant="secondary" className="ml-2 bg-muted/50 text-[10px] font-black uppercase tracking-widest">{totalItems} itens</Badge>
           </SheetTitle>
         </SheetHeader>
 
         {items.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground">
-            <ShoppingCart className="h-16 w-16 mb-4 opacity-20" />
-            <p className="text-lg font-medium">Seu carrinho está vazio</p>
-            <p className="text-sm">Adicione algumas assinaturas para continuar.</p>
+          <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground text-center px-6">
+            <div className="relative mb-6">
+              <ShoppingCart className="h-20 w-20 opacity-20" />
+            </div>
+            <p className="text-xl font-black text-white uppercase italic tracking-tighter mb-2">Seu carrinho está vazio</p>
+            <p className="text-sm leading-relaxed max-w-[240px]">Adicione algumas assinaturas do Império para continuar.</p>
           </div>
         ) : (
           <>

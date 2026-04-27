@@ -233,11 +233,11 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
   return (
     <div className="space-y-8">
       {/* Navigation Tabs */}
-      <div className="flex items-center gap-1 bg-muted/30 p-1 rounded-2xl w-fit border border-border/40">
+      <div className="flex items-center gap-1 bg-muted/30 p-1 rounded-2xl w-full sm:w-fit border border-border/40 overflow-x-auto scrollbar-hide">
         <button 
           onClick={() => setActiveTab("overview")}
           className={cn(
-            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105 active:scale-95",
+            "flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-[11px] sm:text-sm font-bold transition-all hover:scale-105 active:scale-95 whitespace-nowrap",
             activeTab === "overview" ? "bg-background text-primary shadow-sm" : "text-muted-foreground hover:bg-muted/50"
           )}
         >
@@ -246,7 +246,7 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
         <button 
           onClick={() => setActiveTab("visits")}
           className={cn(
-            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105 active:scale-95",
+            "flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-[11px] sm:text-sm font-bold transition-all hover:scale-105 active:scale-95 whitespace-nowrap",
             activeTab === "visits" ? "bg-background text-primary shadow-sm" : "text-muted-foreground hover:bg-muted/50"
           )}
         >
@@ -255,7 +255,7 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
         <button 
           onClick={() => setActiveTab("tools")}
           className={cn(
-            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105 active:scale-95",
+            "flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-[11px] sm:text-sm font-bold transition-all hover:scale-105 active:scale-95 whitespace-nowrap",
             activeTab === "tools" ? "bg-background text-primary shadow-sm" : "text-muted-foreground hover:bg-muted/50"
           )}
         >
@@ -264,7 +264,7 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
         <button 
           onClick={() => setActiveTab("leaderboard")}
           className={cn(
-            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105 active:scale-95",
+            "flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-[11px] sm:text-sm font-bold transition-all hover:scale-105 active:scale-95 whitespace-nowrap",
             activeTab === "leaderboard" ? "bg-background text-primary shadow-sm" : "text-muted-foreground hover:bg-muted/50"
           )}
         >
@@ -273,7 +273,7 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
         <button 
           onClick={() => setActiveTab("payouts")}
           className={cn(
-            "flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105 active:scale-95",
+            "flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-[11px] sm:text-sm font-bold transition-all hover:scale-105 active:scale-95 whitespace-nowrap",
             activeTab === "payouts" ? "bg-background text-primary shadow-sm" : "text-muted-foreground hover:bg-muted/50"
           )}
         >
@@ -289,7 +289,7 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
                <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 group-hover:scale-125 transition-all duration-700">
                   <DollarSign className="h-24 w-24 text-green-500" />
                </div>
-               <CardContent className="p-6">
+               <CardContent className="p-5 sm:p-6">
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Saldo Disponível</p>
                   <h3 className="text-4xl font-black text-green-500 mb-2 group-hover:scale-105 origin-left transition-transform duration-500">
                     {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(Number(stats.balance))}
@@ -304,7 +304,7 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
                <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 group-hover:scale-125 transition-all duration-700">
                   <TrendingUp className="h-24 w-24 text-primary" />
                </div>
-               <CardContent className="p-6">
+               <CardContent className="p-5 sm:p-6">
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Total Acumulado</p>
                   <h3 className="text-4xl font-black mb-2 group-hover:scale-105 origin-left transition-transform duration-500">
                     {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(Number(stats.totalEarned))}
@@ -317,7 +317,7 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
                <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 group-hover:scale-125 transition-all duration-700">
                   <MousePointerClick className="h-24 w-24 text-blue-500" />
                </div>
-               <CardContent className="p-6">
+               <CardContent className="p-5 sm:p-6">
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Total de Visitas</p>
                   <h3 className="text-4xl font-black mb-2 group-hover:scale-105 origin-left transition-transform duration-500">{stats.visitStats?.totalVisits || 0}</h3>
                   <div className="flex items-center gap-1 text-[10px] text-blue-500 font-bold group-hover:text-blue-400 transition-colors">
@@ -330,7 +330,7 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
                <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
                   <UserCheck className="h-24 w-24 text-purple-500" />
                </div>
-               <CardContent className="p-6">
+               <CardContent className="p-5 sm:p-6">
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Contas Registradas</p>
                   <h3 className="text-4xl font-black mb-2">{stats.visitStats?.convertedUsers || 0}</h3>
                   <div className="flex items-center gap-1 text-[10px] text-purple-500 font-bold">
@@ -343,7 +343,7 @@ export function AffiliatePortalClient({ initialStats }: { initialStats: any }) {
                <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
                   <Users className="h-24 w-24 text-cyan-500" />
                </div>
-               <CardContent className="p-6">
+               <CardContent className="p-5 sm:p-6">
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Total de Vendas</p>
                   <h3 className="text-4xl font-black mb-2">{currentReferrals}</h3>
                   <div className="flex items-center gap-1 text-[10px] text-cyan-500 font-bold">

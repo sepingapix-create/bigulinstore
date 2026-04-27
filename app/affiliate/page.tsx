@@ -20,10 +20,10 @@ export default async function AffiliatePage() {
       <main className="container mx-auto px-4 py-12 max-w-5xl">
         <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 text-center md:text-left">
           <div>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4 italic uppercase italic">
+            <h1 className="text-3xl md:text-6xl font-black tracking-tight mb-2 sm:mb-4 italic uppercase italic">
               Portal de <span className="text-primary">Afiliados</span>
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-base sm:text-xl text-muted-foreground">
               Transforme sua influência em lucro. Ganhe comissões por cada venda indicada.
             </p>
           </div>
