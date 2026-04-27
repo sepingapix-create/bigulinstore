@@ -164,7 +164,7 @@ export default async function UserProfile() {
                               </div>
                               <div className="text-right">
                                 <p className="text-base font-black text-primary">
-                                  {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(Number(item.price))}
+                                  {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(Number(item.priceAtPurchase))}
                                 </p>
                               </div>
                             </div>
