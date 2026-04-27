@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ShoppingBag, Package, CheckCircle2, Clock, ExternalLink } from "lucide-react";
+import { ShoppingBag, Package, CheckCircle2, Clock, ExternalLink, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { ProfileDeliveryReveal } from "@/components/profile/ProfileDeliveryReveal";
@@ -50,6 +50,15 @@ export default async function UserProfile() {
       <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none" />
       
       <div className="container mx-auto px-4 py-12 max-w-5xl relative z-10">
+        <div className="mb-6">
+          <Link href="/#catalogo">
+            <Button variant="ghost" className="text-zinc-400 hover:text-white hover:bg-white/5 font-bold px-4 py-2 h-auto gap-2 rounded-xl transition-colors">
+              <ChevronLeft className="h-4 w-4" />
+              Voltar ao Catálogo
+            </Button>
+          </Link>
+        </div>
+        
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           
           {/* User Info Column */}
@@ -110,11 +119,6 @@ export default async function UserProfile() {
                   <Package className="h-16 w-16 mb-6 opacity-20" />
                   <p className="font-bold text-lg text-zinc-400">Nenhum pedido encontrado.</p>
                   <p className="text-sm mb-6">Sua jornada no Império ainda não começou.</p>
-                  <Link href="/#catalogo">
-                    <Button className="rounded-xl px-8 h-12 bg-primary hover:bg-primary/90 text-white font-bold tracking-widest uppercase shadow-lg shadow-primary/20">
-                      Explorar Catálogo
-                    </Button>
-                  </Link>
                 </CardContent>
               </Card>
             ) : (
