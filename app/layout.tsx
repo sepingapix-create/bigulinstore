@@ -36,6 +36,7 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       className={`${outfit.variable} ${jakarta.variable} dark h-full antialiased`}
+      data-scroll-behavior="smooth"
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-jakarta overflow-x-hidden">
         <NextTopLoader

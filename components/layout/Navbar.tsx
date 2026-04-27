@@ -25,11 +25,11 @@ export async function Navbar() {
       <div className="container mx-auto flex h-16 items-center px-4 justify-between">
         
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-1 group">
-          <span className="text-3xl font-bold text-white transition-all duration-300 italic mr-1">
+        <Link href="/" className="flex items-center gap-1 group transition-transform duration-500 hover:scale-105 active:scale-95">
+          <span className="text-3xl font-bold text-white transition-all duration-500 italic mr-1 group-hover:text-red-500 group-hover:drop-shadow-[0_0_15px_rgba(220,38,38,0.8)] group-hover:rotate-12">
             爱
           </span>
-          <span className="font-black text-2xl tracking-tighter hidden sm:inline-block uppercase italic text-red-600">
+          <span className="font-black text-2xl tracking-tighter hidden sm:inline-block uppercase italic text-red-600 transition-all duration-500 group-hover:text-white group-hover:tracking-normal group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
             BIGULIN
           </span>
         </Link>

@@ -12,61 +12,37 @@ import Link from "next/link";
 import Image from "next/image";
 import { ProfileDeliveryReveal } from "@/components/profile/ProfileDeliveryReveal";
 
-export default async function ProfilePage() {
+export default async function UserProfilePage() {
   const session = await auth();
 
   if (!session?.user) {
     redirect("/login");
   }
 
-  // Fetch user orders
-  const rawOrders = await db
-    .select()
-    .from(orders)
-    .where(eq(orders.userId, session.user.id!))
-    .orderBy(desc(orders.createdAt));
+  // Fetch orders with items and products in a single relational query
+  const ordersWithItems = await db.query.orders.findMany({
+    where: eq(orders.userId, session.user.id!),
+    orderBy: [desc(orders.createdAt)],
+    with: {
+      items: {
+        with: {
+          product: true,
+        },
+      },
+      deliveredContent: true, // This is the productInventory relation
+    },
+  });
 
-  let userOrders: any[] = [];
-
-  if (rawOrders.length > 0) {
-    const orderIds = rawOrders.map((o) => o.id);
-
-    // Fetch items with joined products
-    const itemsWithProducts = await db
-      .select({ item: orderItems, product: products })
-      .from(orderItems)
-      .innerJoin(products, eq(orderItems.productId, products.id))
-      .where(inArray(orderItems.orderId, orderIds));
-
-    // Fetch delivered digital inventory for PAID orders
-    const paidOrderIds = rawOrders.filter((o) => o.status === "PAID").map((o) => o.id);
-    let deliveredItems: { orderId: string; productId: string; content: string }[] = [];
-    if (paidOrderIds.length > 0) {
-      const inventory = await db
-        .select({
-          orderId: productInventory.orderId,
-          productId: productInventory.productId,
-          content: productInventory.content,
-        })
-        .from(productInventory)
-        .where(inArray(productInventory.orderId, paidOrderIds));
-      deliveredItems = inventory as typeof deliveredItems;
-    }
-
-    userOrders = rawOrders.map((order) => ({
-      ...order,
-      items: itemsWithProducts
-        .filter((row) => row.item.orderId === order.id)
-        .map((row) => ({
-          ...row.item,
-          product: row.product,
-          // Attach delivered content for this specific product in this order
-          deliveredContent: deliveredItems
-            .filter((d) => d.orderId === order.id && d.productId === row.item.productId)
-            .map((d) => d.content),
-        })),
-    }));
-  }
+  const userOrders = ordersWithItems.map((order) => ({
+    ...order,
+    items: order.items.map((item) => ({
+      ...item,
+      product: item.product,
+      deliveredContent: order.deliveredContent
+        .filter((d) => d.productId === item.productId)
+        .map((d) => d.content),
+    })),
+  }));
 
   const paidCount = userOrders.filter((o) => o.status === "PAID").length;
 

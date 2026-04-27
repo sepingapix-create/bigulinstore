@@ -12,20 +12,7 @@ import { GlobalFlashTimer } from "@/components/GlobalFlashTimer";
 import { HeroVector } from "@/components/animations/HeroVector";
 
 export default async function Home() {
-  const allProducts = await db.select({
-    id: products.id,
-    name: products.name,
-    description: products.description,
-    price: products.price,
-    category: products.category,
-    stock: products.stock,
-    imageUrl: products.imageUrl,
-    createdAt: products.createdAt,
-    updatedAt: products.updatedAt,
-    originalPrice: products.originalPrice,
-    isFlashDeal: products.isFlashDeal,
-    flashDealEnd: products.flashDealEnd,
-  }).from(products).orderBy(desc(products.createdAt));
+  const allProducts = await db.select().from(products).orderBy(desc(products.createdAt));
   
   const flashDealProducts = allProducts.filter(p => p.isFlashDeal);
   const regularProducts = allProducts.filter(p => !p.isFlashDeal);
