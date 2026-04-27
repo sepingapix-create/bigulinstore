@@ -8,6 +8,7 @@ import { CheckCircle2, Copy, Download, QrCode, Loader2 } from "lucide-react";
 import { simulatePaymentAction, checkOrderStatus } from "@/actions/checkout";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export function OrderClient({ 
   orderId, 
@@ -218,16 +219,13 @@ export function OrderClient({
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Button className="flex-1 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-black italic uppercase tracking-widest shadow-xl shadow-blue-600/20 transition-all hover:-translate-y-0.5 active:translate-y-0">
-                    <Download className="mr-2 h-5 w-5" /> Baixar Comprovante
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="h-14 px-8 rounded-2xl border-white/10 hover:bg-white/5 font-bold"
-                    onClick={() => router.push("/profile")}
-                  >
-                    Ir para o Perfil
-                  </Button>
+                  <Link href="/profile" className="flex-1">
+                    <Button 
+                      className="w-full h-14 rounded-2xl bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white font-black italic uppercase tracking-widest shadow-xl shadow-red-600/20 transition-all hover:-translate-y-0.5 active:translate-y-0"
+                    >
+                      Ir para o Perfil
+                    </Button>
+                  </Link>
                 </div>
               </div>
             )}
