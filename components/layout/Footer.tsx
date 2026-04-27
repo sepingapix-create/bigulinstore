@@ -1,9 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Zap, ShieldCheck, ChevronRight } from "lucide-react";
 
 export function Footer() {
+  const pathname = usePathname();
+  
+  // Define allowed paths for the footer
+  const isHomePage = pathname === "/";
+  const isProductPage = pathname?.startsWith("/product/");
+
+  if (!isHomePage && !isProductPage) {
+    return null;
+  }
+
   return (
     <footer className="bg-[#050505] border-t border-white/5 pt-16 pb-8 relative overflow-hidden">
       {/* Subtle Background Glow */}
