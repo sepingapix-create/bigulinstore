@@ -62,7 +62,7 @@ export function SearchBar() {
   }, []);
 
   return (
-    <div className="flex-1 max-w-2xl mx-4 relative transition-all duration-500 ease-in-out focus-within:max-w-3xl" ref={dropdownRef}>
+    <div className="flex-1 max-w-2xl mx-0 sm:mx-4 relative transition-all duration-500 ease-in-out focus-within:max-w-3xl" ref={dropdownRef}>
       <div className="relative group">
         <Search className={cn(
           "absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 transition-all duration-300",
@@ -85,7 +85,7 @@ export function SearchBar() {
 
       {/* Results Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-background/95 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl overflow-hidden z-[60] animate-in fade-in zoom-in-95 duration-200">
+        <div className="fixed inset-x-4 top-[72px] sm:absolute sm:inset-x-auto sm:top-full sm:left-0 sm:right-0 sm:w-full sm:mt-2 bg-background/95 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl overflow-hidden z-[60] animate-in fade-in zoom-in-95 duration-200">
           <div className="p-2">
             {isSearching ? (
               <div className="flex items-center justify-center py-8">
@@ -93,7 +93,7 @@ export function SearchBar() {
               </div>
             ) : results.length > 0 ? (
               <div className="space-y-1">
-                <div className="px-2 py-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                <div className="px-2 py-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground text-center">
                   Resultados Sugeridos
                 </div>
                 {results.map((product) => (

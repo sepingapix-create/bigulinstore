@@ -22,7 +22,7 @@ export async function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/60 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center px-4 justify-between">
+      <div className="container mx-auto flex h-16 items-center px-2 sm:px-4 justify-between">
         
         {/* Brand */}
         <Link href="/" className="flex items-center gap-1 group transition-transform duration-500 hover:scale-105 active:scale-95">
@@ -35,7 +35,7 @@ export async function Navbar() {
         </Link>
 
         {/* Central Search */}
-        <div className="flex-1 max-w-2xl mx-8 flex items-center gap-6">
+        <div className="flex-1 max-w-2xl mx-2 sm:mx-8 flex items-center gap-6">
           <SearchBar />
           <Link href="/sobre-imperio" className="group flex items-center gap-1.5 text-[10px] font-black uppercase italic tracking-tighter text-muted-foreground hover:text-white transition-all hidden xl:flex whitespace-nowrap bg-muted/20 px-3 py-1.5 rounded-full border border-border/50 hover:border-primary/50 hover:bg-muted/40">
             <span className="w-1.5 h-1.5 rounded-full bg-primary/40 group-hover:bg-primary animate-pulse" />
@@ -44,7 +44,7 @@ export async function Navbar() {
         </div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           
           {/* Cart */}
           <CartSheet />

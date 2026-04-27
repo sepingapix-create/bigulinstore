@@ -97,34 +97,36 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
 
           {/* Price + Button row */}
-          <div className="flex items-center justify-between border-t border-white/5 pt-2 gap-2">
-            <div>
+          <div className="flex flex-col @[180px]:flex-row @[180px]:items-center justify-between border-t border-white/5 pt-2 gap-2">
+            <div className="flex flex-col">
               {product.originalPrice ? (
                 <div className="flex items-center gap-1 mb-0.5">
-                  <span className="text-[8px] text-red-500 font-bold uppercase tracking-widest bg-red-500/10 px-1 rounded">Promo</span>
-                  <span className="text-[9px] text-zinc-500 font-bold line-through">{formatPrice(product.originalPrice)}</span>
+                  <span className="text-[7px] sm:text-[8px] text-red-500 font-bold uppercase tracking-widest bg-red-500/10 px-1 rounded whitespace-nowrap">Promo</span>
+                  <span className="text-[8px] sm:text-[9px] text-zinc-500 font-bold line-through whitespace-nowrap">{formatPrice(product.originalPrice)}</span>
                 </div>
               ) : (
                 <p className="text-[8px] text-zinc-600 font-bold uppercase tracking-wider leading-none mb-0.5">POR</p>
               )}
-              <p className="text-base font-black text-white italic tracking-tight leading-none">
-                {formatPrice(product.price)}
-              </p>
-              <p className="text-[8px] font-black text-emerald-400 uppercase tracking-widest mt-0.5">PIX</p>
+              <div className="flex items-baseline gap-1.5">
+                <p className="text-sm sm:text-base font-black text-white italic tracking-tight leading-none">
+                  {formatPrice(product.price)}
+                </p>
+                <p className="text-[7px] sm:text-[8px] font-black text-emerald-400 uppercase tracking-widest">PIX</p>
+              </div>
             </div>
 
             <button
               onClick={handleBuyNow}
               disabled={product.stock === 0}
               className={cn(
-                "shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-wider transition-all duration-300",
+                "flex items-center justify-center gap-1.5 px-4 py-2 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-full text-[9px] font-black uppercase tracking-wider transition-all duration-300 w-full sm:w-auto",
                 product.stock > 0
                   ? "bg-red-600 hover:bg-red-500 text-white hover:scale-105 shadow-[0_0_12px_rgba(220,38,38,0.35)]"
                   : "bg-zinc-800 text-zinc-600 cursor-not-allowed"
               )}
             >
               <ShoppingCart className="h-3 w-3 shrink-0" />
-              Comprar
+              <span>Comprar</span>
             </button>
           </div>
         </div>

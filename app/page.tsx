@@ -116,11 +116,11 @@ export default async function Home() {
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-500/5 blur-[120px] rounded-full pointer-events-none" />
             <div className="container mx-auto px-4">
               <ScrollReveal>
-              <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
+              <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between mb-8 gap-6 sm:gap-4">
                 {/* Left: minimal title */}
-                <div className="flex items-center gap-4 flex-1 min-w-0">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
+                <div className="flex flex-col sm:flex-row items-center gap-4 sm:flex-1 w-full sm:min-w-0 text-center sm:text-left">
+                  <div className="flex flex-col items-center sm:items-start">
+                    <div className="flex items-center justify-center sm:justify-start gap-2 mb-2 sm:mb-1">
                       <Zap className="h-3 w-3 fill-red-500 text-red-500" />
                       <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-red-500">Tempo Limitado</p>
                     </div>
@@ -132,7 +132,7 @@ export default async function Home() {
                 </div>
 
                 {/* Right: timer */}
-                <div className="flex items-center gap-3 bg-black/40 border border-red-500/10 px-4 py-2 rounded-xl">
+                <div className="flex items-center gap-3 bg-black/40 border border-red-500/10 px-5 py-2.5 rounded-2xl shadow-xl shadow-red-500/5">
                   <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">Expira em</p>
                   <GlobalFlashTimer targetDate={earliestFlashDeal!.flashDealEnd!.toISOString()} />
                 </div>
