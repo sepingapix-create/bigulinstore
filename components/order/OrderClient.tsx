@@ -235,6 +235,5 @@ export function OrderClient({
         </Card>
       </div>
     </div>
-    </div>
   );
 }
