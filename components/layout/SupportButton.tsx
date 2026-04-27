@@ -32,7 +32,14 @@ export function SupportButton({ variant = "floating" }: { variant?: "floating" |
   const pathname = usePathname();
 
   // If floating, hide on certain pages
-  if (variant === "floating" && (pathname?.startsWith("/admin") || pathname?.startsWith("/affiliate") || pathname?.startsWith("/profile") || pathname?.startsWith("/order"))) {
+  const isHiddenPage = pathname?.startsWith("/admin") || 
+                       pathname?.startsWith("/affiliate") || 
+                       pathname?.startsWith("/profile") || 
+                       pathname?.startsWith("/order") || 
+                       pathname === "/login" || 
+                       pathname === "/register";
+
+  if (variant === "floating" && isHiddenPage) {
     return null;
   }
 

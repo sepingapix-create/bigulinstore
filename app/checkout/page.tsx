@@ -145,8 +145,8 @@ export default function CheckoutPage() {
               <CardContent className="p-0">
                 <div className="divide-y divide-border/30">
                   {items.map((item) => (
-                    <div key={item.product.id} className="group flex gap-6 p-6 transition-all duration-300 hover:bg-primary/5 cursor-default">
-                      <div className="relative h-24 w-24 rounded-xl overflow-hidden bg-muted/20 border border-border/50 shrink-0 transition-transform duration-500 group-hover:scale-105 group-hover:border-primary/30">
+                    <div key={item.product.id} className="group flex flex-col sm:flex-row gap-4 sm:gap-6 p-4 sm:p-6 transition-all duration-300 hover:bg-primary/5 cursor-default">
+                      <div className="relative h-20 w-20 sm:h-24 sm:w-24 rounded-xl overflow-hidden bg-muted/20 border border-border/50 shrink-0 transition-transform duration-500 group-hover:scale-105 group-hover:border-primary/30 mx-auto sm:mx-0">
                         <Image 
                           src={item.product.imageUrl} 
                           alt={item.product.name}
@@ -154,20 +154,20 @@ export default function CheckoutPage() {
                           className="object-cover"
                         />
                       </div>
-                      <div className="flex-1 flex flex-col py-1">
-                        <div className="flex justify-between items-start">
+                      <div className="flex-1 flex flex-col py-0 sm:py-1 text-center sm:text-left">
+                        <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start gap-2">
                           <div>
-                            <Badge variant="outline" className="mb-2 bg-primary/5 text-primary border-primary/20 text-[10px] uppercase font-bold group-hover:bg-primary group-hover:text-white transition-all">
+                            <Badge variant="outline" className="mb-1 sm:mb-2 bg-primary/5 text-primary border-primary/20 text-[8px] sm:text-[10px] uppercase font-bold group-hover:bg-primary group-hover:text-white transition-all mx-auto sm:mx-0">
                               {item.product.category}
                             </Badge>
-                            <h3 className="font-bold text-xl uppercase italic tracking-tighter group-hover:text-primary transition-colors">{item.product.name}</h3>
+                            <h3 className="font-bold text-lg sm:text-xl uppercase italic tracking-tighter group-hover:text-primary transition-colors">{item.product.name}</h3>
                           </div>
-                          <p className="font-black text-2xl text-primary tabular-nums transition-transform group-hover:scale-110">
+                          <p className="font-black text-xl sm:text-2xl text-primary tabular-nums transition-transform group-hover:scale-110">
                             {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(Number(item.product.price) * item.quantity)}
                           </p>
                         </div>
-                        <div className="mt-auto flex items-center justify-between">
-                          <div className="flex items-center bg-muted/20 border border-border/30 rounded-lg p-1">
+                        <div className="mt-4 sm:mt-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+                          <div className="flex items-center bg-muted/20 border border-border/30 rounded-lg p-1 w-fit">
                             <Button
                               variant="ghost"
                               size="icon"
