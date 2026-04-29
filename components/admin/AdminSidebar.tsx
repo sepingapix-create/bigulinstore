@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
@@ -10,9 +11,12 @@ import {
   Settings,
   ArrowLeft,
   HandCoins,
-  CreditCard
+  CreditCard,
+  Menu
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 
 const menuItems = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
@@ -23,11 +27,11 @@ const menuItems = [
   { name: "Pagamentos", href: "/admin/payments", icon: CreditCard },
 ];
 
-export function AdminSidebar() {
+export function AdminSidebarContent() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 border-r border-[#1A1A1A] bg-[#0A0A0A] flex flex-col shrink-0">
+    <>
       <div className="p-6 border-b border-[#1A1A1A] shrink-0">
         <Link href="/" className="flex items-center gap-2 group">
           <ArrowLeft className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
@@ -81,6 +85,41 @@ export function AdminSidebar() {
           <span>Configurações</span>
         </Link>
       </div>
+    </>
+  );
+}
+
+export function AdminSidebar() {
+  return (
+    <aside className="hidden md:flex w-64 border-r border-[#1A1A1A] bg-[#0A0A0A] flex-col shrink-0">
+      <AdminSidebarContent />
     </aside>
+  );
+}
+
+export function MobileAdminSidebar() {
+  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger 
+        render={
+          <Button variant="ghost" size="icon" className="md:hidden shrink-0 hover:bg-[#1A1A1A] text-muted-foreground hover:text-primary" />
+        }
+      >
+        <Menu className="h-5 w-5" />
+        <span className="sr-only">Menu</span>
+      </SheetTrigger>
+      <SheetContent side="left" className="p-0 w-64 bg-[#0A0A0A] border-r border-[#1A1A1A] text-white flex flex-col sm:max-w-xs data-[state=closed]:duration-200 data-[state=open]:duration-200">
+        <SheetTitle className="sr-only">Navegação Administrativa</SheetTitle>
+        <SheetDescription className="sr-only">Menu de navegação do painel administrativo</SheetDescription>
+        <AdminSidebarContent />
+      </SheetContent>
+    </Sheet>
   );
 }
