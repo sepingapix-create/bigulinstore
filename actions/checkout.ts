@@ -6,7 +6,7 @@ import { auth } from "@/auth";
 import { products, orders, orderItems, productInventory, coupons, affiliates, affiliateReferrals, affiliateVisits, users } from "@/db/schema";
 import crypto from "crypto";
 import { revalidatePath } from "next/cache";
-import { eq, sql, and, desc } from "drizzle-orm";
+import { eq, sql, and, desc, count } from "drizzle-orm";
 import { StylepayService } from "@/lib/payments/stylepay";
 
 export async function validateCouponAction(code: string) {
@@ -128,10 +128,8 @@ export async function processCheckout(
           priceAtPurchase: product.price,
         });
 
-        // Update stock
-        await tx.update(products)
-          .set({ stock: product.stock - item.quantity })
-          .where(eq(products.id, item.productId));
+        // NOTA: O estoque só será deduzido e as chaves marcadas como vendidas
+        // quando o pagamento for confirmado em fulfillOrder().
       }
 
       // Handle coupon discount
@@ -373,6 +371,15 @@ export async function fulfillOrder(
             .set({ isSold: true, orderId: orderId })
             .where(eq(productInventory.id, content.id));
         }
+
+        // Recalcular e atualizar o estoque real do produto após a venda
+        const currentStock = await tx.select({ value: count() })
+          .from(productInventory)
+          .where(and(eq(productInventory.productId, item.productId), eq(productInventory.isSold, false)));
+        
+        await tx.update(products)
+          .set({ stock: currentStock[0].value })
+          .where(eq(products.id, item.productId));
       }
     });
 
