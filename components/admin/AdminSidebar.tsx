@@ -8,7 +8,6 @@ import {
   Package, 
   ShoppingCart, 
   Users, 
-  Settings,
   ArrowLeft,
   HandCoins,
   CreditCard,
@@ -68,23 +67,6 @@ export function AdminSidebarContent() {
         })}
       </nav>
 
-      <div className="p-4 border-t border-[#1A1A1A] shrink-0">
-        <Link
-          href="/admin/settings"
-          className={cn(
-            "flex items-center gap-3 px-4 py-3 rounded-lg transition-all group",
-            pathname === "/admin/settings"
-              ? "bg-red-500/10 text-red-500 font-bold"
-              : "hover:bg-muted/50 text-muted-foreground"
-          )}
-        >
-          <Settings className={cn(
-            "h-5 w-5 pointer-events-none",
-            pathname === "/admin/settings" ? "text-red-500" : "text-muted-foreground"
-          )} />
-          <span>Configurações</span>
-        </Link>
-      </div>
     </>
   );
 }
