@@ -73,7 +73,7 @@ export function ProductsClient({ initialProducts }: { initialProducts: Product[]
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-2xl bg-[#0A0A0A] border border-[#1A1A1A] p-5 flex items-center gap-4">
           <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
             <Package className="h-5 w-5 text-primary" />
@@ -115,7 +115,7 @@ export function ProductsClient({ initialProducts }: { initialProducts: Product[]
           />
         </div>
         {/* Category filter */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1">
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
           <Filter className="h-4 w-4 text-muted-foreground shrink-0" />
           {categories.map((cat) => (
             <button
@@ -211,53 +211,55 @@ export function ProductsClient({ initialProducts }: { initialProducts: Product[]
         </div>
       ) : (
         /* List View */
-        <div className="rounded-2xl border border-[#1A1A1A] bg-[#0A0A0A] overflow-hidden divide-y divide-[#1A1A1A]">
-          {/* Header */}
-          <div className="grid grid-cols-[64px_1fr_140px_100px_100px_120px] gap-4 px-5 py-3 bg-[#111111] text-[11px] font-black uppercase tracking-widest text-muted-foreground">
-            <span>Imagem</span>
-            <span>Nome</span>
-            <span>Categoria</span>
-            <span>Preço</span>
-            <span>Estoque</span>
-            <span className="text-right">Ações</span>
-          </div>
-          {filtered.map((product) => (
-            <div
-              key={product.id}
-              className="grid grid-cols-[64px_1fr_140px_100px_100px_120px] gap-4 px-5 py-4 items-center hover:bg-white/[0.02] transition-colors"
-            >
-              <div className="relative h-12 w-12 rounded-xl overflow-hidden border border-[#1A1A1A]">
-                <Image
-                  src={product.imageUrl}
-                  alt={product.name}
-                  fill
-                  sizes="48px"
-                  className="object-cover"
-                />
-              </div>
-              <div>
-                <p className="font-bold text-sm capitalize">{product.name}</p>
-                <p className="text-xs text-muted-foreground line-clamp-1 max-w-xs">{product.description}</p>
-              </div>
-              <div>
-                <Badge className="text-[10px] bg-primary/10 text-primary border-primary/20">
-                  {product.category}
-                </Badge>
-              </div>
-              <span className="font-black text-sm">{formatBRL(product.price)}</span>
-              <div className="flex items-center gap-2">
-                <span className={`font-bold text-sm ${product.stock <= 5 ? "text-red-400" : ""}`}>
-                  {product.stock}
-                </span>
-                {product.stock <= 5 && (
-                  <AlertTriangle className="h-3.5 w-3.5 text-red-400" />
-                )}
-              </div>
-              <div className="flex justify-end">
-                <ProductActions product={product} />
-              </div>
+        <div className="overflow-x-auto rounded-2xl border border-[#1A1A1A] bg-[#0A0A0A]">
+          <div className="min-w-[800px] divide-y divide-[#1A1A1A]">
+            {/* Header */}
+            <div className="grid grid-cols-[64px_1fr_140px_100px_100px_120px] gap-4 px-5 py-3 bg-[#111111] text-[11px] font-black uppercase tracking-widest text-muted-foreground">
+              <span>Imagem</span>
+              <span>Nome</span>
+              <span>Categoria</span>
+              <span>Preço</span>
+              <span>Estoque</span>
+              <span className="text-right">Ações</span>
             </div>
-          ))}
+            {filtered.map((product) => (
+              <div
+                key={product.id}
+                className="grid grid-cols-[64px_1fr_140px_100px_100px_120px] gap-4 px-5 py-4 items-center hover:bg-white/[0.02] transition-colors"
+              >
+                <div className="relative h-12 w-12 rounded-xl overflow-hidden border border-[#1A1A1A]">
+                  <Image
+                    src={product.imageUrl}
+                    alt={product.name}
+                    fill
+                    sizes="48px"
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <p className="font-bold text-sm capitalize">{product.name}</p>
+                  <p className="text-xs text-muted-foreground line-clamp-1 max-w-xs">{product.description}</p>
+                </div>
+                <div>
+                  <Badge className="text-[10px] bg-primary/10 text-primary border-primary/20">
+                    {product.category}
+                  </Badge>
+                </div>
+                <span className="font-black text-sm">{formatBRL(product.price)}</span>
+                <div className="flex items-center gap-2">
+                  <span className={`font-bold text-sm ${product.stock <= 5 ? "text-red-400" : ""}`}>
+                    {product.stock}
+                  </span>
+                  {product.stock <= 5 && (
+                    <AlertTriangle className="h-3.5 w-3.5 text-red-400" />
+                  )}
+                </div>
+                <div className="flex justify-end">
+                  <ProductActions product={product} />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
