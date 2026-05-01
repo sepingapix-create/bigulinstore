@@ -162,6 +162,34 @@ export const settings = mysqlTable("settings", {
   updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().onUpdateNow(),
 });
 
+// New Stock System Tables
+export const stockItems = mysqlTable("stock_items", {
+  id: varchar("id", { length: 255 }).primaryKey(),
+  productId: varchar("productId", { length: 255 }).notNull().references(() => products.id),
+  content: text("content").notNull(), // The actual account, key or link
+  usedSlots: int("usedSlots").notNull().default(0),
+  maxSlots: int("maxSlots").notNull().default(1),
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
+  updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().onUpdateNow(),
+});
+
+export const stockDeliveries = mysqlTable("stock_deliveries", {
+  id: varchar("id", { length: 255 }).primaryKey(),
+  orderId: varchar("orderId", { length: 255 }).notNull().references(() => orders.id, { onDelete: "cascade" }),
+  stockItemId: varchar("stockItemId", { length: 255 }).notNull().references(() => stockItems.id),
+  deliveredAt: timestamp("deliveredAt", { mode: "date" }).defaultNow(),
+});
+
+export const stockAuditLogs = mysqlTable("stock_audit_logs", {
+  id: varchar("id", { length: 255 }).primaryKey(),
+  adminId: varchar("adminId", { length: 255 }).notNull().references(() => users.id),
+  orderId: varchar("orderId", { length: 255 }).notNull(),
+  stockItemId: varchar("stockItemId", { length: 255 }).notNull(),
+  action: mysqlEnum("action", ["DELIVERY_ADDED", "DELIVERY_REMOVED"]).notNull(),
+  details: text("details"),
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
+});
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   orders: many(orders),
@@ -257,9 +285,31 @@ export const orderItemsRelations = relations(orderItems, ({ one }) => ({
   }),
 }));
 
+export const stockItemsRelations = relations(stockItems, ({ one, many }) => ({
+  product: one(products, {
+    fields: [stockItems.productId],
+    references: [products.id],
+  }),
+  deliveries: many(stockDeliveries),
+}));
+
+export const stockDeliveriesRelations = relations(stockDeliveries, ({ one }) => ({
+  order: one(orders, {
+    fields: [stockDeliveries.orderId],
+    references: [orders.id],
+  }),
+  stockItem: one(stockItems, {
+    fields: [stockDeliveries.stockItemId],
+    references: [stockItems.id],
+  }),
+}));
+
 export type User = typeof users.$inferSelect;
 export type Product = typeof products.$inferSelect;
 export type Order = typeof orders.$inferSelect;
 export type OrderItem = typeof orderItems.$inferSelect;
 export type ProductInventory = typeof productInventory.$inferSelect;
 export type Setting = typeof settings.$inferSelect;
+export type StockItem = typeof stockItems.$inferSelect;
+export type StockDelivery = typeof stockDeliveries.$inferSelect;
+export type StockAuditLog = typeof stockAuditLogs.$inferSelect;

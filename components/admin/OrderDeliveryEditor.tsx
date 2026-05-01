@@ -1,0 +1,128 @@
+"use client";
+
+import { useState } from "react";
+import { addManualDelivery, removeDelivery } from "@/actions/stock-delivery";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Trash, Plus, Package } from "lucide-react";
+
+type OrderItemInfo = {
+  productId: string;
+  productName: string;
+  quantity: number;
+  availableStockItems: { id: string; content: string; usedSlots: number; maxSlots: number }[];
+  deliveries: { id: string; stockItemId: string; content: string; deliveredAt: Date | null }[];
+};
+
+export function OrderDeliveryEditor({ orderId, items }: { orderId: string, items: OrderItemInfo[] }) {
+  const router = useRouter();
+  const [loadingId, setLoadingId] = useState<string | null>(null);
+
+  const handleAdd = async (productId: string, stockItemId: string) => {
+    setLoadingId(stockItemId);
+    const result = await addManualDelivery(orderId, productId, stockItemId);
+    if (result.error) {
+      toast.error(result.error);
+    } else {
+      toast.success("Entrega adicionada com sucesso!");
+      router.refresh();
+    }
+    setLoadingId(null);
+  };
+
+  const handleRemove = async (deliveryId: string) => {
+    setLoadingId(deliveryId);
+    const result = await removeDelivery(deliveryId);
+    if (result.error) {
+      toast.error(result.error);
+    } else {
+      toast.success("Entrega removida com sucesso!");
+      router.refresh();
+    }
+    setLoadingId(null);
+  };
+
+  return (
+    <div className="space-y-6">
+      <h2 className="text-xl font-bold border-b border-border pb-2">Gestão de Entregas</h2>
+      
+      {items.map((item) => {
+        const deliveredCount = item.deliveries.length;
+        const isFullyDelivered = deliveredCount >= item.quantity;
+
+        return (
+          <div key={item.productId} className="bg-muted/50 p-4 rounded-xl border border-border">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="font-semibold text-lg">{item.productName}</h3>
+                <p className="text-sm text-muted-foreground">
+                  Comprado: {item.quantity} | Entregue: {deliveredCount}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                {isFullyDelivered ? (
+                  <span className="text-green-500 font-bold text-sm bg-green-500/10 px-3 py-1 rounded-full">Entrega Completa</span>
+                ) : (
+                  <span className="text-yellow-500 font-bold text-sm bg-yellow-500/10 px-3 py-1 rounded-full">Pendente</span>
+                )}
+              </div>
+            </div>
+
+            {/* Current Deliveries */}
+            <div className="mb-6 space-y-2">
+              <h4 className="text-sm font-medium mb-2 flex items-center gap-2"><Package className="w-4 h-4" /> Itens Entregues</h4>
+              {item.deliveries.length === 0 ? (
+                <p className="text-xs text-muted-foreground italic">Nenhuma entrega realizada ainda.</p>
+              ) : (
+                item.deliveries.map((delivery) => (
+                  <div key={delivery.id} className="flex items-center justify-between bg-background p-2 px-3 rounded-lg border border-border text-sm">
+                    <span className="font-mono truncate max-w-[200px]" title={delivery.content}>{delivery.content}</span>
+                    <Button 
+                      variant="destructive" 
+                      size="icon" 
+                      className="w-8 h-8 rounded-md"
+                      onClick={() => handleRemove(delivery.id)}
+                      disabled={loadingId === delivery.id}
+                    >
+                      <Trash className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Available to Add */}
+            {!isFullyDelivered && (
+              <div>
+                <h4 className="text-sm font-medium mb-2 flex items-center gap-2"><Plus className="w-4 h-4" /> Adicionar Entrega Manual</h4>
+                {item.availableStockItems.length === 0 ? (
+                  <p className="text-xs text-red-400 italic">Nenhum item em estoque disponível.</p>
+                ) : (
+                  <div className="space-y-2 max-h-[200px] overflow-y-auto">
+                    {item.availableStockItems.map((stockItem) => (
+                      <div key={stockItem.id} className="flex items-center justify-between bg-background p-2 px-3 rounded-lg border border-border text-sm">
+                        <div className="flex flex-col">
+                          <span className="font-mono truncate max-w-[200px]" title={stockItem.content}>{stockItem.content}</span>
+                          <span className="text-[10px] text-muted-foreground">Slots: {stockItem.usedSlots}/{stockItem.maxSlots}</span>
+                        </div>
+                        <Button 
+                          size="sm"
+                          variant="secondary"
+                          onClick={() => handleAdd(item.productId, stockItem.id)}
+                          disabled={loadingId === stockItem.id}
+                        >
+                          Vincular
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
