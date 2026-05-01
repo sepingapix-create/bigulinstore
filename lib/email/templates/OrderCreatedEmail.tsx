@@ -1,6 +1,15 @@
 import * as React from "react";
-import { Text, Hr, Section } from "@react-email/components";
-import { BaseEmail, EmailButton, InfoBox, KeyBox, sharedStyles } from "./base";
+import {
+  Html,
+  Head,
+  Preview,
+  Body,
+  Container,
+  Section,
+  Text,
+  Hr,
+  Link,
+} from "@react-email/components";
 
 interface OrderItem {
   name: string;
@@ -33,7 +42,6 @@ export function OrderCreatedEmail({
   const firstName = name?.split(" ")[0] || "Cliente";
   const shortOrder = orderId.slice(0, 8).toUpperCase();
 
-  // Structured Data / Schema.org para o Gmail identificar como Recibo (Anti-Spam 2026)
   const orderSchema = {
     "@context": "http://schema.org",
     "@type": "Order",
@@ -49,70 +57,94 @@ export function OrderCreatedEmail({
   };
 
   return (
-    <BaseEmail
-      preview={`Instruções de pagamento para o Pedido #${shortOrder}`}
-      footerNote={`Documento referente ao Pedido ID: ${orderId}`}
-    >
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(orderSchema) }}
-      />
+    <Html lang="pt-BR" style={{ backgroundColor: "#f9fafb" }}>
+      <Head>
+        <style>
+          {`
+            a[href^="mailto:"] { color: inherit !important; text-decoration: none !important; }
+          `}
+        </style>
+      </Head>
+      <Preview>Instruções de pagamento para o Pedido #{shortOrder}</Preview>
+      <Body style={{ backgroundColor: "#f9fafb", fontFamily: "Arial, sans-serif", padding: "20px 0", margin: "0" }}>
+        <Container style={{ backgroundColor: "#ffffff", border: "1px solid #e5e7eb", borderRadius: "4px", padding: "32px", maxWidth: "600px", margin: "0 auto" }}>
+          
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(orderSchema) }}
+          />
 
-      <Text style={sharedStyles.greeting}>
-        Resumo do Pedido #{shortOrder}
-      </Text>
-
-      <Text style={sharedStyles.body_text}>
-        Olá, <strong style={{ color: "#ffffff" }}>{firstName}</strong>. 
-        Recebemos a sua solicitação. O status atual do pedido é aguardando pagamento.
-        Efetue a transferência via PIX utilizando o código abaixo para que possamos processar a entrega digital.
-      </Text>
-
-      <InfoBox>
-        <Text style={{ color: "#d4af37", fontSize: "13px", fontWeight: "700", margin: "0 0 10px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-          📦 Detalhes dos Itens
-        </Text>
-        {items.map((item, i) => (
-          <Section key={i} style={{ margin: "0 0 6px" }}>
-            <Text style={{ color: "#cccccc", fontSize: "14px", margin: "0", display: "flex", justifyContent: "space-between" }}>
-              {item.name} × {item.quantity}
-              <span style={{ color: "#ffffff", fontWeight: "600", float: "right" }}>
-                {formatCurrency(item.price * item.quantity)}
-              </span>
+          <Section style={{ borderBottom: "1px solid #e5e7eb", paddingBottom: "16px", marginBottom: "24px" }}>
+            <Text style={{ fontSize: "20px", fontWeight: "bold", color: "#111827", margin: "0" }}>
+              Resumo do Pedido #{shortOrder}
+            </Text>
+            <Text style={{ fontSize: "14px", color: "#6b7280", margin: "4px 0 0 0" }}>
+              Bingulin — Detalhes da Solicitação
             </Text>
           </Section>
-        ))}
-        <Hr style={{ borderColor: "#333333", margin: "10px 0" }} />
-        {discountAmount > 0 && (
-          <Text style={{ color: "#ff5252", fontSize: "14px", margin: "0 0 4px" }}>
-            Desconto Aplicado: -{formatCurrency(discountAmount)}
+
+          <Text style={{ fontSize: "14px", color: "#374151", lineHeight: "1.6", margin: "0 0 16px 0" }}>
+            Prezado(a) <strong>{firstName}</strong>,
+            <br />
+            Recebemos a sua solicitação. O status atual do pedido é aguardando pagamento. Efetue a transferência via PIX utilizando o código abaixo para que possamos processar a entrega digital.
           </Text>
-        )}
-        <Text style={{ color: "#d4af37", fontSize: "17px", fontWeight: "800", margin: "0" }}>
-          Valor a Pagar: {formatCurrency(totalAmount)}
-        </Text>
-      </InfoBox>
 
-      <Text style={{ ...sharedStyles.body_text, fontWeight: "700", color: "#ffffff", marginBottom: "8px" }}>
-        📋 Linha Digitável PIX (Copia e Cola):
-      </Text>
-      <KeyBox content={pixCode} />
-      <Text style={{ color: "#888888", fontSize: "12px", margin: "4px 0 20px" }}>
-        A chave expira em 30 minutos. Uma vez compensado, um novo e-mail será gerado contendo o acesso aos produtos.
-      </Text>
+          {/* Items Table Equivalent */}
+          <Section style={{ backgroundColor: "#f3f4f6", padding: "16px", borderRadius: "4px", marginBottom: "24px" }}>
+            <Text style={{ fontSize: "14px", fontWeight: "bold", color: "#111827", margin: "0 0 12px 0", textTransform: "uppercase" }}>
+              Detalhes dos Itens
+            </Text>
+            {items.map((item, i) => (
+              <Text key={i} style={{ fontSize: "14px", color: "#374151", margin: "0 0 8px 0", display: "flex", justifyContent: "space-between" }}>
+                <span>{item.name} × {item.quantity}</span>
+                <span style={{ float: "right", fontWeight: "bold" }}>{formatCurrency(item.price * item.quantity)}</span>
+              </Text>
+            ))}
+            <Hr style={{ borderColor: "#e5e7eb", margin: "12px 0" }} />
+            {discountAmount > 0 && (
+              <Text style={{ fontSize: "14px", color: "#dc2626", margin: "0 0 4px 0" }}>
+                Desconto Aplicado: -{formatCurrency(discountAmount)}
+              </Text>
+            )}
+            <Text style={{ fontSize: "16px", fontWeight: "bold", color: "#111827", margin: "0" }}>
+              Valor a Pagar: {formatCurrency(totalAmount)}
+            </Text>
+          </Section>
 
-      <div style={{ textAlign: "center", margin: "24px 0" }}>
-        <EmailButton href={`${siteUrl}/order/${orderId}`}>
-          Acompanhar Pedido
-        </EmailButton>
-      </div>
+          <Text style={{ fontSize: "14px", fontWeight: "bold", color: "#111827", margin: "0 0 8px 0" }}>
+            Linha Digitável PIX (Copia e Cola):
+          </Text>
+          <Section style={{ backgroundColor: "#ffffff", border: "1px dashed #9ca3af", padding: "16px", borderRadius: "4px", marginBottom: "8px" }}>
+            <Text style={{ fontSize: "14px", fontFamily: "monospace", color: "#111827", margin: "0", wordBreak: "break-all" }}>
+              {pixCode}
+            </Text>
+          </Section>
+          <Text style={{ fontSize: "12px", color: "#6b7280", margin: "0 0 24px 0" }}>
+            A chave expira em 30 minutos. Uma vez compensado, um novo e-mail será gerado contendo o acesso aos produtos.
+          </Text>
 
-      <Hr style={sharedStyles.hr} />
+          <Section style={{ textAlign: "center", marginBottom: "32px" }}>
+            <Link
+              href={`${siteUrl}/order/${orderId}`}
+              style={{ backgroundColor: "#111827", color: "#ffffff", padding: "12px 24px", borderRadius: "4px", textDecoration: "none", fontSize: "14px", fontWeight: "bold", display: "inline-block" }}
+            >
+              Acompanhar Pedido
+            </Link>
+          </Section>
 
-      <Text style={{ ...sharedStyles.body_text, fontSize: "13px", color: "#666666" }}>
-        Este é um documento de registro de compra gerado por sistema automatizado.
-      </Text>
-    </BaseEmail>
+          <Hr style={{ borderColor: "#e5e7eb", margin: "0 0 16px 0" }} />
+
+          <Text style={{ fontSize: "11px", color: "#9ca3af", margin: "0 0 8px 0", lineHeight: "1.5" }}>
+            Este é um documento de registro de compra gerado por sistema automatizado. Não responda diretamente a esta mensagem.
+          </Text>
+          <Text style={{ fontSize: "11px", color: "#9ca3af", margin: "0", lineHeight: "1.5" }}>
+            Bingulin © {new Date().getFullYear()} — Rua do Comércio, 1000 - São Paulo, SP, Brasil (BR)
+            <br />
+            Você está recebendo este e-mail pois realizou um pedido em nossa plataforma.
+          </Text>
+        </Container>
+      </Body>
+    </Html>
   );
 }
 
