@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Trash, Plus, Package } from "lucide-react";
+import { Trash, Plus, Package, CheckCircle, AlertTriangle } from "lucide-react";
 
 type OrderItemInfo = {
   productId: string;
