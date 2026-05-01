@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
-import { orders } from "@/db/schema";
+import { orders, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { fulfillOrder } from "@/actions/checkout";
+import { sendEmailDirect } from "@/lib/email/sender";
+import { OrderCancelledEmail } from "@/lib/email/templates/OrderCancelledEmail";
 
 export async function POST(req: NextRequest) {
   try {
@@ -82,9 +84,28 @@ export async function POST(req: NextRequest) {
       if (lookupId) {
         const [order] = await db.select().from(orders).where(eq(orders.stylepayTransactionId, String(lookupId)));
         
-        if (order && order.status === "PENDING") {
+      if (order && order.status === "PENDING") {
           await db.update(orders).set({ status: "CANCELLED", updatedAt: new Date() }).where(eq(orders.id, order.id));
           console.log(`[WEBHOOK] ❌ Pedido ${order.id} marcado como CANCELADO`);
+
+          // Send cancellation email
+          try {
+            const [userData] = await db.select().from(users).where(eq(users.id, order.userId));
+            if (userData?.email) {
+              await sendEmailDirect({
+                to: userData.email,
+                subject: `Pedido #${order.id.slice(0, 8).toUpperCase()} cancelado`,
+                react: OrderCancelledEmail({
+                  name: userData.name || "Cliente",
+                  orderId: order.id,
+                  totalAmount: Number(order.totalAmount),
+                }),
+                tags: [{ name: "type", value: "order_cancelled" }],
+              });
+            }
+          } catch (emailErr) {
+            console.error("[Email] Falha ao enviar email de cancelamento:", emailErr);
+          }
         }
       }
       return NextResponse.json({ ok: true }, { status: 200 });

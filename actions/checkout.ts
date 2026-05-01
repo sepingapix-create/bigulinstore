@@ -8,6 +8,10 @@ import crypto from "crypto";
 import { revalidatePath } from "next/cache";
 import { eq, sql, and, desc, count } from "drizzle-orm";
 import { StylepayService } from "@/lib/payments/stylepay";
+import { sendEmail, sendEmailDirect } from "@/lib/email/sender";
+import { OrderCreatedEmail } from "@/lib/email/templates/OrderCreatedEmail";
+import { OrderPaidEmail } from "@/lib/email/templates/OrderPaidEmail";
+import { AffiliateSaleEmail } from "@/lib/email/templates/AffiliateSaleEmail";
 
 export async function validateCouponAction(code: string) {
   try {
@@ -236,6 +240,43 @@ export async function processCheckout(
     revalidatePath("/admin/products");
     revalidatePath("/profile");
 
+    // ─── Order Created Email ───
+    try {
+      const session2 = await auth();
+      const userEmail = session2?.user?.email;
+      const userName = session2?.user?.name || "Cliente";
+
+      if (userEmail && result.pixCode) {
+        // Fetch item names for the email
+        const emailItems = [];
+        const rawItems2 = formData.get("items");
+        if (rawItems2) {
+          const parsed2 = JSON.parse(rawItems2 as string) as { productId: string; quantity: number }[];
+          for (const i of parsed2) {
+            const prod = await db.query.products.findFirst({ where: eq(products.id, i.productId) });
+            if (prod) {
+              emailItems.push({ name: prod.name, quantity: i.quantity, price: Number(prod.price) });
+            }
+          }
+        }
+
+        sendEmail({
+          to: userEmail,
+          subject: `Pedido #${result.orderId!.slice(0, 8).toUpperCase()} criado — Pague com PIX ⚡`,
+          react: OrderCreatedEmail({
+            name: userName,
+            orderId: result.orderId!,
+            items: emailItems,
+            totalAmount: emailItems.reduce((s, i) => s + i.price * i.quantity, 0),
+            pixCode: result.pixCode,
+          }),
+          tags: [{ name: "type", value: "order_created" }],
+        });
+      }
+    } catch (emailErr) {
+      console.error("[Email] Falha ao enfileirar email de pedido criado:", emailErr);
+    }
+
     console.log(`[CHECKOUT DEBUG] Checkout finished successfully! Returning orderId: ${result.orderId}`);
     return { success: true, orderId: result.orderId, pixCode: result.pixCode };
   } catch (error: any) {
@@ -318,6 +359,29 @@ export async function fulfillOrder(
             })
             .where(eq(affiliates.id, affiliate.id));
 
+          // ─── Affiliate Sale Email ───
+          try {
+            const affiliateUser = await tx.query.users.findFirst({
+              where: eq(users.id, affiliate.userId),
+            });
+            if (affiliateUser?.email) {
+              sendEmail({
+                to: affiliateUser.email,
+                subject: `💰 Nova comissão de R$ ${commissionAmount.toFixed(2)}!`,
+                react: AffiliateSaleEmail({
+                  affiliateName: affiliateUser.name || "Afiliado",
+                  commissionAmount: commissionAmount,
+                  orderTotal: Number(orderData.totalAmount),
+                  orderId: orderId,
+                  newBalance: Number(affiliate.balance) + commissionAmount,
+                }),
+                tags: [{ name: "type", value: "affiliate_sale" }],
+              });
+            }
+          } catch (emailErr) {
+            console.error("[Email] Falha ao enfileirar email de comissão:", emailErr);
+          }
+
           try {
             const [latestVisit] = await tx
               .select()
@@ -382,6 +446,58 @@ export async function fulfillOrder(
           .where(eq(products.id, item.productId));
       }
     });
+
+    // ─── Order Paid / Delivery Email ───
+    try {
+      const orderWithUser = await db.query.orders.findFirst({
+        where: eq(orders.id, orderId),
+        with: { user: true, items: { with: { product: true } } },
+      });
+
+      if (orderWithUser?.user?.email) {
+        // Build delivered items list with keys
+        const deliveredItems: { productName: string; keys: string[] }[] = [];
+
+        const deliveredContent = await db.query.productInventory.findMany({
+          where: and(
+            eq(productInventory.orderId, orderId),
+            eq(productInventory.isSold, true)
+          ),
+        });
+
+        // Group keys by productId
+        const keysByProduct = new Map<string, string[]>();
+        for (const content of deliveredContent) {
+          const existing = keysByProduct.get(content.productId) || [];
+          existing.push(content.content);
+          keysByProduct.set(content.productId, existing);
+        }
+
+        for (const item of orderWithUser.items) {
+          const keys = keysByProduct.get(item.productId) || [];
+          if (keys.length > 0) {
+            deliveredItems.push({
+              productName: (item as any).product?.name || "Produto",
+              keys,
+            });
+          }
+        }
+
+        await sendEmailDirect({
+          to: orderWithUser.user.email,
+          subject: `✅ Pagamento confirmado! Seus produtos digitais estão prontos — #${orderId.slice(0, 8).toUpperCase()}`,
+          react: OrderPaidEmail({
+            name: orderWithUser.user.name || "Cliente",
+            orderId,
+            totalAmount: Number(orderWithUser.totalAmount),
+            deliveredItems,
+          }),
+          tags: [{ name: "type", value: "order_paid" }],
+        });
+      }
+    } catch (emailErr) {
+      console.error("[Email] Falha ao enviar email de pedido pago:", emailErr);
+    }
 
     revalidatePath(`/order/${orderId}`);
     revalidatePath("/profile");

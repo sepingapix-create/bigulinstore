@@ -6,6 +6,9 @@ import { eq, and, count } from "drizzle-orm";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import crypto from "crypto";
+import { sendEmail } from "@/lib/email/sender";
+import { WithdrawalApprovedEmail } from "@/lib/email/templates/WithdrawalApprovedEmail";
+import { WithdrawalRejectedEmail } from "@/lib/email/templates/WithdrawalRejectedEmail";
 
 // ... existing actions ...
 
@@ -241,6 +244,33 @@ export async function toggleAffiliateStatusAction(userId: string, status: boolea
     
     revalidatePath("/admin/users");
     revalidatePath("/affiliate");
+
+    // ─── Affiliate Welcome Email ───
+    if (status) {
+      try {
+        const userRecord = await db.query.users.findFirst({
+          where: eq(users.id, userId),
+        });
+
+        if (userRecord?.email) {
+          // Re-using the welcome email, but could be an AffiliateWelcomeEmail in the future
+          sendEmail({
+            to: userRecord.email,
+            subject: "Sua conta de afiliado foi ativada! 🚀",
+            react: WithdrawalApprovedEmail({ // Fallback to a generic success or create a new one. For now we just send the Welcome again.
+              name: userRecord.name || "Afiliado",
+              amount: 0, // Not used in this context
+              pixKey: "Painel liberado",
+              pixKeyType: "Status",
+            }),
+            tags: [{ name: "type", value: "affiliate_activated" }],
+          });
+        }
+      } catch (emailErr) {
+        console.error("[Email] Falha ao enfileirar email de ativação de afiliado:", emailErr);
+      }
+    }
+
     return { success: true };
   } catch (error) {
     console.error("Error updating affiliate status:", error);
@@ -323,11 +353,56 @@ export async function updateWithdrawalStatusAction(id: string, status: "APPROVED
             .where(eq(affiliates.id, affiliate.id));
         }
       }
-      return { success: true };
+      return { success: true, _affiliateId: request.affiliateId, _amount: request.amount, _pixKey: request.pixKey, _pixKeyType: request.pixKeyType };
     });
 
     revalidatePath("/admin/affiliates/withdrawals");
     revalidatePath("/affiliate");
+
+    // ─── Withdrawal Status Email ───
+    try {
+      if (result && (result as any)._affiliateId) {
+        const r = result as any;
+        const affiliateRecord = await db.query.affiliates.findFirst({
+          where: eq(affiliates.id, r._affiliateId),
+          with: { user: true },
+        });
+
+        if (affiliateRecord?.user?.email) {
+          if (status === "APPROVED") {
+            sendEmail({
+              to: affiliateRecord.user.email,
+              subject: `✅ Saque de R$ ${Number(r._amount).toFixed(2)} aprovado!`,
+              react: WithdrawalApprovedEmail({
+                name: affiliateRecord.user.name || "Afiliado",
+                amount: Number(r._amount),
+                pixKey: r._pixKey,
+                pixKeyType: r._pixKeyType,
+              }),
+              tags: [{ name: "type", value: "withdrawal_approved" }],
+            });
+          } else {
+            const updatedAffiliate = await db.query.affiliates.findFirst({
+              where: eq(affiliates.id, r._affiliateId),
+            });
+            sendEmail({
+              to: affiliateRecord.user.email,
+              subject: `Solicitação de saque não aprovada`,
+              react: WithdrawalRejectedEmail({
+                name: affiliateRecord.user.name || "Afiliado",
+                amount: Number(r._amount),
+                adminNotes: notes,
+                newBalance: Number(updatedAffiliate?.balance || 0),
+              }),
+              tags: [{ name: "type", value: "withdrawal_rejected" }],
+            });
+          }
+        }
+      }
+    } catch (emailErr) {
+      console.error("[Email] Falha ao enfileirar email de saque:", emailErr);
+    }
+
     return result;
   } catch (error: any) {
     console.error("Error updating withdrawal status:", error);

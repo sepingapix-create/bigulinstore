@@ -8,6 +8,8 @@ import { eq, and, desc } from "drizzle-orm";
 import crypto from "crypto";
 import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
+import { sendEmail } from "@/lib/email/sender";
+import { WelcomeEmail } from "@/lib/email/templates/WelcomeEmail";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
@@ -75,6 +77,18 @@ export async function registerAction(prevState: any, formData: FormData) {
       }
     } catch (err) {
       console.error("Error linking referral on registration:", err);
+    }
+
+    // ─── Welcome Email ───
+    try {
+      sendEmail({
+        to: email,
+        subject: "Bem-vindo à Bingulin! 🎉",
+        react: WelcomeEmail({ name, email }),
+        tags: [{ name: "type", value: "welcome" }],
+      });
+    } catch (emailErr) {
+      console.error("[Email] Falha ao enfileirar email de boas-vindas:", emailErr);
     }
 
     return { success: true };
