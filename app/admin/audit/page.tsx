@@ -47,7 +47,7 @@ export default async function AdminAuditPage() {
                 <div key={log.id} className="p-4 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between hover:bg-white/[0.02] transition-colors">
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
-                      <span className={\`text-xs font-black px-2 py-0.5 rounded-sm uppercase \${isAdded ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}\`}>
+                      <span className={`text-xs font-black px-2 py-0.5 rounded-sm uppercase ${isAdded ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
                         {isAdded ? "Adicionado" : "Removido"}
                       </span>
                       <span className="text-sm font-semibold">{product.name}</span>
@@ -59,7 +59,7 @@ export default async function AdminAuditPage() {
                   </div>
 
                   <div className="flex flex-col md:items-end text-sm">
-                    <Link href={\`/admin/orders/\${order.id}\`} className="text-primary hover:underline font-bold">
+                    <Link href={`/admin/orders/${order.id}`} className="text-primary hover:underline font-bold">
                       Pedido #{order.id.split('-')[0].toUpperCase()}
                     </Link>
                     <span className="text-xs text-muted-foreground">

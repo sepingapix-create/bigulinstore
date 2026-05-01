@@ -87,7 +87,7 @@ export async function addManualDelivery(orderId: string, productId: string, stoc
         orderId,
         stockItemId,
         action: "DELIVERY_ADDED",
-        details: \`Adicionou manualmente a entrega do item \${stockItemId} (Slot \${stockItem.usedSlots + 1}/\${stockItem.maxSlots})\`,
+        details: `Adicionou manualmente a entrega do item ${stockItemId} (Slot ${stockItem.usedSlots + 1}/${stockItem.maxSlots})`,
       });
     });
 
@@ -136,7 +136,7 @@ export async function removeDelivery(deliveryId: string) {
         orderId: delivery.orderId,
         stockItemId: stockItem.id,
         action: "DELIVERY_REMOVED",
-        details: \`Removeu manualmente a entrega (deliveryId: \${deliveryId})\`,
+        details: `Removeu manualmente a entrega (deliveryId: ${deliveryId})`,
       });
     });
 

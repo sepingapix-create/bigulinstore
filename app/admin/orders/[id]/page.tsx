@@ -63,7 +63,7 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
         .where(
           and(
             eq(stockItems.productId, item.productId),
-            sql\`${stockItems.usedSlots} < ${stockItems.maxSlots}\`
+            sql`${stockItems.usedSlots} < ${stockItems.maxSlots}`
           )
         );
 
