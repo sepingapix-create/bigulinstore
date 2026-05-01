@@ -47,14 +47,16 @@ export async function addManualDelivery(orderId: string, productId: string, stoc
       const purchasedQuantity = item.quantity;
 
       // Get current deliveries for this order and product
-      const currentDeliveriesQuery = await tx.execute(sql`
-        SELECT COUNT(*) as count 
-        FROM \`stock_deliveries\` sd
-        JOIN \`stock_items\` si ON sd.stockItemId = si.id
-        WHERE sd.orderId = ${orderId} AND si.productId = ${productId}
-      `);
+      const deliveriesCount = await tx
+        .select({ count: sql<number>`count(*)` })
+        .from(stockDeliveries)
+        .innerJoin(stockItems, eq(stockDeliveries.stockItemId, stockItems.id))
+        .where(and(
+          eq(stockDeliveries.orderId, orderId),
+          eq(stockItems.productId, productId)
+        ));
       
-      const currentDeliveries = Number((currentDeliveriesQuery[0] as any)[0].count);
+      const currentDeliveries = Number(deliveriesCount[0]?.count ?? 0);
 
       // Validation to avoid over-delivery
       if (currentDeliveries >= purchasedQuantity) {

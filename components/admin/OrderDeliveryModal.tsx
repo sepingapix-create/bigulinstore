@@ -96,7 +96,7 @@ export function OrderDeliveryModal({ orderId }: { orderId: string }) {
           </div>
         ) : (
           <div className="mt-4">
-            <OrderDeliveryEditor orderId={orderId} items={items} />
+            <OrderDeliveryEditor orderId={orderId} items={items} orderStatus={orderStatus} />
           </div>
         )}
       </DialogContent>

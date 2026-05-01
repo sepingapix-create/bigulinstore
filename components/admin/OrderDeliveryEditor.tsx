@@ -16,7 +16,7 @@ type OrderItemInfo = {
   deliveries: { id: string; stockItemId: string; content: string; deliveredAt: Date | null }[];
 };
 
-export function OrderDeliveryEditor({ orderId, items }: { orderId: string, items: OrderItemInfo[] }) {
+export function OrderDeliveryEditor({ orderId, items, orderStatus }: { orderId: string, items: OrderItemInfo[], orderStatus: string }) {
   const router = useRouter();
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [newStockContent, setNewStockContent] = useState<Record<string, string>>({});
@@ -85,9 +85,18 @@ export function OrderDeliveryEditor({ orderId, items }: { orderId: string, items
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="font-semibold text-lg">{item.productName}</h3>
-                <p className="text-sm text-muted-foreground">
-                  Comprado: {item.quantity} | Entregue: {deliveredCount}
-                </p>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <p className="text-xs text-muted-foreground">
+                    Comprado: {item.quantity} | Entregue: {deliveredCount}
+                  </p>
+                  <span className={`text-[8px] font-black px-1.5 py-0.5 rounded uppercase border ${
+                    orderStatus === 'PAID' 
+                      ? 'bg-green-500/10 text-green-400 border-green-500/20' 
+                      : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
+                  }`}>
+                    {orderStatus === 'PAID' ? 'Pago' : 'Pendente'}
+                  </span>
+                </div>
               </div>
               <div className="flex gap-2">
                 {isFullyDelivered ? (
