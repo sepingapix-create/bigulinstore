@@ -33,6 +33,14 @@ export function OrderDeliveryEditor({ orderId, items }: { orderId: string, items
     if (result.success) {
       toast.success("Item adicionado ao estoque!");
       setNewStockContent(prev => ({ ...prev, [productId]: "" }));
+      
+      // Auto-link if needed
+      const item = items.find(i => i.productId === productId);
+      if (item && item.deliveries.length < item.quantity) {
+        await addManualDelivery(orderId, productId, result.id!);
+        toast.success("Item vinculado automaticamente ao pedido!");
+      }
+      
       router.refresh();
     } else {
       toast.error(result.error);
@@ -83,9 +91,9 @@ export function OrderDeliveryEditor({ orderId, items }: { orderId: string, items
               </div>
               <div className="flex gap-2">
                 {isFullyDelivered ? (
-                  <span className="text-green-500 font-bold text-sm bg-green-500/10 px-3 py-1 rounded-full">Entrega Completa</span>
+                  <span className="text-green-500 font-black text-[10px] bg-green-500/10 px-3 py-1 rounded-full border border-green-500/20 uppercase">Produto Entregue</span>
                 ) : (
-                  <span className="text-yellow-500 font-bold text-sm bg-yellow-500/10 px-3 py-1 rounded-full">Pendente</span>
+                  <span className="text-yellow-500 font-black text-[10px] bg-yellow-500/10 px-3 py-1 rounded-full border border-yellow-500/20 uppercase">Entrega Pendente</span>
                 )}
               </div>
             </div>

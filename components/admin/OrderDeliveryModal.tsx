@@ -75,13 +75,6 @@ export function OrderDeliveryModal({ orderId }: { orderId: string }) {
             </div>
             
             <div className="flex flex-col items-end gap-1">
-              <span className={`text-[10px] font-black px-2 py-1 rounded-md uppercase border ${
-                orderStatus === 'PAID' 
-                  ? 'bg-green-500/10 text-green-400 border-green-500/20' 
-                  : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
-              }`}>
-                {orderStatus === 'PAID' ? 'Pago' : 'Pagamento Pendente'}
-              </span>
               {orderStatus === 'PENDING' && (
                 <Button 
                   variant="link" 
@@ -89,7 +82,7 @@ export function OrderDeliveryModal({ orderId }: { orderId: string }) {
                   onClick={handleApproveManually}
                   disabled={loading}
                 >
-                  Aprovar Manualmente
+                  Aprovar Pagamento Manualmente
                 </Button>
               )}
             </div>
