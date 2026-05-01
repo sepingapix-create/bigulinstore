@@ -262,7 +262,7 @@ export async function processCheckout(
 
         sendEmail({
           to: userEmail,
-          subject: `Pedido #${result.orderId!.slice(0, 8).toUpperCase()} criado — Pague com PIX ⚡`,
+          subject: `Confirmação de Pedido #${result.orderId!.slice(0, 8).toUpperCase()}`,
           react: OrderCreatedEmail({
             name: userName,
             orderId: result.orderId!,
@@ -485,7 +485,7 @@ export async function fulfillOrder(
 
         await sendEmailDirect({
           to: orderWithUser.user.email,
-          subject: `✅ Pagamento confirmado! Seus produtos digitais estão prontos — #${orderId.slice(0, 8).toUpperCase()}`,
+          subject: `Documento de Entrega — Pedido #${orderId.slice(0, 8).toUpperCase()}`,
           react: OrderPaidEmail({
             name: orderWithUser.user.name || "Cliente",
             orderId,
