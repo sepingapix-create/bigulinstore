@@ -28,11 +28,31 @@ export function OrderPaidEmail({
   const firstName = name?.split(" ")[0] || "Cliente";
   const shortOrder = orderId.slice(0, 8).toUpperCase();
 
+  // Structured Data / Schema.org para recibo e entrega digital (Anti-Spam 2026)
+  const orderSchema = {
+    "@context": "http://schema.org",
+    "@type": "Order",
+    "merchant": {
+      "@type": "Organization",
+      "name": "Bingulin"
+    },
+    "orderNumber": shortOrder,
+    "priceCurrency": "BRL",
+    "price": totalAmount,
+    "orderStatus": "http://schema.org/OrderDelivered",
+    "url": `${siteUrl}/order/${orderId}`
+  };
+
   return (
     <BaseEmail
-      preview={`✅ Pagamento confirmado! Seus produtos digitais estão prontos — #${shortOrder}`}
-      footerNote={`Pedido ID: ${orderId} · Valor: ${formatCurrency(totalAmount)}`}
+      preview={`Recibo e entrega de credenciais — Pedido #${shortOrder}`}
+      footerNote={`Documento referente ao Pedido ID: ${orderId}`}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orderSchema) }}
+      />
+
       {/* Success banner */}
       <Section
         style={{
@@ -46,21 +66,23 @@ export function OrderPaidEmail({
       >
         <Text style={{ fontSize: "40px", margin: "0 0 8px" }}>✅</Text>
         <Text style={{ color: "#d4af37", fontSize: "20px", fontWeight: "800", margin: "0 0 4px" }}>
-          Pagamento Confirmado!
+          Pagamento Confirmado
         </Text>
         <Text style={{ color: "#cccccc", fontSize: "14px", margin: "0" }}>
-          Pedido #{shortOrder} · {formatCurrency(totalAmount)}
+          Recibo #{shortOrder} · {formatCurrency(totalAmount)}
         </Text>
       </Section>
 
       <Text style={sharedStyles.greeting}>
-        Seus produtos estão prontos, {firstName}! 🎮
+        Entrega Digital do Pedido
       </Text>
 
       <Text style={sharedStyles.body_text}>
-        Ótimas notícias! Seu pagamento foi confirmado e seus produtos digitais
-        foram entregues abaixo. Guarde este email em local seguro — ele contém
-        todas as suas credenciais de acesso.
+        Prezado(a) <strong style={{ color: "#ffffff" }}>{firstName}</strong>,
+        <br /><br />
+        Acusamos o recebimento do pagamento referente ao pedido #{shortOrder}.
+        Abaixo encontram-se as credenciais e licenças de acesso adquiridas.
+        Recomendamos que arquive este e-mail para futuras referências.
       </Text>
 
       {/* Delivered items */}
@@ -75,13 +97,13 @@ export function OrderPaidEmail({
                 margin: "0 0 12px",
               }}
             >
-              🎯 {item.productName}
+              📑 {item.productName}
             </Text>
             {item.keys.map((key, j) => (
               <div key={j}>
                 {item.keys.length > 1 && (
                   <Text style={{ color: "#888888", fontSize: "11px", margin: "8px 0 2px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                    Item {j + 1}
+                    Licença {j + 1}
                   </Text>
                 )}
                 <KeyBox content={key} />
@@ -91,24 +113,21 @@ export function OrderPaidEmail({
         </Section>
       ))}
 
-      <InfoBox color="#b71c1c">
-        <Text style={{ color: "#ffffff", fontSize: "14px", margin: "0", lineHeight: "1.6" }}>
-          💡 <strong>Dica:</strong> Você também pode acessar seus produtos a qualquer
-          momento na área do seu perfil. As credenciais ficam salvas com segurança.
-        </Text>
-      </InfoBox>
+      <Text style={{ ...sharedStyles.body_text, fontSize: "14px" }}>
+        Para sua conveniência e segurança, o histórico de suas aquisições e respectivas credenciais 
+        permanecem acessíveis em caráter permanente através da área restrita do seu perfil em nossa plataforma.
+      </Text>
 
       <div style={{ textAlign: "center", margin: "28px 0" }}>
         <EmailButton href={`${siteUrl}/profile`}>
-          Acessar Meus Produtos
+          Acessar Painel do Usuário
         </EmailButton>
       </div>
 
       <Hr style={sharedStyles.hr} />
 
-      <Text style={{ ...sharedStyles.body_text, fontSize: "13px" }}>
-        Obrigado por comprar na Bingulin! Se tiver algum problema com os produtos,
-        entre em contato conosco respondendo este email.
+      <Text style={{ ...sharedStyles.body_text, fontSize: "13px", color: "#666666" }}>
+        Este é um documento de entrega automática. Para questões técnicas relacionadas aos itens adquiridos, favor acionar o suporte utilizando o e-mail cadastrado.
       </Text>
     </BaseEmail>
   );

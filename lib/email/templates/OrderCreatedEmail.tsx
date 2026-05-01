@@ -33,25 +33,44 @@ export function OrderCreatedEmail({
   const firstName = name?.split(" ")[0] || "Cliente";
   const shortOrder = orderId.slice(0, 8).toUpperCase();
 
+  // Structured Data / Schema.org para o Gmail identificar como Recibo (Anti-Spam 2026)
+  const orderSchema = {
+    "@context": "http://schema.org",
+    "@type": "Order",
+    "merchant": {
+      "@type": "Organization",
+      "name": "Bingulin"
+    },
+    "orderNumber": shortOrder,
+    "priceCurrency": "BRL",
+    "price": totalAmount,
+    "orderStatus": "http://schema.org/OrderPaymentDue",
+    "url": `${siteUrl}/order/${orderId}`
+  };
+
   return (
     <BaseEmail
-      preview={`Pedido #${shortOrder} criado — Pague com PIX e receba na hora! ⚡`}
-      footerNote={`Pedido ID: ${orderId}`}
+      preview={`Instruções de pagamento para o Pedido #${shortOrder}`}
+      footerNote={`Documento referente ao Pedido ID: ${orderId}`}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orderSchema) }}
+      />
+
       <Text style={sharedStyles.greeting}>
-        Pedido criado com sucesso! ⚡
+        Resumo do Pedido #{shortOrder}
       </Text>
 
       <Text style={sharedStyles.body_text}>
-        Olá, <strong style={{ color: "#ffffff" }}>{firstName}</strong>! Seu pedido{" "}
-        <strong style={{ color: "#d4af37" }}>#{shortOrder}</strong> foi registrado.
-        Complete o pagamento via PIX para receber seus produtos digitais <strong style={{ color: "#4caf50" }}>instantaneamente</strong>.
+        Olá, <strong style={{ color: "#ffffff" }}>{firstName}</strong>. 
+        Recebemos a sua solicitação. O status atual do pedido é aguardando pagamento.
+        Efetue a transferência via PIX utilizando o código abaixo para que possamos processar a entrega digital.
       </Text>
 
-      {/* Order Summary */}
       <InfoBox>
         <Text style={{ color: "#d4af37", fontSize: "13px", fontWeight: "700", margin: "0 0 10px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-          📦 Resumo do Pedido
+          📦 Detalhes dos Itens
         </Text>
         {items.map((item, i) => (
           <Section key={i} style={{ margin: "0 0 6px" }}>
@@ -66,40 +85,32 @@ export function OrderCreatedEmail({
         <Hr style={{ borderColor: "#333333", margin: "10px 0" }} />
         {discountAmount > 0 && (
           <Text style={{ color: "#ff5252", fontSize: "14px", margin: "0 0 4px" }}>
-            Desconto: -{formatCurrency(discountAmount)}
+            Desconto Aplicado: -{formatCurrency(discountAmount)}
           </Text>
         )}
         <Text style={{ color: "#d4af37", fontSize: "17px", fontWeight: "800", margin: "0" }}>
-          Total: {formatCurrency(totalAmount)}
+          Valor a Pagar: {formatCurrency(totalAmount)}
         </Text>
       </InfoBox>
 
-      {/* PIX Code */}
       <Text style={{ ...sharedStyles.body_text, fontWeight: "700", color: "#ffffff", marginBottom: "8px" }}>
-        📋 Código PIX Copia e Cola:
+        📋 Linha Digitável PIX (Copia e Cola):
       </Text>
       <KeyBox content={pixCode} />
       <Text style={{ color: "#888888", fontSize: "12px", margin: "4px 0 20px" }}>
-        Válido por 30 minutos. Copie o código acima e cole no seu aplicativo bancário.
+        A chave expira em 30 minutos. Uma vez compensado, um novo e-mail será gerado contendo o acesso aos produtos.
       </Text>
-
-      <InfoBox color="#b71c1c">
-        <Text style={{ color: "#ffffff", fontSize: "14px", margin: "0", lineHeight: "1.6" }}>
-          ⚡ <strong>Após confirmar o pagamento</strong>, você receberá automaticamente
-          outro email com seus produtos digitais. O processo é 100% automático e instantâneo.
-        </Text>
-      </InfoBox>
 
       <div style={{ textAlign: "center", margin: "24px 0" }}>
         <EmailButton href={`${siteUrl}/order/${orderId}`}>
-          Ver Status do Pedido
+          Acompanhar Pedido
         </EmailButton>
       </div>
 
       <Hr style={sharedStyles.hr} />
 
       <Text style={{ ...sharedStyles.body_text, fontSize: "13px", color: "#666666" }}>
-        Se tiver dúvidas, acesse seu pedido pelo link acima ou entre em contato com nosso suporte.
+        Este é um documento de registro de compra gerado por sistema automatizado.
       </Text>
     </BaseEmail>
   );
