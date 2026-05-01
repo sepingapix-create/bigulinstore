@@ -151,3 +151,29 @@ export async function removeDelivery(deliveryId: string) {
     return { error: error.message || "Erro interno ao remover entrega." };
   }
 }
+
+export async function addStockItem(productId: string, content: string, maxSlots: number = 1) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { error: "Não autorizado" };
+  }
+
+  try {
+    const id = generateId();
+    await db.insert(stockItems).values({
+      id,
+      productId,
+      content,
+      maxSlots,
+      usedSlots: 0,
+    });
+
+    // Update product stock display
+    await synchronizeProductStock(productId);
+
+    return { success: true, id };
+  } catch (error: any) {
+    console.error("Error adding stock item:", error);
+    return { error: "Erro ao adicionar item ao estoque." };
+  }
+}

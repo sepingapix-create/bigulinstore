@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { addManualDelivery, removeDelivery } from "@/actions/stock-delivery";
+import { addManualDelivery, removeDelivery, addStockItem } from "@/actions/stock-delivery";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -18,6 +19,26 @@ type OrderItemInfo = {
 export function OrderDeliveryEditor({ orderId, items }: { orderId: string, items: OrderItemInfo[] }) {
   const router = useRouter();
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [newStockContent, setNewStockContent] = useState<Record<string, string>>({});
+
+  const handleAddStock = async (productId: string) => {
+    const content = newStockContent[productId];
+    if (!content?.trim()) {
+      toast.error("Insira o conteúdo do item (ex: e-mail:senha ou código)");
+      return;
+    }
+
+    setLoadingId(`add-${productId}`);
+    const result = await addStockItem(productId, content);
+    if (result.success) {
+      toast.success("Item adicionado ao estoque!");
+      setNewStockContent(prev => ({ ...prev, [productId]: "" }));
+      router.refresh();
+    } else {
+      toast.error(result.error);
+    }
+    setLoadingId(null);
+  };
 
   const handleAdd = async (productId: string, stockItemId: string) => {
     setLoadingId(stockItemId);
@@ -96,8 +117,28 @@ export function OrderDeliveryEditor({ orderId, items }: { orderId: string, items
             {!isFullyDelivered && (
               <div>
                 <h4 className="text-sm font-medium mb-2 flex items-center gap-2"><Plus className="w-4 h-4" /> Adicionar Entrega Manual</h4>
+                
+                {/* Add new stock form */}
+                <div className="flex gap-2 mb-4">
+                  <Input 
+                    placeholder="E-mail:Senha ou Código..." 
+                    className="h-8 text-xs bg-background border-border"
+                    value={newStockContent[item.productId] || ""}
+                    onChange={(e) => setNewStockContent(prev => ({ ...prev, [item.productId]: e.target.value }))}
+                  />
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="h-8 px-3 text-[10px] uppercase font-black"
+                    onClick={() => handleAddStock(item.productId)}
+                    disabled={loadingId === `add-${item.productId}`}
+                  >
+                    + Estoque
+                  </Button>
+                </div>
+
                 {item.availableStockItems.length === 0 ? (
-                  <p className="text-xs text-red-400 italic">Nenhum item em estoque disponível.</p>
+                  <p className="text-xs text-red-400 italic">Nenhum item disponível. Adicione um acima para vincular.</p>
                 ) : (
                   <div className="space-y-2 max-h-[200px] overflow-y-auto">
                     {item.availableStockItems.map((stockItem) => (
