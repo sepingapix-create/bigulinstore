@@ -9,6 +9,7 @@ import {
   Text,
   Hr,
   Link,
+  Img,
 } from "@react-email/components";
 
 interface BaseEmailProps {
@@ -18,41 +19,50 @@ interface BaseEmailProps {
 }
 
 const styles = {
-  html: { backgroundColor: "#0a0a0f" },
+  html: { backgroundColor: "#000000" },
   body: {
-    backgroundColor: "#0a0a0f",
-    fontFamily: "'Segoe UI', Helvetica, Arial, sans-serif",
+    backgroundColor: "#000000",
+    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
     margin: "0",
     padding: "0",
   },
   wrapper: {
-    backgroundColor: "#0a0a0f",
+    backgroundColor: "#050505",
+    backgroundImage: "url('https://images.unsplash.com/photo-1615598166649-0dcb62ab0096?q=80&w=600&auto=format&fit=crop&opacity=10')", // Subtle dark texture
+    backgroundSize: "cover",
+    backgroundPosition: "center",
     padding: "40px 16px",
   },
   container: {
     maxWidth: "560px",
     margin: "0 auto",
-    backgroundColor: "#0d0d1a",
-    borderRadius: "16px",
+    backgroundColor: "#0d0d0d",
+    borderRadius: "8px",
     overflow: "hidden",
-    border: "1px solid #1e1e3a",
+    border: "1px solid #3e0c0c", // Dark red border
+    boxShadow: "0 4px 20px rgba(183, 28, 28, 0.15)",
   },
   header: {
-    background: "linear-gradient(135deg, #6c3de8 0%, #9b59b6 50%, #3d7de8 100%)",
-    padding: "32px 40px",
+    backgroundColor: "#1a0505",
+    borderBottom: "2px solid #b71c1c", // Imperial Red
+    padding: "36px 40px",
     textAlign: "center" as const,
+    backgroundImage: "linear-gradient(to bottom, #2b0808, #1a0505)",
   },
   headerLogo: {
     fontSize: "28px",
     fontWeight: "800",
-    color: "#ffffff",
-    letterSpacing: "-0.5px",
+    color: "#d4af37", // Imperial Gold
+    letterSpacing: "1px",
     margin: "0",
+    textTransform: "uppercase" as const,
   },
   headerTagline: {
     fontSize: "13px",
-    color: "rgba(255,255,255,0.75)",
-    margin: "6px 0 0",
+    color: "#a8a8a8",
+    margin: "8px 0 0",
+    letterSpacing: "2px",
+    textTransform: "uppercase" as const,
   },
   contentPadding: {
     padding: "36px 40px",
@@ -60,34 +70,34 @@ const styles = {
   greeting: {
     fontSize: "22px",
     fontWeight: "700",
-    color: "#e8e8f8",
+    color: "#ffffff",
     margin: "0 0 16px",
     lineHeight: "1.3",
   },
   body_text: {
     fontSize: "15px",
-    color: "#a8a8c8",
+    color: "#cccccc",
     lineHeight: "1.7",
     margin: "0 0 16px",
   },
   hr: {
-    borderColor: "#1e1e3a",
+    borderColor: "#2a0a0a",
     margin: "28px 0",
   },
   footer: {
     padding: "24px 40px",
-    backgroundColor: "#08080f",
-    borderTop: "1px solid #1e1e3a",
+    backgroundColor: "#050505",
+    borderTop: "1px solid #2a0a0a",
     textAlign: "center" as const,
   },
   footerText: {
     fontSize: "12px",
-    color: "#55557a",
+    color: "#666666",
     lineHeight: "1.6",
     margin: "0",
   },
   footerLink: {
-    color: "#7c6de8",
+    color: "#b71c1c",
     textDecoration: "none",
   },
 };
@@ -107,8 +117,8 @@ export function BaseEmail({ preview, children, footerNote }: BaseEmailProps) {
           <Container style={styles.container}>
             {/* Header */}
             <Section style={styles.header}>
-              <Text style={styles.headerLogo}>⚡ Bingulin</Text>
-              <Text style={styles.headerTagline}>Loja Digital Premium</Text>
+              <Text style={styles.headerLogo}>🐉 Bingulin</Text>
+              <Text style={styles.headerTagline}>Império Digital</Text>
             </Section>
 
             {/* Content */}
@@ -119,22 +129,24 @@ export function BaseEmail({ preview, children, footerNote }: BaseEmailProps) {
             {/* Footer */}
             <Section style={styles.footer}>
               <Text style={styles.footerText}>
+                Este é um e-mail automático. Por favor, não responda diretamente.
+              </Text>
+              <Text style={{...styles.footerText, marginTop: "12px"}}>
                 © {new Date().getFullYear()} Bingulin. Todos os direitos reservados.
                 <br />
-                <Link href={`${siteUrl}/privacidade`} style={styles.footerLink}>
-                  Política de Privacidade
-                </Link>
-                {" · "}
-                <Link href={`${siteUrl}/termos`} style={styles.footerLink}>
-                  Termos de Uso
-                </Link>
-                {" · "}
-                <Link href={`mailto:${process.env.EMAIL_REPLY_TO || "suporte@bingulin.com"}?subject=cancelar`} style={styles.footerLink}>
-                  Cancelar inscrição
+                Rua do Comércio, 1000 - São Paulo, SP, Brasil (BR)
+              </Text>
+              <Text style={{...styles.footerText, marginTop: "12px"}}>
+                <Link href={`${siteUrl}/privacidade`} style={styles.footerLink}>Privacidade</Link>
+                {" • "}
+                <Link href={`${siteUrl}/termos`} style={styles.footerLink}>Termos</Link>
+                {" • "}
+                <Link href={`mailto:${process.env.EMAIL_REPLY_TO || "suporte@bingulin.com"}?subject=unsubscribe`} style={{...styles.footerLink, color: "#888888"}}>
+                  Cancelar Inscrição
                 </Link>
               </Text>
               {footerNote && (
-                <Text style={{ ...styles.footerText, marginTop: "8px", color: "#3a3a5a" }}>
+                <Text style={{ ...styles.footerText, marginTop: "16px", color: "#444444" }}>
                   {footerNote}
                 </Text>
               )}
@@ -154,14 +166,17 @@ export function EmailButton({ href, children }: { href: string; children: React.
       href={href}
       style={{
         display: "inline-block",
-        backgroundColor: "#6c3de8",
+        backgroundColor: "#b71c1c", // Imperial Red
         color: "#ffffff",
         fontWeight: "700",
         fontSize: "15px",
         textDecoration: "none",
         padding: "14px 32px",
-        borderRadius: "10px",
+        borderRadius: "4px",
         margin: "8px 0",
+        border: "1px solid #ff5252",
+        textTransform: "uppercase",
+        letterSpacing: "1px",
       }}
     >
       {children}
@@ -169,14 +184,15 @@ export function EmailButton({ href, children }: { href: string; children: React.
   );
 }
 
-export function InfoBox({ children, color = "#6c3de8" }: { children: React.ReactNode; color?: string }) {
+export function InfoBox({ children, color = "#d4af37" }: { children: React.ReactNode; color?: string }) {
+  // color default is gold now
   return (
     <Section
       style={{
-        backgroundColor: "#12122a",
-        border: `1px solid ${color}33`,
+        backgroundColor: "#0f0f0f",
+        border: `1px solid ${color}40`,
         borderLeft: `4px solid ${color}`,
-        borderRadius: "10px",
+        borderRadius: "4px",
         padding: "16px 20px",
         margin: "16px 0",
       }}
@@ -190,9 +206,9 @@ export function KeyBox({ content }: { content: string }) {
   return (
     <Section
       style={{
-        backgroundColor: "#0a0a18",
-        border: "1px solid #2a2a4a",
-        borderRadius: "8px",
+        backgroundColor: "#050505",
+        border: "1px solid #333333",
+        borderRadius: "4px",
         padding: "14px 18px",
         margin: "8px 0",
         fontFamily: "'Courier New', monospace",
@@ -200,11 +216,12 @@ export function KeyBox({ content }: { content: string }) {
     >
       <Text
         style={{
-          fontSize: "14px",
-          color: "#c8c8e8",
+          fontSize: "15px",
+          color: "#d4af37", // Gold for keys
           margin: "0",
           wordBreak: "break-all",
-          letterSpacing: "0.3px",
+          letterSpacing: "0.5px",
+          fontWeight: "600",
         }}
       >
         {content}

@@ -13,11 +13,11 @@ export function WelcomeEmail({ name, email }: WelcomeEmailProps) {
 
   return (
     <BaseEmail
-      preview={`Bem-vindo à Bingulin, ${firstName}! 🎉 Sua conta está pronta.`}
+      preview={`Bem-vindo ao Império Bingulin, ${firstName}! 🎉 Sua conta está pronta.`}
       footerNote={`Conta criada para ${email}`}
     >
       <Text style={sharedStyles.greeting}>
-        Bem-vindo à Bingulin, {firstName}! 🎉
+        Bem-vindo ao Império, {firstName}! 🐉
       </Text>
 
       <Text style={sharedStyles.body_text}>
@@ -25,11 +25,11 @@ export function WelcomeEmail({ name, email }: WelcomeEmailProps) {
         loja de produtos digitais premium — jogos, streaming, softwares e muito mais.
       </Text>
 
-      <InfoBox color="#6c3de8">
-        <Text style={{ color: "#c8b8f8", fontSize: "14px", margin: "0 0 4px", fontWeight: "600" }}>
-          🚀 O que você pode fazer agora:
+      <InfoBox>
+        <Text style={{ color: "#d4af37", fontSize: "15px", margin: "0 0 8px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "1px" }}>
+          ⚔️ O que você pode fazer agora:
         </Text>
-        <Text style={{ color: "#a0a0c0", fontSize: "14px", margin: "4px 0 0", lineHeight: "1.7" }}>
+        <Text style={{ color: "#cccccc", fontSize: "14px", margin: "4px 0 0", lineHeight: "1.7" }}>
           • Explorar nosso catálogo de produtos digitais<br />
           • Comprar com PIX instantâneo e receber na hora<br />
           • Acessar suas compras no perfil a qualquer momento<br />
@@ -37,15 +37,15 @@ export function WelcomeEmail({ name, email }: WelcomeEmailProps) {
         </Text>
       </InfoBox>
 
-      <div style={{ textAlign: "center", margin: "28px 0" }}>
+      <div style={{ textAlign: "center", margin: "32px 0" }}>
         <EmailButton href={`${siteUrl}`}>
-          Explorar a Loja →
+          Explorar a Loja
         </EmailButton>
       </div>
 
       <Hr style={sharedStyles.hr} />
 
-      <Text style={{ ...sharedStyles.body_text, fontSize: "13px", color: "#6868a8" }}>
+      <Text style={{ ...sharedStyles.body_text, fontSize: "13px", color: "#666666" }}>
         Se você não criou esta conta, ignore este email.
         Nenhuma ação é necessária — a conta não será ativada sem o primeiro login.
       </Text>

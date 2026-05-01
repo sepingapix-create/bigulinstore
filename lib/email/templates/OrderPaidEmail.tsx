@@ -36,19 +36,19 @@ export function OrderPaidEmail({
       {/* Success banner */}
       <Section
         style={{
-          background: "linear-gradient(135deg, #1a3a2a 0%, #0d2a1a 100%)",
-          border: "1px solid #2a6a3a",
-          borderRadius: "12px",
+          background: "linear-gradient(135deg, #1a0505 0%, #2b0808 100%)",
+          border: "1px solid #b71c1c",
+          borderRadius: "8px",
           padding: "20px 24px",
           margin: "0 0 24px",
           textAlign: "center",
         }}
       >
         <Text style={{ fontSize: "40px", margin: "0 0 8px" }}>✅</Text>
-        <Text style={{ color: "#68d888", fontSize: "20px", fontWeight: "800", margin: "0 0 4px" }}>
+        <Text style={{ color: "#d4af37", fontSize: "20px", fontWeight: "800", margin: "0 0 4px" }}>
           Pagamento Confirmado!
         </Text>
-        <Text style={{ color: "#a8c8b8", fontSize: "14px", margin: "0" }}>
+        <Text style={{ color: "#cccccc", fontSize: "14px", margin: "0" }}>
           Pedido #{shortOrder} · {formatCurrency(totalAmount)}
         </Text>
       </Section>
@@ -66,10 +66,10 @@ export function OrderPaidEmail({
       {/* Delivered items */}
       {deliveredItems.map((item, i) => (
         <Section key={i} style={{ margin: "0 0 24px" }}>
-          <InfoBox color="#6c3de8">
+          <InfoBox>
             <Text
               style={{
-                color: "#c8b8f8",
+                color: "#d4af37",
                 fontSize: "15px",
                 fontWeight: "700",
                 margin: "0 0 12px",
@@ -80,7 +80,7 @@ export function OrderPaidEmail({
             {item.keys.map((key, j) => (
               <div key={j}>
                 {item.keys.length > 1 && (
-                  <Text style={{ color: "#6868a8", fontSize: "11px", margin: "8px 0 2px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                  <Text style={{ color: "#888888", fontSize: "11px", margin: "8px 0 2px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
                     Item {j + 1}
                   </Text>
                 )}
@@ -91,8 +91,8 @@ export function OrderPaidEmail({
         </Section>
       ))}
 
-      <InfoBox color="#f8c84a">
-        <Text style={{ color: "#f8e888", fontSize: "14px", margin: "0", lineHeight: "1.6" }}>
+      <InfoBox color="#b71c1c">
+        <Text style={{ color: "#ffffff", fontSize: "14px", margin: "0", lineHeight: "1.6" }}>
           💡 <strong>Dica:</strong> Você também pode acessar seus produtos a qualquer
           momento na área do seu perfil. As credenciais ficam salvas com segurança.
         </Text>
@@ -100,7 +100,7 @@ export function OrderPaidEmail({
 
       <div style={{ textAlign: "center", margin: "28px 0" }}>
         <EmailButton href={`${siteUrl}/profile`}>
-          Acessar Meus Produtos →
+          Acessar Meus Produtos
         </EmailButton>
       </div>
 

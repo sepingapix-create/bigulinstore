@@ -29,6 +29,7 @@ export async function sendEmailDirect(options: SendEmailOptions): Promise<{ succ
   try {
     const { render } = await import("@react-email/render");
     const html = await render(options.react);
+    const text = await render(options.react, { plainText: true });
     const resend = getResendClient();
 
     await resend.emails.send({
@@ -37,6 +38,7 @@ export async function sendEmailDirect(options: SendEmailOptions): Promise<{ succ
       replyTo: EMAIL_REPLY_TO,
       subject: options.subject,
       html,
+      text,
       headers: {
         ...ANTISPAM_HEADERS,
         "X-Entity-Ref-ID": `bingulin-${crypto.randomUUID()}`,

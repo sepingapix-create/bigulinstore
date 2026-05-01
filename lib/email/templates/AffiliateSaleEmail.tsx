@@ -32,19 +32,19 @@ export function AffiliateSaleEmail({
       {/* Commission banner */}
       <div
         style={{
-          background: "linear-gradient(135deg, #1a2a0a 0%, #0a1a05 100%)",
-          border: "1px solid #3a6a1a",
-          borderRadius: "12px",
+          background: "linear-gradient(135deg, #1a1a05 0%, #2b2b08 100%)",
+          border: "1px solid #d4af37",
+          borderRadius: "8px",
           padding: "24px",
           margin: "0 0 24px",
           textAlign: "center",
         }}
       >
         <Text style={{ fontSize: "36px", margin: "0 0 8px" }}>💰</Text>
-        <Text style={{ color: "#68d868", fontSize: "28px", fontWeight: "900", margin: "0 0 4px" }}>
+        <Text style={{ color: "#d4af37", fontSize: "28px", fontWeight: "900", margin: "0 0 4px" }}>
           +{formatCurrency(commissionAmount)}
         </Text>
-        <Text style={{ color: "#a8c8a8", fontSize: "14px", margin: "0" }}>
+        <Text style={{ color: "#cccccc", fontSize: "14px", margin: "0" }}>
           Nova comissão creditada!
         </Text>
       </div>
@@ -58,21 +58,21 @@ export function AffiliateSaleEmail({
         foi creditada automaticamente no seu saldo.
       </Text>
 
-      <InfoBox color="#4ad868">
-        <Text style={{ color: "#a8f8a8", fontSize: "13px", fontWeight: "700", margin: "0 0 10px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+      <InfoBox>
+        <Text style={{ color: "#d4af37", fontSize: "13px", fontWeight: "700", margin: "0 0 10px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
           📊 Detalhes da Comissão
         </Text>
-        <Text style={{ color: "#c8e8c8", fontSize: "14px", margin: "0 0 4px" }}>
-          Pedido: <strong style={{ color: "#f8f8f8" }}>#{shortOrder}</strong>
+        <Text style={{ color: "#cccccc", fontSize: "14px", margin: "0 0 4px" }}>
+          Pedido: <strong style={{ color: "#ffffff" }}>#{shortOrder}</strong>
         </Text>
-        <Text style={{ color: "#c8e8c8", fontSize: "14px", margin: "0 0 4px" }}>
-          Valor da venda: <strong style={{ color: "#f8f8f8" }}>{formatCurrency(orderTotal)}</strong>
+        <Text style={{ color: "#cccccc", fontSize: "14px", margin: "0 0 4px" }}>
+          Valor da venda: <strong style={{ color: "#ffffff" }}>{formatCurrency(orderTotal)}</strong>
         </Text>
-        <Text style={{ color: "#c8e8c8", fontSize: "14px", margin: "0 0 8px" }}>
-          Sua comissão: <strong style={{ color: "#68d868", fontSize: "16px" }}>{formatCurrency(commissionAmount)}</strong>
+        <Text style={{ color: "#cccccc", fontSize: "14px", margin: "0 0 8px" }}>
+          Sua comissão: <strong style={{ color: "#4caf50", fontSize: "16px" }}>{formatCurrency(commissionAmount)}</strong>
         </Text>
-        <Hr style={{ borderColor: "#2a5a2a", margin: "10px 0" }} />
-        <Text style={{ color: "#a8f8a8", fontSize: "15px", fontWeight: "800", margin: "0" }}>
+        <Hr style={{ borderColor: "#333333", margin: "10px 0" }} />
+        <Text style={{ color: "#d4af37", fontSize: "15px", fontWeight: "800", margin: "0" }}>
           Saldo atual: {formatCurrency(newBalance)}
         </Text>
       </InfoBox>
@@ -84,13 +84,13 @@ export function AffiliateSaleEmail({
 
       <div style={{ textAlign: "center", margin: "28px 0" }}>
         <EmailButton href={`${siteUrl}/affiliate`}>
-          Ver Meu Painel de Afiliado →
+          Ver Meu Painel de Afiliado
         </EmailButton>
       </div>
 
       <Hr style={sharedStyles.hr} />
 
-      <Text style={{ ...sharedStyles.body_text, fontSize: "13px", color: "#6868a8" }}>
+      <Text style={{ ...sharedStyles.body_text, fontSize: "13px", color: "#666666" }}>
         Continue compartilhando seu link para aumentar seus ganhos!
         Cada venda gera comissão automática.
       </Text>

@@ -51,6 +51,7 @@ async function processQueue() {
       const resend = getResendClient();
       const { render } = await import("@react-email/render");
       const html = await render(job.react);
+      const text = await render(job.react, { plainText: true });
 
       await resend.emails.send({
         from: EMAIL_FROM,
@@ -58,6 +59,7 @@ async function processQueue() {
         replyTo: EMAIL_REPLY_TO,
         subject: job.subject,
         html,
+        text,
         headers: {
           ...ANTISPAM_HEADERS,
           "X-Entity-Ref-ID": `bingulin-${job.id}`,
