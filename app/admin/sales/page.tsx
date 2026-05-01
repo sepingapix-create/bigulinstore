@@ -10,6 +10,7 @@ import {
   CalendarDays,
   Hash,
 } from "lucide-react";
+import { OrderDeliveryModal } from "@/components/admin/OrderDeliveryModal";
 
 export default async function AdminSalesPage() {
   const allOrders = await db
@@ -111,12 +112,13 @@ export default async function AdminSalesPage() {
       {/* Orders list */}
       <div className="rounded-2xl bg-[#0A0A0A] border border-[#1A1A1A] overflow-hidden">
         {/* Table header */}
-        <div className="hidden md:grid grid-cols-[120px_1fr_140px_120px_120px] gap-4 px-5 py-3 bg-[#111111] border-b border-[#1A1A1A] text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+        <div className="hidden md:grid grid-cols-[120px_1fr_140px_120px_120px_120px] gap-4 px-5 py-3 bg-[#111111] border-b border-[#1A1A1A] text-[10px] font-black uppercase tracking-widest text-muted-foreground">
           <span className="flex items-center gap-1"><Hash className="h-3 w-3" /> Pedido</span>
           <span>Cliente</span>
           <span className="flex items-center gap-1"><CalendarDays className="h-3 w-3" /> Data</span>
           <span className="flex items-center gap-1"><DollarSign className="h-3 w-3" /> Total</span>
           <span>Status</span>
+          <span>Ações</span>
         </div>
 
         {allOrders.length === 0 ? (
@@ -132,7 +134,7 @@ export default async function AdminSalesPage() {
               return (
                 <div
                   key={order.id}
-                  className="grid grid-cols-1 md:grid-cols-[120px_1fr_140px_120px_120px] gap-4 px-5 py-4 items-center hover:bg-white/[0.02] transition-colors"
+                  className="grid grid-cols-1 md:grid-cols-[120px_1fr_140px_120px_120px_120px] gap-4 px-5 py-4 items-center hover:bg-white/[0.02] transition-colors"
                 >
                   {/* Order ID */}
                   <span className="font-mono text-xs text-muted-foreground font-bold">
@@ -174,6 +176,11 @@ export default async function AdminSalesPage() {
                       <StatusIcon className="h-3 w-3" />
                       {status.label}
                     </span>
+                  </div>
+
+                  {/* Actions */}
+                  <div>
+                    <OrderDeliveryModal orderId={order.id} />
                   </div>
                 </div>
               );
