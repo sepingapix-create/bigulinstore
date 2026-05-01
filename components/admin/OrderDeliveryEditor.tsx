@@ -82,14 +82,11 @@ export function OrderDeliveryEditor({ orderId, items, orderStatus }: { orderId: 
 
         return (
           <div key={item.productId} className="bg-muted/50 p-4 rounded-xl border border-border">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="font-semibold text-lg">{item.productName}</h3>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <p className="text-xs text-muted-foreground">
-                    Comprado: {item.quantity} | Entregue: {deliveredCount}
-                  </p>
-                  <span className={`text-[8px] font-black px-1.5 py-0.5 rounded uppercase border ${
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-black italic uppercase tracking-tighter text-xl">{item.productName}</h3>
+                  <span className={`text-[9px] font-black px-2 py-0.5 rounded-md uppercase border shrink-0 ${
                     orderStatus === 'PAID' 
                       ? 'bg-green-500/10 text-green-400 border-green-500/20' 
                       : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
@@ -97,12 +94,22 @@ export function OrderDeliveryEditor({ orderId, items, orderStatus }: { orderId: 
                     {orderStatus === 'PAID' ? 'Pago' : 'Pendente'}
                   </span>
                 </div>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                  Comprado: <span className="text-white">{item.quantity}</span> | Entregue: <span className={deliveredCount >= item.quantity ? "text-green-500" : "text-yellow-500"}>{deliveredCount}</span>
+                </p>
               </div>
-              <div className="flex gap-2">
+              
+              <div className="shrink-0">
                 {isFullyDelivered ? (
-                  <span className="text-green-500 font-black text-[10px] bg-green-500/10 px-3 py-1 rounded-full border border-green-500/20 uppercase">Produto Entregue</span>
+                  <div className="flex items-center gap-1.5 text-green-500 font-black text-[10px] bg-green-500/10 px-4 py-2 rounded-xl border border-green-500/20 uppercase tracking-widest">
+                    <CheckCircle className="w-3 h-3" />
+                    Produto Entregue
+                  </div>
                 ) : (
-                  <span className="text-yellow-500 font-black text-[10px] bg-yellow-500/10 px-3 py-1 rounded-full border border-yellow-500/20 uppercase">Entrega Pendente</span>
+                  <div className="flex items-center gap-1.5 text-yellow-500 font-black text-[10px] bg-yellow-500/10 px-4 py-2 rounded-xl border border-yellow-500/20 uppercase tracking-widest">
+                    <AlertTriangle className="w-3 h-3" />
+                    Entrega Pendente
+                  </div>
                 )}
               </div>
             </div>
