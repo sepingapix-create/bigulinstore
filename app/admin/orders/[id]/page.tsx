@@ -104,7 +104,7 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
 
       {/* Editor Component */}
       <div className="bg-[#0A0A0A] border border-[#1A1A1A] p-6 rounded-2xl">
-        <OrderDeliveryEditor orderId={params.id} items={itemsInfo} />
+        <OrderDeliveryEditor orderId={params.id} items={itemsInfo} orderStatus={order.order.status} />
       </div>
     </div>
   );
