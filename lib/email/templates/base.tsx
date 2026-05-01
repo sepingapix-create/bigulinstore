@@ -110,11 +110,34 @@ export function BaseEmail({ preview, children, footerNote }: BaseEmailProps) {
       <Head>
         <meta name="color-scheme" content="dark" />
         <meta name="supported-color-schemes" content="dark" />
+        <style>
+          {`
+            a[href^="mailto:"] { color: inherit !important; text-decoration: none !important; }
+            .UnsubscribeLink:hover { text-decoration: underline !important; color: #ff5252 !important; }
+          `}
+        </style>
       </Head>
       <Preview>{preview}</Preview>
       <Body style={styles.body}>
         <Section style={styles.wrapper}>
           <Container style={styles.container}>
+            {/* Schema.org JSON-LD for 2026 Anti-Spam Compliance */}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "http://schema.org",
+                  "@type": "Organization",
+                  "name": "Bingulin",
+                  "url": siteUrl,
+                  "logo": `${siteUrl}/favicon.ico`,
+                  "sameAs": [
+                    siteUrl
+                  ]
+                })
+              }}
+            />
+
             {/* Header */}
             <Section style={styles.header}>
               <Text style={styles.headerLogo}>🐉 Bingulin</Text>
@@ -128,20 +151,25 @@ export function BaseEmail({ preview, children, footerNote }: BaseEmailProps) {
 
             {/* Footer */}
             <Section style={styles.footer}>
-              <Text style={styles.footerText}>
-                Este é um e-mail automático. Por favor, não responda diretamente.
+              <Text style={{...styles.footerText, marginBottom: "16px", color: "#888888", fontStyle: "italic"}}>
+                Você está recebendo este e-mail automático porque possui uma conta cadastrada ou realizou uma compra no Império Bingulin.
               </Text>
+              <Hr style={{ borderColor: "#1a0505", margin: "0 0 16px" }} />
               <Text style={{...styles.footerText, marginTop: "12px"}}>
                 © {new Date().getFullYear()} Bingulin. Todos os direitos reservados.
                 <br />
                 Rua do Comércio, 1000 - São Paulo, SP, Brasil (BR)
               </Text>
-              <Text style={{...styles.footerText, marginTop: "12px"}}>
+              <Text style={{...styles.footerText, marginTop: "16px"}}>
                 <Link href={`${siteUrl}/privacidade`} style={styles.footerLink}>Privacidade</Link>
                 {" • "}
                 <Link href={`${siteUrl}/termos`} style={styles.footerLink}>Termos</Link>
                 {" • "}
-                <Link href={`mailto:${process.env.EMAIL_REPLY_TO || "suporte@bingulin.com"}?subject=unsubscribe`} style={{...styles.footerLink, color: "#888888"}}>
+                <Link 
+                  href={`mailto:${process.env.EMAIL_REPLY_TO || "suporte@bingulin.com"}?subject=unsubscribe`} 
+                  style={{...styles.footerLink, color: "#aaaaaa", fontWeight: "bold"}}
+                  className="UnsubscribeLink"
+                >
                   Cancelar Inscrição
                 </Link>
               </Text>
