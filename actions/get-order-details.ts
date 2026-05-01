@@ -6,6 +6,8 @@ import { eq, and, sql } from "drizzle-orm";
 
 export async function getOrderDeliveryDetails(orderId: string) {
   try {
+    const [order] = await db.select().from(orders).where(eq(orders.id, orderId));
+    
     // Fetch purchased items
     const items = await db
       .select({
@@ -64,7 +66,7 @@ export async function getOrderDeliveryDetails(orderId: string) {
       })
     );
 
-    return { success: true, items: itemsInfo };
+    return { success: true, items: itemsInfo, orderStatus: order?.status };
   } catch (error) {
     console.error("Error fetching order delivery details:", error);
     return { success: false, error: "Falha ao buscar detalhes do pedido." };
