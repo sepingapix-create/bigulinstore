@@ -179,3 +179,54 @@ export async function addStockItem(productId: string, content: string, maxSlots:
     return { error: "Erro ao adicionar item ao estoque." };
   }
 }
+
+export async function bulkAddStockItem(productId: string, rawContent: string, maxSlots: number = 1) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { error: "Não autorizado" };
+  }
+
+  try {
+    const lines = rawContent.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+    if (lines.length === 0) return { error: "Nenhum conteúdo válido inserido." };
+
+    await db.transaction(async (tx) => {
+      for (const content of lines) {
+        await tx.insert(stockItems).values({
+          id: generateId(),
+          productId,
+          content,
+          maxSlots,
+          usedSlots: 0,
+        });
+      }
+    });
+
+    await synchronizeProductStock(productId);
+    return { success: true, count: lines.length };
+  } catch (error: any) {
+    console.error("Error in bulk add:", error);
+    return { error: "Erro ao processar importação em massa." };
+  }
+}
+
+export async function deleteStockItem(id: string) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { error: "Não autorizado" };
+  }
+
+  try {
+    const [item] = await db.select().from(stockItems).where(eq(stockItems.id, id));
+    if (!item) return { error: "Item não encontrado." };
+    if (item.usedSlots > 0) return { error: "Não é possível excluir um item que já possui slots utilizados/entregues." };
+
+    await db.delete(stockItems).where(eq(stockItems.id, id));
+    await synchronizeProductStock(item.productId);
+
+    return { success: true };
+  } catch (error: any) {
+    console.error("Error deleting stock item:", error);
+    return { error: "Erro ao excluir item do estoque." };
+  }
+}
