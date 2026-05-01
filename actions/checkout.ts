@@ -3,10 +3,10 @@
 import { z } from "zod";
 import { db } from "@/db";
 import { auth } from "@/auth";
-import { products, orders, orderItems, productInventory, coupons, affiliates, affiliateReferrals, affiliateVisits, users } from "@/db/schema";
+import { products, orders, orderItems, productInventory, coupons, affiliates, affiliateReferrals, affiliateVisits, users, stockItems, stockDeliveries } from "@/db/schema";
 import crypto from "crypto";
 import { revalidatePath } from "next/cache";
-import { eq, sql, and, desc, count } from "drizzle-orm";
+import { eq, sql, and, desc, asc, count } from "drizzle-orm";
 import { StylepayService } from "@/lib/payments/stylepay";
 import { sendEmail, sendEmailDirect } from "@/lib/email/sender";
 import { OrderCreatedEmail } from "@/lib/email/templates/OrderCreatedEmail";
@@ -415,34 +415,52 @@ export async function fulfillOrder(
         }
       }
 
-      // 4. Deliver digital inventory
+      // 4. Deliver digital inventory (NEW STOCK SYSTEM)
       const items = await tx.query.orderItems.findMany({
         where: eq(orderItems.orderId, orderId),
       });
 
       for (const item of items) {
-        const availableContent = await tx.query.productInventory.findMany({
-          where: and(
-            eq(productInventory.productId, item.productId),
-            eq(productInventory.isSold, false)
-          ),
-          limit: item.quantity,
-          orderBy: (inventory, { asc }) => [asc(inventory.createdAt)],
-        });
+        // Find stock items with available slots
+        const availableItems = await tx.select()
+          .from(stockItems)
+          .where(and(
+            eq(stockItems.productId, item.productId),
+            sql`${stockItems.usedSlots} < ${stockItems.maxSlots}`
+          ))
+          .orderBy(asc(stockItems.createdAt));
 
-        for (const content of availableContent) {
-          await tx.update(productInventory)
-            .set({ isSold: true, orderId: orderId })
-            .where(eq(productInventory.id, content.id));
+        let remainingToDeliver = item.quantity;
+
+        for (const stockItem of availableItems) {
+          if (remainingToDeliver <= 0) break;
+
+          const availableSlots = stockItem.maxSlots - stockItem.usedSlots;
+          const toDeliverFromThisItem = Math.min(remainingToDeliver, availableSlots);
+
+          // Increment used slots
+          await tx.update(stockItems)
+            .set({ usedSlots: stockItem.usedSlots + toDeliverFromThisItem })
+            .where(eq(stockItems.id, stockItem.id));
+
+          // Create delivery records
+          for (let i = 0; i < toDeliverFromThisItem; i++) {
+            await tx.insert(stockDeliveries).values({
+              id: crypto.randomUUID(),
+              orderId: orderId,
+              stockItemId: stockItem.id,
+            });
+          }
+
+          remainingToDeliver -= toDeliverFromThisItem;
         }
 
-        // Recalcular e atualizar o estoque real do produto após a venda
-        const currentStock = await tx.select({ value: count() })
-          .from(productInventory)
-          .where(and(eq(productInventory.productId, item.productId), eq(productInventory.isSold, false)));
+        // Sync product total stock
+        const stockItemsForProduct = await tx.select().from(stockItems).where(eq(stockItems.productId, item.productId));
+        const totalAvailable = stockItemsForProduct.reduce((acc, si) => acc + (si.maxSlots - si.usedSlots), 0);
         
         await tx.update(products)
-          .set({ stock: currentStock[0].value })
+          .set({ stock: totalAvailable })
           .where(eq(products.id, item.productId));
       }
     });
@@ -455,26 +473,28 @@ export async function fulfillOrder(
       });
 
       if (orderWithUser?.user?.email) {
-        // Build delivered items list with keys
+        // Build delivered items list with keys from the NEW system
         const deliveredItems: { productName: string; keys: string[] }[] = [];
 
-        const deliveredContent = await db.query.productInventory.findMany({
-          where: and(
-            eq(productInventory.orderId, orderId),
-            eq(productInventory.isSold, true)
-          ),
+        const deliveries = await db.query.stockDeliveries.findMany({
+          where: eq(stockDeliveries.orderId, orderId),
+          with: { stockItem: true }
         });
 
-        // Group keys by productId
-        const keysByProduct = new Map<string, string[]>();
-        for (const content of deliveredContent) {
-          const existing = keysByProduct.get(content.productId) || [];
-          existing.push(content.content);
-          keysByProduct.set(content.productId, existing);
+        // Group content by product
+        const contentByProduct = new Map<string, string[]>();
+        for (const d of deliveries) {
+          if (d.stockItem) {
+            const existing = contentByProduct.get(d.stockItem.productId) || [];
+            if (!existing.includes(d.stockItem.content)) {
+               existing.push(d.stockItem.content);
+            }
+            contentByProduct.set(d.stockItem.productId, existing);
+          }
         }
 
         for (const item of orderWithUser.items) {
-          const keys = keysByProduct.get(item.productId) || [];
+          const keys = contentByProduct.get(item.productId) || [];
           if (keys.length > 0) {
             deliveredItems.push({
               productName: (item as any).product?.name || "Produto",
