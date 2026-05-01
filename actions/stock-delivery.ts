@@ -83,9 +83,9 @@ export async function addManualDelivery(orderId: string, productId: string, stoc
       // Audit Log
       await tx.insert(stockAuditLogs).values({
         id: generateId(),
-        adminId: session.user.id,
-        orderId,
-        stockItemId,
+        adminId: session.user!.id!, // Non-null assertion since we checked at start
+        orderId: orderId,
+        stockItemId: stockItemId,
         action: "DELIVERY_ADDED",
         details: `Adicionou manualmente a entrega do item ${stockItemId} (Slot ${stockItem.usedSlots + 1}/${stockItem.maxSlots})`,
       });
@@ -132,7 +132,7 @@ export async function removeDelivery(deliveryId: string) {
       // Audit Log
       await tx.insert(stockAuditLogs).values({
         id: generateId(),
-        adminId: session.user.id,
+        adminId: session.user!.id!, // Non-null assertion since we checked at start
         orderId: delivery.orderId,
         stockItemId: stockItem.id,
         action: "DELIVERY_REMOVED",
