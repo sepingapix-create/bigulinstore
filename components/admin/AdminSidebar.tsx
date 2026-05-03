@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button";
 const menuItems = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Produtos", href: "/admin/products", icon: Package },
-  { name: "Estoque", href: "/admin/inventory", icon: Database },
   { name: "Vendas", href: "/admin/sales", icon: ShoppingCart },
   { name: "Usuários", href: "/admin/users", icon: Users },
   { name: "Afiliados", href: "/admin/affiliates", icon: HandCoins },
