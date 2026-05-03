@@ -143,19 +143,18 @@ export function ProductCard({ product }: ProductCardProps) {
                   : "border-zinc-800 text-zinc-700 cursor-not-allowed"
               )}
             >
-              <Plus className="h-3.5 w-3.5" />
+              <ShoppingCart className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={handleBuyNow}
               disabled={product.stock === 0}
               className={cn(
-                "flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-[9px] font-black uppercase italic tracking-wider transition-all duration-300",
+                "flex-1 flex items-center justify-center py-2 rounded-lg text-[9px] font-black uppercase italic tracking-wider transition-all duration-300",
                 product.stock > 0
                   ? "bg-primary hover:bg-primary/90 text-white hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(220,38,38,0.3)]"
                   : "bg-zinc-900 text-zinc-700 cursor-not-allowed"
               )}
             >
-              <ShoppingCart className="h-3 w-3" />
               <span>Comprar</span>
             </button>
           </div>
