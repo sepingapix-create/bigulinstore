@@ -43,12 +43,18 @@ export function SupportButton({ variant = "floating" }: { variant?: "floating" |
     return null;
   }
 
-  const toggleOpen = () => {
-    setIsOpen(!isOpen);
-    if (!isOpen) {
-      setView("main");
-      setOpenFaqIndex(null);
+  const openJivo = () => {
+    if (typeof window !== "undefined" && (window as any).jivo_api) {
+      (window as any).jivo_api.open();
+    } else {
+      // Fallback to whatsapp if jivo not loaded or just wait
+      window.open("https://wa.me/5500000000000", "_blank");
     }
+  };
+
+  const toggleOpen = () => {
+    // Instead of opening our custom menu, we now open JivoSite directly
+    openJivo();
   };
 
   return (
@@ -98,15 +104,13 @@ export function SupportButton({ variant = "floating" }: { variant?: "floating" |
               </div>
 
               <div className="space-y-3">
-                <a 
-                  href="https://wa.me/5500000000000" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-500 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-green-600/20 group"
+                <button 
+                  onClick={openJivo}
+                  className="flex items-center justify-center gap-2 w-full bg-red-600 hover:bg-red-500 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-red-600/20 group"
                 >
                   <MessageCircle className="h-5 w-5 group-hover:scale-110 transition-transform" /> 
-                  Falar no WhatsApp
-                </a>
+                  Abrir Chat Online
+                </button>
                 <button 
                   onClick={() => setView("faq")}
                   className="w-full border border-border/50 hover:bg-muted/50 text-sm font-bold py-4 rounded-2xl transition-all"

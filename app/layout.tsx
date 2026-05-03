@@ -26,6 +26,7 @@ import { Suspense } from "react";
 import { NavbarWrapper } from "@/components/layout/NavbarWrapper";
 import { Footer } from "@/components/layout/Footer";
 import NextTopLoader from 'nextjs-toploader';
+import Script from "next/script";
 
 export default function RootLayout({
   children,
@@ -38,6 +39,7 @@ export default function RootLayout({
       className={`${outfit.variable} ${jakarta.variable} dark h-full antialiased`}
       data-scroll-behavior="smooth"
     >
+      <Script src="//code.jivosite.com/widget/4SK7xR3JvZ" strategy="afterInteractive" />
       <body className="min-h-full flex flex-col bg-background text-foreground font-jakarta overflow-x-hidden">
         <NextTopLoader
           color="#dc2626"
