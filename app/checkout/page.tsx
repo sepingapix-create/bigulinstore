@@ -120,7 +120,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="flex-1 bg-background pt-8 pb-16">
+    <div className="flex-1 pt-8 pb-16">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">

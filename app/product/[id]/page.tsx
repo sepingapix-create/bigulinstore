@@ -30,7 +30,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     .limit(4);
 
   return (
-    <div className="flex-1 bg-[#050505] text-white">
+    <div className="flex-1 text-white">
       <main className="container mx-auto px-4 py-12 max-w-7xl">
         <ProductDetailsClient product={product} />
 

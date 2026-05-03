@@ -54,7 +54,9 @@ export default function RootLayout({
         <NavbarWrapper>
           <Navbar />
         </NavbarWrapper>
-        <div className="flex-1 animate-in fade-in duration-700 ease-in-out">
+        <div className="flex-1 animate-in fade-in duration-700 ease-in-out relative">
+          {/* Global Dragon Background Overlay */}
+          <div className="fixed inset-0 bg-[url('/dragon-bg.png')] bg-cover bg-center mix-blend-overlay opacity-[0.15] pointer-events-none -z-10" />
           {children}
         </div>
         <Suspense fallback={null}>

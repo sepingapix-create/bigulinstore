@@ -22,7 +22,7 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
   });
 
   return (
-    <div className="flex-1 flex flex-col bg-background">
+    <div className="flex-1 flex flex-col">
       <main className="flex-1 container mx-auto px-4 py-12 max-w-3xl">
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>

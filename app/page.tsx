@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Zap, Instagram, Twitter, Send, MessageSquare, Bookmark } from "lucide-react";
 import { db } from "@/db";
 import { products } from "@/db/schema";
-import { desc, sql } from "drizzle-orm";
+import { desc, asc, sql } from "drizzle-orm";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
@@ -13,7 +13,7 @@ import { HeroVector } from "@/components/animations/HeroVector";
 import { OpenJivoButton } from "@/components/layout/OpenJivoButton";
 
 export default async function Home() {
-  const allProducts = await db.select().from(products).orderBy(desc(products.createdAt));
+  const allProducts = await db.select().from(products).orderBy(asc(products.price));
   
   const flashDealProducts = allProducts.filter(p => p.isFlashDeal);
   const regularProducts = allProducts.filter(p => !p.isFlashDeal);
