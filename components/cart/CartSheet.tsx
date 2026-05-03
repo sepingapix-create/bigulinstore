@@ -48,7 +48,7 @@ export function CartSheet() {
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger 
         render={
-          <div className="group relative hover:bg-muted/50 rounded-full cursor-pointer inline-flex items-center justify-center h-9 w-9 text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:scale-110 active:scale-90">
+          <button className="group relative hover:bg-muted/50 rounded-full cursor-pointer inline-flex items-center justify-center h-9 w-9 text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:scale-110 active:scale-90 border-0 bg-transparent">
             <ShoppingCart className="h-5 w-5 transition-all duration-300 group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(220,38,38,0.5)]" />
             {totalItems > 0 && (
               <Badge 
@@ -58,7 +58,7 @@ export function CartSheet() {
               </Badge>
             )}
             <span className="sr-only">Carrinho</span>
-          </div>
+          </button>
         }
       />
       

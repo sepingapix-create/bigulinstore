@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Zap, ShoppingCart } from "lucide-react";
+import { Zap, ShoppingCart, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Product } from "@/db/schema";
 import { useCartStore } from "@/store/cartStore";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface ProductCardProps {
   product: Product;
@@ -20,6 +21,19 @@ export function ProductCard({ product }: ProductCardProps) {
     e.preventDefault();
     addItem(product, 1);
     router.push("/checkout");
+  };
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addItem(product, 1);
+    toast.success(`${product.name} adicionado ao carrinho!`, {
+      icon: <ShoppingCart className="h-4 w-4 text-primary" />,
+      style: {
+        background: "#0a0a0a",
+        color: "#fff",
+        border: "1px solid rgba(220, 38, 38, 0.2)",
+      },
+    });
   };
 
   const formatPrice = (val: any) => new Intl.NumberFormat("pt-BR", {
@@ -74,7 +88,7 @@ export function ProductCard({ product }: ProductCardProps) {
       {/* Content */}
       <div className="p-3 flex flex-col flex-grow">
         <Link href={`/product/${product.id}`} className="block mb-2">
-          <h3 className="text-[13px] font-bold text-white line-clamp-1 leading-tight group-hover:text-red-400 transition-colors">
+          <h3 className="text-[13px] font-bold text-white line-clamp-1 leading-tight group-hover:text-red-400 transition-colors uppercase italic">
             {product.name}
           </h3>
         </Link>
@@ -89,15 +103,15 @@ export function ProductCard({ product }: ProductCardProps) {
                 : "bg-red-500"
             )} />
             <span className={cn(
-              "text-[8px] font-black uppercase tracking-widest",
-              product.stock > 0 ? "text-emerald-400" : "text-red-500"
+              "text-[8px] font-black uppercase tracking-widest italic",
+              product.stock > 0 ? "text-emerald-400" : "text-zinc-500"
             )}>
               {product.stock > 0 ? "Disponível" : "Sem estoque"}
             </span>
           </div>
 
-          {/* Price + Button row */}
-          <div className="flex flex-col @[180px]:flex-row @[180px]:items-center justify-between border-t border-white/5 pt-2 gap-2">
+          {/* Price Row */}
+          <div className="border-t border-white/5 pt-2 mb-3">
             <div className="flex flex-col">
               {product.originalPrice ? (
                 <div className="flex items-center gap-1 mb-0.5">
@@ -108,24 +122,40 @@ export function ProductCard({ product }: ProductCardProps) {
                 <p className="text-[8px] text-zinc-600 font-bold uppercase tracking-wider leading-none mb-0.5">POR</p>
               )}
               <div className="flex items-baseline gap-1.5">
-                <p className="text-sm sm:text-base font-black text-white italic tracking-tight leading-none">
+                <p className="text-sm sm:text-lg font-black text-white italic tracking-tight leading-none">
                   {formatPrice(product.price)}
                 </p>
                 <p className="text-[7px] sm:text-[8px] font-black text-emerald-400 uppercase tracking-widest">PIX</p>
               </div>
             </div>
+          </div>
 
+          {/* Buttons Row */}
+          <div className="flex gap-1.5">
+            <button
+              onClick={handleAddToCart}
+              disabled={product.stock === 0}
+              title="Adicionar ao Carrinho"
+              className={cn(
+                "flex items-center justify-center p-2 rounded-lg border transition-all duration-300",
+                product.stock > 0
+                  ? "border-white/10 bg-white/5 hover:bg-white/10 text-white hover:scale-105 active:scale-95"
+                  : "border-zinc-800 text-zinc-700 cursor-not-allowed"
+              )}
+            >
+              <Plus className="h-3.5 w-3.5" />
+            </button>
             <button
               onClick={handleBuyNow}
               disabled={product.stock === 0}
               className={cn(
-                "flex items-center justify-center gap-1.5 px-4 py-2 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-full text-[9px] font-black uppercase tracking-wider transition-all duration-300 w-full sm:w-auto",
+                "flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-[9px] font-black uppercase italic tracking-wider transition-all duration-300",
                 product.stock > 0
-                  ? "bg-red-600 hover:bg-red-500 text-white hover:scale-105 shadow-[0_0_12px_rgba(220,38,38,0.35)]"
-                  : "bg-zinc-800 text-zinc-600 cursor-not-allowed"
+                  ? "bg-primary hover:bg-primary/90 text-white hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_15px_rgba(220,38,38,0.3)]"
+                  : "bg-zinc-900 text-zinc-700 cursor-not-allowed"
               )}
             >
-              <ShoppingCart className="h-3 w-3 shrink-0" />
+              <ShoppingCart className="h-3 w-3" />
               <span>Comprar</span>
             </button>
           </div>

@@ -115,7 +115,7 @@ export default async function Home() {
         {activeFlashDeals.length > 0 && (
           <section className="py-10 relative overflow-hidden bg-red-950/5 border-t border-red-500/10">
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-500/5 blur-[120px] rounded-full pointer-events-none" />
-            <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto px-4">
               <ScrollReveal>
               <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between mb-8 gap-6 sm:gap-4">
                 {/* Left: minimal title */}
@@ -138,7 +138,7 @@ export default async function Home() {
                   <GlobalFlashTimer targetDate={earliestFlashDeal!.flashDealEnd!.toISOString()} />
                 </div>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                 {activeFlashDeals.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
@@ -150,7 +150,7 @@ export default async function Home() {
 
         {/* Catalog Section */}
         <section id="catalogo" className="py-10 bg-card/5 border-t border-border/10">
-          <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto px-4">
             <ScrollReveal direction="right">
               <div className="mb-8 flex items-center gap-4">
                 <div>
@@ -182,7 +182,7 @@ export default async function Home() {
                       </div>
                     </ScrollReveal>
                     
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                       {productsByCategory[category].map((product) => (
                         <ProductCard key={product.id} product={product} />
                       ))}
