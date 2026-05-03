@@ -18,7 +18,6 @@ export const metadata: Metadata = {
 };
 
 import { Navbar } from "@/components/layout/Navbar";
-import { SupportButton } from "@/components/layout/SupportButton";
 import { Toaster } from "@/components/ui/sonner";
 import { AffiliateTracker } from "@/components/affiliate/AffiliateTracker";
 import { Suspense } from "react";
@@ -62,7 +61,6 @@ export default function RootLayout({
           <AffiliateTracker />
         </Suspense>
         <Footer />
-        <SupportButton />
         <Toaster position="top-right" richColors duration={2000} closeButton />
       </body>
     </html>
