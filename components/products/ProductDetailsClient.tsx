@@ -130,7 +130,7 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
               </Button>
               <AddToCartButton 
                 product={product} 
-                className="w-full h-14 text-lg font-bold border-[#1A1A1A] hover:bg-white/5 transition-all hover:scale-[1.02]"
+                className="w-full h-14 text-lg font-bold transition-all hover:scale-[1.02]"
                 showIcon={true}
               />
             </div>

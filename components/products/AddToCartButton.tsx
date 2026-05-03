@@ -33,7 +33,7 @@ export function AddToCartButton({ product, className, showIcon = true }: AddToCa
         "font-semibold transition-all duration-300",
         added 
           ? "bg-green-500 hover:bg-green-600 text-white" 
-          : "bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white shadow-lg shadow-red-500/25",
+          : "bg-zinc-800 hover:bg-zinc-700 text-white border border-white/5 shadow-lg shadow-black/20",
         className
       )}
       disabled={product.stock === 0 || added}
