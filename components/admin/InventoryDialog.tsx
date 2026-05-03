@@ -109,14 +109,14 @@ export function InventoryDialog({ productId, productName }: InventoryDialogProps
             {/* Add Form */}
             <form onSubmit={handleAdd} className="p-5 border-b border-[#1A1A1A] space-y-3">
               <Label htmlFor="content" className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                Adicionar Itens (um por linha)
+                Conteúdo do Item (pode conter múltiplas linhas)
               </Label>
               <Textarea
                 id="content"
                 name="content"
                 placeholder={"conta@email.com:senha123\nchave-de-produto-aqui\noutra-credencial"}
                 required
-                className="bg-[#111111] border-[#1A1A1A] focus:border-primary/50 transition-all min-h-[90px] font-mono text-sm resize-none"
+                className="bg-[#111111] border-[#1A1A1A] focus:border-primary/50 transition-all min-h-[90px] font-mono text-sm resize-y"
               />
               <button
                 type="submit"
@@ -158,7 +158,7 @@ export function InventoryDialog({ productId, productName }: InventoryDialogProps
                             : "bg-[#111111] border-[#1A1A1A] hover:border-primary/20"
                         }`}
                       >
-                        <code className="text-xs font-mono break-all line-clamp-1 flex-1 mr-3 text-muted-foreground">
+                        <code className="text-[10px] font-mono break-all whitespace-pre-wrap flex-1 mr-3 text-muted-foreground/80 leading-relaxed">
                           {item.content}
                         </code>
                         {item.isSold ? (

@@ -29,8 +29,7 @@ export async function addInventoryAction(productId: string, formData: FormData) 
     const content = formData.get("content") as string;
     if (!content) return { error: "Conteúdo não pode estar vazio" };
 
-    // Support multiple items separated by new lines
-    const items = content.split("\n").map(i => i.trim()).filter(i => i !== "");
+    const items = [content.trim()];
 
     for (const item of items) {
       await db.insert(productInventory).values({
